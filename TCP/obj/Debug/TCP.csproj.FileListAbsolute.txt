@@ -1,0 +1,14 @@
+c:\users\mandy\documents\visual studio 2013\Projects\TCP\TCP\bin\Debug\TCP.exe.config
+c:\users\mandy\documents\visual studio 2013\Projects\TCP\TCP\bin\Debug\TCP.exe
+c:\users\mandy\documents\visual studio 2013\Projects\TCP\TCP\bin\Debug\TCP.pdb
+c:\users\mandy\documents\visual studio 2013\Projects\TCP\TCP\obj\Debug\TCP.exe
+c:\users\mandy\documents\visual studio 2013\Projects\TCP\TCP\obj\Debug\TCP.pdb
+C:\Users\Mandy\Documents\Visual Studio 2013\Projects\TCP\TCP\obj\Debug\TCP.csprojResolveAssemblyReference.cache
+D:\Mike OXD\TCP\TCP\bin\Debug\TCP.exe.config
+D:\Mike OXD\TCP\TCP\obj\Debug\TCP.exe
+D:\Mike OXD\TCP\TCP\obj\Debug\TCP.pdb
+D:\Mike OXD\TCP\TCP\bin\Debug\TCP.exe
+D:\Mike OXD\TCP\TCP\bin\Debug\TCP.pdb
+D:\Mike OXD\TCP\TCP\obj\Debug\TCP.csprojResolveAssemblyReference.cache
+D:\Mike OXD\TCP\TCP\bin\Debug\Newtonsoft.Json.dll
+D:\Mike OXD\TCP\TCP\bin\Debug\Newtonsoft.Json.xml
