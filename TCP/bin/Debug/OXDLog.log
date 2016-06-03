@@ -1,0 +1,6 @@
+2016-06-02 17:23:45.5156|DEBUG|TCP.client.update_site_registration|Assert.IsNotNull failed. 
+2016-06-02 17:31:40.9988|ERROR|TCP.client.update_site_registration|woops!
+2016-06-02 17:38:58.6638|DEBUG|TCP.Classes.CommandClient|No connection could be made because the target machine actively refused it 127.0.0.1:8099
+2016-06-02 17:38:58.7919|DEBUG|TCP.client.update_site_registration|Error parsing NaN value. Path '', line 1, position 1.
+2016-06-02 17:39:50.4258|DEBUG|TCP.Classes.CommandClient|No connection could be made because the target machine actively refused it 127.0.0.1:8099
+2016-06-02 17:40:33.3273|DEBUG|TCP.client.update_site_registration|Error parsing NaN value. Path '', line 1, position 1.
