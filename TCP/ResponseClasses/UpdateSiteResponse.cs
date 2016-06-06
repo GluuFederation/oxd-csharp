@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace TCP.ResponseClasses
 {
+    /// <summary>
+    /// Setting up OXD from Site Update responce
+    /// </summary>
     class UpdateSiteResponse
     {
         [JsonProperty("oxd_id")]
@@ -19,7 +22,7 @@ namespace TCP.ResponseClasses
 
         public String getOxdId()
         {
-            return _oxdId;
+            return this._oxdId;
         }
 
         public void setOxdId(String oxdId)

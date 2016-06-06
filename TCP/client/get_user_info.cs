@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TCP.Classes;
+using TCP.CommonClasses;
 using TCP.ResponseClasses;
 
 namespace TCP.client
@@ -13,14 +14,22 @@ namespace TCP.client
     class get_user_info
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
-        public GetUserInfoResponse GetUserInfo(string host, int port, string oxd_id, string accessToken)
+
+        /// <summary>
+        /// Get the User Info
+        /// </summary>
+        /// <param name="host"></param>
+        /// <param name="port"></param>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
+        public GetUserInfoResponse GetUserInfo(string host, int port, string accessToken)
         {
             try
             {
                 CommandClient client = new CommandClient(host, port);
 
                 GetUserInfoParams param = new GetUserInfoParams();
-                param.setOxdId(oxd_id);
+                param.setOxdId(StoredValues._oxd_id);
                 param.setAccessToken(accessToken);
 
                 Command cmd = new Command(CommandType.get_user_info);
@@ -33,6 +42,7 @@ namespace TCP.client
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 Logger.Debug(ex.Message);
                 return null;
             }

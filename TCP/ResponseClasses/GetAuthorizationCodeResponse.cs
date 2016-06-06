@@ -7,10 +7,13 @@ using System.Threading.Tasks;
 
 namespace TCP.ResponseClasses
 {
+    /// <summary>
+    /// Setting up response for Authorization Code
+    /// </summary>
     class GetAuthorizationCodeResponse
     {
         [JsonProperty("code")]
-        private dynamic _code;
+        private String _code;
 
         public GetAuthorizationCodeResponse()
         {
@@ -21,9 +24,9 @@ namespace TCP.ResponseClasses
             this._code = obj.code;
         }
 
-        public dynamic getCode()
+        public String getCode()
         {
-            return _code;
+            return this._code;
         }
 
         public void setCode(dynamic code)

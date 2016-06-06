@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace TCP.Classes
 {
+    /// <summary>
+    /// Class for setting up Command and Params
+    /// </summary>
     class Command 
     {
         [JsonProperty("command")]

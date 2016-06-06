@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace TCP.ResponseClasses
 {
+    /// <summary>
+    /// Setting up userInfo response
+    /// </summary>
     class GetUserInfoResponse
     {
 

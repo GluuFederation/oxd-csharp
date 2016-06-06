@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace TCP.Classes
 {
+    /// <summary>
+    /// Setting up Command Type to send on Server
+    /// </summary>
     public class CommandType
     {
         public static string register_site = "register_site";

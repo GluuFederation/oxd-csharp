@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace TCP.ResponseClasses
 {
+    /// <summary>
+    /// Setting up Logout Response
+    /// </summary>
     class LogoutResponse
     {
         [JsonProperty("uri")]

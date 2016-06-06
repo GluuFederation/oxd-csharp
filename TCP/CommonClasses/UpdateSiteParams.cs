@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace TCP.Classes
 {
+    /// <summary>
+    /// Getting and Setting up Update Site params
+    /// </summary>
     class UpdateSiteParams
     {
         [JsonProperty("oxd_id")]

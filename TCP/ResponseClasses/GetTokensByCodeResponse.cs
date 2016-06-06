@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace TCP.ResponseClasses
 {
+    /// <summary>
+    /// Setting up Token by Code response
+    /// </summary>
     class GetTokensByCodeResponse
     {
 

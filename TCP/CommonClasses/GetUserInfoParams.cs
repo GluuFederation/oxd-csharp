@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace TCP.Classes
 {
+    /// <summary>
+    /// Getting and Setting User Info Params
+    /// </summary>
     class GetUserInfoParams
     {
         [JsonProperty("oxd_id")]

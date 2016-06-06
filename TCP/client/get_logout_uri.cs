@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TCP.Classes;
+using TCP.CommonClasses;
 using TCP.ResponseClasses;
 
 namespace TCP.client
@@ -13,14 +14,21 @@ namespace TCP.client
     class get_logout_uri
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
-        public LogoutResponse GetLogoutURL(string host, int port, string oxd_id)
+
+        /// <summary>
+        /// Get the Logout URL
+        /// </summary>
+        /// <param name="host"></param>
+        /// <param name="port"></param>
+        /// <returns></returns>
+        public LogoutResponse GetLogoutURL(string host, int port)
         {
             try
             {
                 CommandClient client = new CommandClient(host, port);
 
                 GetLogoutUrlParams param = new GetLogoutUrlParams();
-                param.setOxdId(oxd_id);
+                param.setOxdId(StoredValues._oxd_id);
                 param.setIdTokenHint("dummy_token");
                 //param.setPostLogoutRedirectUri("");
 
@@ -38,6 +46,7 @@ namespace TCP.client
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 Logger.Debug(ex.Message);
                 return null;
             }

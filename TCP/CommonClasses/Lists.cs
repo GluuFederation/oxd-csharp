@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace TCP.Classes
 {
+    /// <summary>
+    /// Class to create new Arraylist with String array
+    /// </summary>
     public static class Lists
     {
         public static List<string> newArrayList(string[] lists)

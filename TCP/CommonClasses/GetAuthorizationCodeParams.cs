@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace TCP.CommonClasses
 {
+    /// <summary>
+    /// Getting and Setting Authorization Code Params
+    /// </summary>
     class GetAuthorizationCodeParams
     {
         [JsonProperty("oxd_id")]

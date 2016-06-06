@@ -60,6 +60,7 @@
     <Compile Include="CommonClasses\GetUserInfoParams.cs" />
     <Compile Include="CommonClasses\Lists.cs" />
     <Compile Include="CommonClasses\RegisterSiteParams.cs" />
+    <Compile Include="CommonClasses\StoredValues.cs" />
     <Compile Include="CommonClasses\UpdateSiteParams.cs" />
     <Compile Include="client\get_authorization_url.cs" />
     <Compile Include="client\get_logout_uri.cs" />

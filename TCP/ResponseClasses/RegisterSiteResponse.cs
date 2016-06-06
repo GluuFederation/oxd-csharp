@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace TCP.ResponseClasses
 {
+    /// <summary>
+    /// Setting up OXD ID
+    /// </summary>
     class RegisterSiteResponse
     {
 

@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace TCP.Classes
 {
+    /// <summary>
+    /// Getting and Setting Logout URL Params
+    /// </summary>
     class GetLogoutUrlParams
     {
 

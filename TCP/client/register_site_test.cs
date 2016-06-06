@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TCP.Classes;
+using TCP.CommonClasses;
 using TCP.ResponseClasses;
 
 namespace TCP.client
@@ -14,6 +15,15 @@ namespace TCP.client
     class register_site_test
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        /// <summary>
+        /// Register site using regular params
+        /// </summary>
+        /// <param name="host">Host address to connect</param>
+        /// <param name="port">Port number</param>
+        /// <param name="redirectUrl"></param>
+        /// <param name="postLogoutRedirectUrl"></param>
+        /// <param name="logoutUrl"></param>
+        /// <returns></returns>
         public RegisterSiteResponse RegisterSite(String host, int port, String redirectUrl, String postLogoutRedirectUrl, String logoutUrl)
         {
             try
@@ -39,16 +49,25 @@ namespace TCP.client
                 string commandresponse = client.send(cmd);
                 RegisterSiteResponse response = new RegisterSiteResponse(JsonConvert.DeserializeObject<dynamic>(commandresponse).data);
                 Assert.IsNotNull(response);
-                Assert.IsTrue(String.IsNullOrEmpty(response.getOxdId()));
+                Assert.IsTrue(!String.IsNullOrEmpty(response.getOxdId()));
+                StoredValues._oxd_id = response.getOxdId();
                 return response;
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 Logger.Debug(ex.Message);
                 return null;
             }
         }
 
+        /// <summary>
+        /// Register site with minimal params
+        /// </summary>
+        /// <param name="host"></param>
+        /// <param name="port"></param>
+        /// <param name="redirectUrl"></param>
+        /// <returns></returns>
         public RegisterSiteResponse RegisterSite(string host, int port, string redirectUrl)
         {
             try
@@ -65,11 +84,13 @@ namespace TCP.client
                 string commandresponse = client.send(cmd);
                 RegisterSiteResponse response = new RegisterSiteResponse(JsonConvert.DeserializeObject<dynamic>(commandresponse).data);
                 Assert.IsNotNull(response);
-                Assert.IsTrue(String.IsNullOrEmpty(response.getOxdId()));
+                Assert.IsTrue(!String.IsNullOrEmpty(response.getOxdId()));
+                StoredValues._oxd_id = response.getOxdId();
                 return response;
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 Logger.Debug(ex.Message);
                 return null;
             }

@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace TCP.Classes
 {
+    /// <summary>
+    /// Getting and Setting Tokens By Code Params
+    /// </summary>
     class GetTokensByCodeParams
     {
         [JsonProperty("oxd_id")]

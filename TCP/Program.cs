@@ -11,48 +11,61 @@ using TCP.Classes;
 using System.Collections;
 using TCP.client;
 using TCP.ResponseClasses;
-using Microsoft.VisualStudio.TestTools.UnitTesting; 
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TCP
 {
     class Program
     {
+
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
+        /// <summary>
+        /// Main Program to test all Classes
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
 
             try
             {
-                
-                
-                //register_site_test testing = new register_site_test();
-                //RegisterSiteResponse response = testing.register("127.0.0.1", 8099, "https://www.omsttech.com/wp-login.php?option=oxdOpenId");
+                ///Registering the new Site
+                register_site_test testing = new register_site_test();
+                RegisterSiteResponse response = testing.RegisterSite("127.0.0.1", 8099, "https://www.omsttech.com/wp-login.php?option=oxdOpenId");
+                Console.WriteLine(response);
 
-                update_site_registration test = new update_site_registration();
-                UpdateSiteResponse re = test.UpdateSiteRegisteration("127.0.0.1", 8099, "1c80f252-85a8-4280-b344-44786aba50f5");
+                ///updating the site
+                update_site_registration updatetest = new update_site_registration();
+                UpdateSiteResponse re = updatetest.UpdateSiteRegisteration("127.0.0.1", 8099);
+                Console.WriteLine(re);
 
-                //get_authorization_url test = new get_authorization_url();
-                //test.GetAuthorizationURL("127.0.0.1", "8099", "e90809a3-85a6-409e-b836-f59487a36965");
+                ///Getting auth URL
+                get_authorization_url authUrltest = new get_authorization_url();
+                String authURL = authUrltest.GetAuthorizationURL("127.0.0.1", 8099);
+                Console.WriteLine(authURL);
 
-                //get_authorization_code test = new get_authorization_code();
-                //test.GetAuthorizationCode("127.0.0.1", "8099", "e90809a3-85a6-409e-b836-f59487a36965", "vikas1980", "vikas1980");
+                ///Get Token by code
+                get_tokens_by_code tokentest = new get_tokens_by_code();
+                GetTokensByCodeResponse res = tokentest.GetTokenByCode("127.0.0.1", 8099, "vikas1980", "vikas1980");
+                string accesstoken = res.getAccessToken();
+                Console.WriteLine(accesstoken);
 
-                //get_tokens_by_code test = new get_tokens_by_code();
-                //GetTokensByCodeResponse res = test.GetTokenByCode("127.0.0.1", 8099, "1c80f252-85a8-4280-b344-44786aba50f5", "vikas1980", "vikas1980");
-                //string accesstoken = res.getAccessToken();
+                ///Getting User Info
+                get_user_info userinfo = new get_user_info();
+                GetUserInfoResponse userInfores = userinfo.GetUserInfo("127.0.0.1", 8099, accesstoken);
+                dynamic tes = userInfores.getClaims();
+                Console.WriteLine(userInfores.getClaims());
 
-                //get_user_info userinfo = new get_user_info();
-                //GetUserInfoResponse userInfores = userinfo.GetUserInfo("127.0.0.1", 8099, "1c80f252-85a8-4280-b344-44786aba50f5", accesstoken);
-                //dynamic tes = userInfores.getClaims();
-
-                //get_logout_uri logoutURI = new get_logout_uri();
-                //LogoutResponse logrep = logoutURI.GetLogoutURL("127.0.0.1", 8099, "1c80f252-85a8-4280-b344-44786aba50f5");
+                ///Getting logout URL
+                get_logout_uri logoutURI = new get_logout_uri();
+                LogoutResponse logrep = logoutURI.GetLogoutURL("127.0.0.1", 8099);
+                Console.WriteLine(logrep);
 
             }
             catch (Exception ex)
             {
-                Logger.Debug(ex.Message);   
+                Console.WriteLine(ex.Message);
+                Logger.Debug(ex.Message);
             }
         }
     }

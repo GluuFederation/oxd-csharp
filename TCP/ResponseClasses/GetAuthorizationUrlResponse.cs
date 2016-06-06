@@ -7,10 +7,13 @@ using System.Threading.Tasks;
 
 namespace TCP.ResponseClasses
 {
+    /// <summary>
+    /// Setting up Authorization Url
+    /// </summary>
     class GetAuthorizationUrlResponse
     {
         [JsonProperty("authorization_url")]
-        private dynamic _authorizationUrl;
+        private String _authorizationUrl;
 
         public GetAuthorizationUrlResponse()
         {
@@ -21,9 +24,9 @@ namespace TCP.ResponseClasses
             this._authorizationUrl = obj.authorization_url;
         }
 
-        public dynamic getAuthorizationUrl()
+        public String getAuthorizationUrl()
         {
-            return _authorizationUrl;
+            return this._authorizationUrl;
         }
 
         public void setAuthorizationUrl(dynamic authorizationUrl)

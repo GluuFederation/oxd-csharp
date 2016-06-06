@@ -14,14 +14,24 @@ namespace TCP.client
     class get_tokens_by_code
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
-        public GetTokensByCodeResponse GetTokenByCode(string host, int port, string oxd_id, string userId, string userSecret)
+
+        /// <summary>
+        /// Method to get token
+        /// </summary>
+        /// <param name="host"></param>
+        /// <param name="port"></param>
+        /// <param name="oxd_id"></param>
+        /// <param name="userId"></param>
+        /// <param name="userSecret"></param>
+        /// <returns></returns>
+        public GetTokensByCodeResponse GetTokenByCode(string host, int port, string userId, string userSecret)
         {
             try
             {
                 CommandClient client = new CommandClient(host, port);
                 GetTokensByCodeParams param = new GetTokensByCodeParams();
-                param.SetOxdId(oxd_id);
-                param.SetCode(get_authorization_code.GetAuthorizationCode(host, port, oxd_id, userId, userSecret));
+                param.SetOxdId(StoredValues._oxd_id);
+                param.SetCode(get_authorization_code.GetAuthorizationCode(host, port, userId, userSecret));
                 param.SetScopes(Lists.newArrayList(new string[] { "openid", "profile" }));
                 Command cmd = new Command(CommandType.get_tokens_by_code);
                 cmd.setParamsObject(param);
@@ -32,6 +42,7 @@ namespace TCP.client
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 Logger.Debug(ex.Message);
                 return null;
             }
