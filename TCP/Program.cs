@@ -6,8 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using TCP.Classes;
+using Newtonsoft.Json; 
 using System.Collections;
 using TCP.client;
 using TCP.ResponseClasses;
@@ -35,29 +34,29 @@ namespace TCP
                 Console.WriteLine(response);
 
                 ///updating the site
-                update_site_registration updatetest = new update_site_registration();
+                update_site_registration_test updatetest = new update_site_registration_test();
                 UpdateSiteResponse re = updatetest.UpdateSiteRegisteration("127.0.0.1", 8099);
                 Console.WriteLine(re);
 
                 ///Getting auth URL
-                get_authorization_url authUrltest = new get_authorization_url();
+                get_authorization_url_test authUrltest = new get_authorization_url_test();
                 String authURL = authUrltest.GetAuthorizationURL("127.0.0.1", 8099);
                 Console.WriteLine(authURL);
 
                 ///Get Token by code
-                get_tokens_by_code tokentest = new get_tokens_by_code();
+                get_tokens_by_code_test tokentest = new get_tokens_by_code_test();
                 GetTokensByCodeResponse res = tokentest.GetTokenByCode("127.0.0.1", 8099, "vikas1980", "vikas1980");
                 string accesstoken = res.getAccessToken();
                 Console.WriteLine(accesstoken);
 
                 ///Getting User Info
-                get_user_info userinfo = new get_user_info();
+                get_user_info_test userinfo = new get_user_info_test();
                 GetUserInfoResponse userInfores = userinfo.GetUserInfo("127.0.0.1", 8099, accesstoken);
                 dynamic tes = userInfores.getClaims();
                 Console.WriteLine(userInfores.getClaims());
 
                 ///Getting logout URL
-                get_logout_uri logoutURI = new get_logout_uri();
+                get_logout_uri_test logoutURI = new get_logout_uri_test();
                 LogoutResponse logrep = logoutURI.GetLogoutURL("127.0.0.1", 8099);
                 Console.WriteLine(logrep);
 

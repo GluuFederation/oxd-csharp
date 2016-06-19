@@ -8,7 +8,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using TCP.ResponseClasses;
-namespace TCP.Classes
+namespace TCP.CommonClasses
 {
     /// <summary>
     /// Command client for communicating with Server

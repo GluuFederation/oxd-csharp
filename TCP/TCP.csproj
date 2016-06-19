@@ -50,6 +50,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="client\get_authorization_code_test.cs" />
+    <Compile Include="client\get_authorization_url_test.cs" />
+    <Compile Include="client\get_logout_uri_test.cs" />
+    <Compile Include="client\get_tokens_by_code_test.cs" />
+    <Compile Include="client\get_user_info_test.cs" />
+    <Compile Include="client\update_site_registration_test.cs" />
     <Compile Include="CommonClasses\Command.cs" />
     <Compile Include="CommonClasses\CommandClient.cs" />
     <Compile Include="CommonClasses\CommandType.cs" />
@@ -62,12 +67,7 @@
     <Compile Include="CommonClasses\RegisterSiteParams.cs" />
     <Compile Include="CommonClasses\StoredValues.cs" />
     <Compile Include="CommonClasses\UpdateSiteParams.cs" />
-    <Compile Include="client\get_authorization_url.cs" />
-    <Compile Include="client\get_logout_uri.cs" />
-    <Compile Include="client\get_tokens_by_code.cs" />
-    <Compile Include="client\get_user_info.cs" />
     <Compile Include="client\register_site_test.cs" />
-    <Compile Include="client\update_site_registration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResponseClasses\GetAuthorizationCodeResponse.cs" />

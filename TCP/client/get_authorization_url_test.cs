@@ -4,40 +4,41 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks; 
+using System.Threading.Tasks;
 using TCP.CommonClasses;
 using TCP.ResponseClasses;
 
 namespace TCP.client
-{
-    public static class get_authorization_code
+{ 
+    class get_authorization_url_test
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
         /// <summary>
-        /// Get the Authorization code for getting token
+        /// Method to get Authorization URL
         /// </summary>
         /// <param name="host"></param>
         /// <param name="port"></param>
-        /// <param name="userId">Username</param>
-        /// <param name="userSecret">Password</param>
         /// <returns></returns>
-        public static string GetAuthorizationCode(string host, int port, string userId, string userSecret)
+        public string GetAuthorizationURL(string host, int port)
         {
             try
             {
                 CommandClient client = new CommandClient(host, port);
-                GetAuthorizationCodeParams param = new GetAuthorizationCodeParams();
+
+                GetAuthorizationUrlParams param = new GetAuthorizationUrlParams();
                 param.SetOxdId(StoredValues._oxd_id);
-                param.SetUserName(userId);
-                param.SetPassword(userSecret);
                 param.SetAcrValues(new List<string>());
-                Command cmd = new Command(CommandType.get_authorization_code);
+
+                Command cmd = new Command(CommandType.get_authorization_url);
                 cmd.setParamsObject(param);
+
                 string response = client.send(cmd);
-                GetAuthorizationCodeResponse res = new GetAuthorizationCodeResponse(JsonConvert.DeserializeObject<dynamic>(response).data);
+                GetAuthorizationUrlResponse res = new GetAuthorizationUrlResponse(JsonConvert.DeserializeObject<dynamic>(response).data);
+
                 Assert.IsNotNull(res);
-                Assert.IsTrue(!String.IsNullOrEmpty(res.getCode()));
-                return res.getCode();
+                Assert.IsTrue(!String.IsNullOrEmpty(res.getAuthorizationUrl()));
+                return res.getAuthorizationUrl();
             }
             catch (Exception ex)
             {

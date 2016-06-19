@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TCP.Classes
+namespace TCP.CommonClasses
 {
     /// <summary>
     /// Class to create new Arraylist with String array

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TCP.Classes
+namespace TCP.CommonClasses
 {
     /// <summary>
     /// Setting up Command Type to send on Server

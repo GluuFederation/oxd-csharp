@@ -19,4 +19,3 @@ D:\Mike OXD\oxd-csharp\TCP\bin\Debug\Newtonsoft.Json.dll
 D:\Mike OXD\oxd-csharp\TCP\bin\Debug\NLog.dll
 D:\Mike OXD\oxd-csharp\TCP\bin\Debug\Newtonsoft.Json.xml
 D:\Mike OXD\oxd-csharp\TCP\bin\Debug\NLog.xml
-D:\Mike OXD\oxd-csharp\TCP\obj\Debug\TCP.csprojResolveAssemblyReference.cache

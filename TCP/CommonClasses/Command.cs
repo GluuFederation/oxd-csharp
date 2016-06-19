@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TCP.Classes
+namespace TCP.CommonClasses
 {
     /// <summary>
     /// Class for setting up Command and Params
