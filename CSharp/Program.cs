@@ -35,8 +35,8 @@ namespace CSharp
                 Console.WriteLine(response);
 
                 ///updating the site
-                update_site_registration_test updatetest = new update_site_registration_test();
-                UpdateSiteResponse re = updatetest.UpdateSiteRegisteration("127.0.0.1", 8099);
+                UpdateSiteRegistrationTest updatetest = new UpdateSiteRegistrationTest();
+                UpdateSiteResponse re = updatetest.UpdateSiteRegisteration(IPAddress.Loopback.ToString(), 8099);
                 Console.WriteLine(re);
 
                 /////Getting auth URL

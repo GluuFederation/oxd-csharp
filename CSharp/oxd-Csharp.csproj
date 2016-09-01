@@ -71,7 +71,7 @@
     <Compile Include="client\get_logout_uri_test.cs" />
     <Compile Include="client\get_tokens_by_code_test.cs" />
     <Compile Include="client\get_user_info_test.cs" />
-    <Compile Include="client\update_site_registration_test.cs" />
+    <Compile Include="client\UpdateSiteRegistrationTest.cs" />
     <Compile Include="CommonClasses\Command.cs" />
     <Compile Include="CommonClasses\CommandClient.cs" />
     <Compile Include="CommonClasses\CommandType.cs" />

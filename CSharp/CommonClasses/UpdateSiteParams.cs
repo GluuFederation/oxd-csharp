@@ -1,97 +1,62 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CSharp.CommonClasses
 {
     /// <summary>
-    /// Getting and Setting up Update Site params
+    /// Update Site command params
     /// </summary>
     class UpdateSiteParams
     {
-        [JsonProperty("oxd_id")]
-        private string _oxd_id { get; set; }
+        [JsonProperty("oxd_id", Required = Required.Always)]
+        public string OxdId { get; set; }
 
         [JsonProperty("authorization_redirect_uri")]
-        private string _setAuthorizationRedirectUri { get; set; }
+        public string AuthorizationRedirectUri { get; set; }
 
         [JsonProperty("post_logout_redirect_uri")]
-        private string _setPostLogoutRedirectUri { get; set; }
+        public string PostLogoutRedirectUri { get; set; }
 
         [JsonProperty("client_logout_uris")]
-        private List<string> _setClientLogoutUri { get; set; }
+        public IList<string> ClientLogoutUris { get; set; }
 
-        [JsonProperty("application_type")]
-        private string _setApplicationType { get; set; }
-
-        [JsonProperty("redirect_uris")]
-        private List<string> _setRedirectUris { get; set; }
-
-        [JsonProperty("acr_values")]
-        private List<string> _setAcrValues { get; set; }
-
-        [JsonProperty("client_token_endpoint_auth_method")]
-        private string _client_token_endpoint_auth_method { get; set; }
+        [JsonProperty("response_type")]
+        public string ResponseType { get; set; }
 
         [JsonProperty("grant_types")]
-        private List<string> _setGrantType { get; set; }
+        public IList<string> GrantTypes { get; set; }
 
-        [JsonProperty("client_request_uris")]
-        private List<string> _client_request_uris { get; set; }
+        [JsonProperty("scope")]
+        public IList<string> Scope { get; set; }
 
-        [JsonProperty("contacts")]
-        private List<string> _setContacts { get; set; }
+        [JsonProperty("acr_values")]
+        public IList<string> AcrValues { get; set; }
+
+        [JsonProperty("client_name")]
+        public string ClientName { get; set; }
+
+        [JsonProperty("client_secret_expires_at")]
+        public long ClientSecretExpiresAt { get; set; }
 
         [JsonProperty("client_jwks_uri")]
-        private string _client_jwks_uri { get; set; }
+        public string ClientJwksUri { get; set; }
 
-        public void SetOxdId(string val)
-        {
-            this._oxd_id = val;
-        }
-        public void SetAuthorizationRedirectUri(string val)
-        {
-            this._setAuthorizationRedirectUri = val;
-        }
-        public void SetPostLogoutRedirectUri(string val)
-        {
-            this._setPostLogoutRedirectUri = val;
-        }
-        public void SetClientLogoutUri(List<string> val)
-        {
-            this._setClientLogoutUri = val;
-        }
-        public void SetApplicationType(string val)
-        {
-            this._setApplicationType = val;
-        }
-        public void SetRedirectUris(List<string> val)
-        {
-            this._setRedirectUris = val;
-        }
-        public void SetAcrValues(List<string> val)
-        {
-            this._setAcrValues = val;
-        }
-        public void SetClientJwksUri(string val)
-        {
-            this._client_jwks_uri = val;
-        }
-        public void SetGrantType(List<string> val)
-        {
-            this._setGrantType = val;
-        }
-        public void SetClientTokenEndpointAuthMethod(string val)
-        {
-            this._client_token_endpoint_auth_method = val;
-        }
+        [JsonProperty("client_token_endpoint_auth_method")]
+        public string ClientTokenEndpointAuthMethod { get; set; }
 
-        public void SetContacts(List<string> val)
-        {
-            this._setContacts = val;
-        }
+        [JsonProperty("client_request_uris")]
+        public IList<string> ClientRequestUris { get; set; }
+
+        [JsonProperty("client_sector_identifier_uri")]
+        public string ClientSectorIdentifierUri { get; set; }
+
+        [JsonProperty("contacts")]
+        public IList<string> Contacts { get; set; }
+
+        [JsonProperty("ui_locales")]
+        public IList<string> UiLocales { get; set; }
+
+        [JsonProperty("claims_locales")]
+        public IList<string> ClaimsLocales { get; set; }
     }
 }
