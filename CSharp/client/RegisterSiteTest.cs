@@ -8,10 +8,11 @@ using System.Text;
 using System.Threading.Tasks; 
 using CSharp.CommonClasses;
 using CSharp.ResponseClasses;
+using System.Configuration;
 
 namespace CSharp.client
 {
-    class register_site_test
+    class RegisterSiteTest
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         /// <summary>
@@ -27,29 +28,33 @@ namespace CSharp.client
         {
             try
             { 
+                //Prepare Register Site Command params
+                RegisterSiteParams registerSiteParam = new RegisterSiteParams();
+                registerSiteParam.AuthorizationRedirectUri = ConfigurationManager.AppSettings["AuthorizationRedirectUri"];
+                registerSiteParam.OpHost = ConfigurationManager.AppSettings["GluuServerUrl"];                                
+                registerSiteParam.PostLogoutRedirectUri = postLogoutRedirectUrl;
+                registerSiteParam.ApplicationType = "web";
+                registerSiteParam.Scope = new List<string> { "openid", "profile", "email", "address", "clientinfo", "mobile_phone", "phone" };
+                registerSiteParam.Contacts = new List<string> { ConfigurationManager.AppSettings["UserEmail"] };
+                registerSiteParam.GrantTypes = new List<string> { "authorization_code" };
+                registerSiteParam.ResponseTypes = new List<string> { "code" };
+                registerSiteParam.ClientLogoutUris = new List<string> { logoutUrl };
+                registerSiteParam.ClientName = ConfigurationManager.AppSettings["OxdClientName"];
+
+                //Prepare Register Site command using its params
+                Command cmdRegisterSite = new Command(CommandType.register_site);
+                cmdRegisterSite.setParamsObject(registerSiteParam);
+
+                //Send request
                 CommandClient client = new CommandClient(host, port);
-                RegisterSiteParams param = new RegisterSiteParams();
-                param.SetAuthorizationRedirectUri("https://www.omsttech.com/wp-login.php?option=oxdOpenId");
-                param.SetPostLogoutRedirectUri("https://www.omsttech.com/wp-login.php?action=logout&_wpnonce=a3c70643e9");
-                param.SetApplicationType("web");
-                param.SetRedirectUris(Lists.newArrayList(new string[] { "https://www.omsttech.com/wp-login.php?option=oxdOpenId" }));
-                param.SetAcrValues(new List<string>());
-                param.SetScope(Lists.newArrayList(new string[] { "openid", "profile", "email", "address", "clientinfo", "mobile_phone", "phone" }));
-                param.SetContacts(Lists.newArrayList(new string[] { "hellochopra1@gmail.com" }));
-                param.SetGrantType(Lists.newArrayList(new string[] { "authorization_code" }));
-                param.SetResponseTypes(Lists.newArrayList(new string[] { "code" }));
-                param.SetClientLogoutUri(Lists.newArrayList(new string[] { "https://www.omsttech.com/wp-login.php?action=logout&_wpnonce=a3c70643e9" }));
+                string commandresponse = client.send(cmdRegisterSite);
 
-                //param.Op_host("https://ce-dev2.gluu.org");
-
-                Command cmd = new Command(CommandType.register_site);
-                cmd.setParamsObject(param);
-
-                string commandresponse = client.send(cmd);
+                //Process response
                 RegisterSiteResponse response = new RegisterSiteResponse(JsonConvert.DeserializeObject<dynamic>(commandresponse).data);
                 Assert.IsNotNull(response);
                 Assert.IsTrue(!String.IsNullOrEmpty(response.getOxdId()));
                 StoredValues._oxd_id = response.getOxdId();
+
                 return response;
             }
             catch (Exception ex)
@@ -71,20 +76,26 @@ namespace CSharp.client
         {
             try
             {
-                CommandClient client = new CommandClient(host, port);
-                RegisterSiteParams param = new RegisterSiteParams();
-                param.SetAuthorizationRedirectUri(redirectUrl);
-                param.SetPostLogoutRedirectUri(redirectUrl);
-                param.SetClientLogoutUri(Lists.newArrayList(new string[] { "" }));
+                //Prepare Register Site Params
+                RegisterSiteParams registerSiteParam = new RegisterSiteParams();
+                registerSiteParam.AuthorizationRedirectUri = redirectUrl;
+                registerSiteParam.OpHost = ConfigurationManager.AppSettings["GluuServerUrl"];
+                registerSiteParam.PostLogoutRedirectUri = redirectUrl;
+                registerSiteParam.ClientLogoutUris = new List<string> { "" };
+                registerSiteParam.ClientName = ConfigurationManager.AppSettings["OxdClientName"];
 
+                //Create Register Site command using its params
                 Command cmd = new Command(CommandType.register_site);
-                cmd.setParamsObject(param);
+                cmd.setParamsObject(registerSiteParam);
 
+                CommandClient client = new CommandClient(host, port);
                 string commandresponse = client.send(cmd);
+
                 RegisterSiteResponse response = new RegisterSiteResponse(JsonConvert.DeserializeObject<dynamic>(commandresponse).data);
                 Assert.IsNotNull(response);
                 Assert.IsTrue(!String.IsNullOrEmpty(response.getOxdId()));
                 StoredValues._oxd_id = response.getOxdId();
+
                 return response;
             }
             catch (Exception ex)

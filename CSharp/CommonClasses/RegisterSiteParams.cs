@@ -1,108 +1,85 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CSharp.CommonClasses
 {
     /// <summary>
-    /// Getting and Setting Register Site Params
+    /// Register Site Commad Params
     /// </summary>
     class RegisterSiteParams
     {
-        [JsonIgnore]
+        /// <summary>
+        /// Authorization Redirect URI
+        /// </summary>
+        /// <remarks>Required Json Property</remarks>
+        [JsonProperty("authorization_redirect_uri", Required = Required.Always)]
+        public string AuthorizationRedirectUri { get; set; }
+
+        /// <summary>
+        /// OP Host
+        /// </summary>
+        /// <remarks>Optional Json Property (But if missing, must be present in oxd-default-site-config.json file of OXD Server)</remarks>
         [JsonProperty("op_host")]
-        public string _op_host { get; set; }
-        [JsonProperty("authorization_redirect_uri")]
-        private string _setAuthorizationRedirectUri { get; set; }
+        public string OpHost { get; set; }
+
         [JsonProperty("post_logout_redirect_uri")]
-        private string _setPostLogoutRedirectUri { get; set; }
-        [JsonProperty("client_logout_uris")]
-        private List<string> _setClientLogoutUri { get; set; }
+        public string PostLogoutRedirectUri { get; set; }
+
         [JsonProperty("application_type")]
-        private string _setApplicationType { get; set; }
-        [JsonProperty("redirect_uris")]
-        private List<string> _setRedirectUris { get; set; }
-        [JsonProperty("acr_values")]
-        private List<string> _setAcrValues { get; set; }
-        [JsonProperty("scope")]
-        private List<string> _setScope { get; set; }
-        [JsonProperty("grant_types")]
-        private List<string> _setGrantType { get; set; }
+        public string ApplicationType { get; set; }
+
         [JsonProperty("response_types")]
-        private List<string> _setResponseTypes { get; set; }
+        public IList<string> ResponseTypes { get; set; }
+
+        [JsonProperty("grant_types")]
+        public IList<string> GrantTypes { get; set; }
+
+        [JsonProperty("scope")]
+        public IList<string> Scope { get; set; }
+
+        [JsonProperty("acr_values")]
+        public IList<string> AcrValues { get; set; }
+
+        [JsonProperty("client_name")]
+        public string ClientName { get; set; }
+
+        [JsonProperty("client_jwks_uri")]
+        public string ClientJwksUri { get; set; }
+
+        [JsonProperty("client_token_endpoint_auth_method")]
+        public string ClientTokenEndpointAuthMethod { get; set; }
+
+        [JsonProperty("client_request_uris")]
+        public IList<string> ClientRequestUris { get; set; }
+
+        [JsonProperty("client_logout_uris")]
+        public IList<string> ClientLogoutUris { get; set; }
+
+        [JsonProperty("client_sector_identifier_uri")]
+        public IList<string> ClientSectorIdentifierUri { get; set; }
+
         [JsonProperty("contacts")]
-        private List<string> _setContacts { get; set; }
+        public IList<string> Contacts { get; set; }
 
-        public void Op_host(string val)
-        {
-            this._op_host = val;
-        }
-        public void SetAuthorizationRedirectUri(string val)
-        {
-            this._setAuthorizationRedirectUri = val;
-        }
-        public void SetPostLogoutRedirectUri(string val)
-        {
-            this._setPostLogoutRedirectUri = val;
-        }
-        public void SetClientLogoutUri(List<string> val)
-        {
-            this._setClientLogoutUri = val;
-        }
-        public void SetApplicationType(string val)
-        {
-            this._setApplicationType = val;
-        }
-        public void SetRedirectUris(List<string> val)
-        {
-            this._setRedirectUris = val;
-        }
-        public void SetAcrValues(List<string> val)
-        {
-            this._setAcrValues = val;
-        }
-        public void SetScope(List<string> val)
-        {
-            this._setScope = val;
-        }
-        public void SetGrantType(List<string> val)
-        {
-            this._setGrantType = val;
-        }
-        public void SetResponseTypes(List<string> val)
-        {
-            this._setResponseTypes = val;
-        }
+        [JsonProperty("ui_locales")]
+        public IList<string> UiLocales { get; set; }
 
-        public void SetContacts(List<string> val)
-        {
-            this._setContacts = val;
-        }
+        [JsonProperty("claims_locales")]
+        public IList<string> ClaimsLocales { get; set; }
 
-        //public override string ToString()
-        //{
-        //    StringBuilder sb = new StringBuilder();
-        //    sb.Append("RegisterSiteParams");
-        //    sb.Append("{acrValues=").Append(_setAcrValues);
-        //    //sb.Append(", opHost='").Append(_op_host).Append('\'');
-        //    sb.Append(", authorizationRedirectUri='").Append(_setAuthorizationRedirectUri).Append('\'');
-        //    sb.Append(", applicationType='").Append(_setApplicationType).Append('\'');
-        //    sb.Append(", redirectUris=").Append(_setRedirectUris);
-        //    sb.Append(", responseTypes=").Append(_setResponseTypes);
-        //    //sb.append(", clientId='").append(clientId).append('\'');
-        //    //sb.append(", clientSecret='").append(clientSecret).append('\'');
-        //   // sb.append(", sectorIdentifierUri='").append(clientSectorIdentifierUri).append('\'');
-        //    sb.Append(", scope=").Append(_setScope);
-        //    //sb.append(", uiLocales=").append(uiLocales);
-        //    //sb.append(", claimsLocales=").append(claimsLocales);
-        //    sb.Append(", grantType=").Append(_setGrantType);
-        //    sb.Append(", contacts=").Append(_setContacts);
-        //    sb.Append('}');
-        //    return base.ToString();
-        //}
+        /// <summary>
+        /// Client ID. It is optional Json property. If specified, it ignores all other parameters and skips new client registration.
+        /// It forces to use existing client with this Client ID and Client Secret
+        /// </summary>
+        /// <remarks>Client Secret is required if this parameter is set</remarks>
+        [JsonProperty("client_id")]
+        public string ClientId { get; set; }
 
+        /// <summary>
+        /// Client Secret
+        /// </summary>
+        /// <remarks>It is requirede Json property only when the Client ID property is set</remarks>
+        [JsonProperty("client_secret")]
+        public string ClientSecret { get; set; }
     }
 }
