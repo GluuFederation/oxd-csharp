@@ -7,84 +7,54 @@ using System.Threading.Tasks;
 
 namespace CSharp.ResponseClasses
 {
-    /// <summary>
-    /// Setting up Token by Code response
-    /// </summary>
-    class GetTokensByCodeResponse
+    public class IdTokenClaims
     {
+        [JsonProperty("iss")]
+        public IList<string> Iss { get; set; }
 
+        [JsonProperty("sub")]
+        public IList<string> Sub { get; set; }
+
+        [JsonProperty("aud")]
+        public IList<string> Aud { get; set; }
+
+        [JsonProperty("nonce")]
+        public IList<string> Nonce { get; set; }
+
+        [JsonProperty("exp")]
+        public IList<int> Exp { get; set; }
+
+        [JsonProperty("iat")]
+        public IList<int> Iat { get; set; }
+
+        [JsonProperty("at_hash")]
+        public IList<string> AtHash { get; set; }
+    }
+
+    public class GetTokensByCodeResponseData
+    {
         [JsonProperty("access_token")]
-        private dynamic _accessToken;
+        public string AccessToken { get; set; }
 
         [JsonProperty("expires_in")]
-        private dynamic _expiresIn; // expiration time in seconds
-
-        [JsonProperty("id_token")]
-        private dynamic _idToken;
+        public int ExpiresIn { get; set; }
 
         [JsonProperty("refresh_token")]
-        private dynamic _refreshToken;
+        public string RefreshToken { get; set; }
+
+        [JsonProperty("id_token")]
+        public string IdToken { get; set; }
 
         [JsonProperty("id_token_claims")]
-        private dynamic _idTokenClaims;
+        public IdTokenClaims IdTokenClaims { get; set; }
+    }
 
-        public GetTokensByCodeResponse(dynamic obj)
-        {
-            this._refreshToken = obj.refresh_token;
-            this._accessToken = obj.access_token;
-            this._expiresIn = obj.expires_in;
-            this._idToken = obj.id_token;
-            this._idTokenClaims = obj.id_token_claims; 
-        }
+    public class GetTokensByCodeResponse
+    {
+        [JsonProperty("status")]
+        public string Status { get; set; }
 
-        public dynamic getRefreshToken()
-        {
-            return _refreshToken;
-        }
-
-        public void setRefreshToken(dynamic refreshToken)
-        {
-            this._refreshToken = refreshToken;
-        }
-
-        public dynamic getAccessToken()
-        {
-            return _accessToken;
-        }
-
-        public void setAccessToken(dynamic accessToken)
-        {
-            this._accessToken = accessToken;
-        }
-
-        public dynamic getExpiresIn()
-        {
-            return _expiresIn;
-        }
-
-        public void setExpiresIn(dynamic expiresIn)
-        {
-            this._expiresIn = expiresIn;
-        }
-
-        public dynamic getIdToken()
-        {
-            return _idToken;
-        }
-
-        public void setIdToken(dynamic idToken)
-        {
-            this._idToken = idToken;
-        }
-
-        public dynamic getIdTokenClaims()
-        {
-            return _idTokenClaims;
-        }
-
-        public void setIdTokenClaims(dynamic idTokenClaims)
-        {
-            this._idTokenClaims = idTokenClaims;
-        }
+        [JsonProperty("data")]
+        public GetTokensByCodeResponseData Data { get; set; }
     }
 }

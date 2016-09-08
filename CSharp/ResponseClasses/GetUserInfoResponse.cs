@@ -7,33 +7,42 @@ using System.Threading.Tasks;
 
 namespace CSharp.ResponseClasses
 {
-    /// <summary>
-    /// Setting up userInfo response
-    /// </summary>
-    class GetUserInfoResponse
+    public class UserClaims
     {
+        [JsonProperty("sub")]
+        public IList<string> Sub { get; set; }
 
+        [JsonProperty("name")]
+        public IList<string> Name { get; set; }
+
+        [JsonProperty("given_name")]
+        public IList<string> GivenName { get; set; }
+
+        [JsonProperty("family_name")]
+        public IList<string> FamilyName { get; set; }
+
+        [JsonProperty("preferred_username")]
+        public IList<string> PreferredUsername { get; set; }
+
+        [JsonProperty("email")]
+        public IList<string> Email { get; set; }
+
+        [JsonProperty("picture")]
+        public IList<string> Picture { get; set; }
+    }
+
+    public class GetUserInfoResponseData
+    {
         [JsonProperty("claims")]
-        private dynamic _claims;
+        public UserClaims UserClaims { get; set; }
+    }
 
-        public GetUserInfoResponse()
-        {
-        }
+    public class GetUserInfoResponse
+    {
+        [JsonProperty("status")]
+        public string Status { get; set; }
 
-        public GetUserInfoResponse(dynamic obj)
-        {
-            this._claims = obj.claims;
-        }
-
-        public dynamic getClaims()
-        {
-            return _claims;
-        }
-
-        public void setClaims(dynamic claims)
-        {
-            this._claims = claims;
-        }
-
+        [JsonProperty("data")]
+        public GetUserInfoResponseData Data { get; set; }
     }
 }

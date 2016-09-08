@@ -40,9 +40,9 @@ namespace CSharp
                 Console.WriteLine(re);
 
                 /////Getting auth URL
-                //get_authorization_url_test authUrltest = new get_authorization_url_test();
-                //String authURL = authUrltest.GetAuthorizationURL("127.0.0.1", 8099);
-                //Console.WriteLine(authURL);
+                get_authorization_url_test authUrltest = new get_authorization_url_test();
+                var authUrlResponse = authUrltest.GetAuthorizationURL("127.0.0.1", 8099);
+                Console.WriteLine(authUrlResponse.Data.AuthorizationUrl);
 
                 /////Get Token by code
                 //get_tokens_by_code_test tokentest = new get_tokens_by_code_test();

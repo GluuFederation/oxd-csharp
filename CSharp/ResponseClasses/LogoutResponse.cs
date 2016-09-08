@@ -7,31 +7,18 @@ using System.Threading.Tasks;
 
 namespace CSharp.ResponseClasses
 {
-    /// <summary>
-    /// Setting up Logout Response
-    /// </summary>
-    class LogoutResponse
+    public class LogoutResponseData
     {
         [JsonProperty("uri")]
-        private String _uri;
+        public string LogoutUri { get; set; }
+    }
 
-        public LogoutResponse()
-        {
-        }
+    public class LogoutResponse
+    {
+        [JsonProperty("status")]
+        public string Status { get; set; }
 
-        public LogoutResponse(dynamic obj)
-        {
-            this._uri = obj.uri;
-        }
-
-        public String getUri()
-        {
-            return _uri;
-        }
-
-        public void setUri(String uri)
-        {
-            this._uri = uri;
-        }
+        [JsonProperty("data")]
+        public LogoutResponseData Data { get; set; }
     }
 }

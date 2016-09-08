@@ -10,7 +10,7 @@ using CSharp.ResponseClasses;
 
 namespace CSharp.client
 {
-    class get_user_info_test
+    public class get_user_info_test
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -21,21 +21,21 @@ namespace CSharp.client
         /// <param name="port"></param>
         /// <param name="accessToken"></param>
         /// <returns></returns>
-        public GetUserInfoResponse GetUserInfo(string host, int port, string accessToken)
+        public GetUserInfoResponse GetUserInfo(string host, int port, string oxdId, string accessToken)
         {
             try
             {
                 CommandClient client = new CommandClient(host, port);
 
                 GetUserInfoParams param = new GetUserInfoParams();
-                param.setOxdId(StoredValues._oxd_id);
+                param.setOxdId(string.IsNullOrEmpty(oxdId)? StoredValues._oxd_id : oxdId);
                 param.setAccessToken(accessToken);
 
                 Command cmd = new Command(CommandType.get_user_info);
                 cmd.setParamsObject(param);
 
                 string response = client.send(cmd);
-                GetUserInfoResponse res = new GetUserInfoResponse(JsonConvert.DeserializeObject<dynamic>(response).data);
+                GetUserInfoResponse res = JsonConvert.DeserializeObject<GetUserInfoResponse>(response);
                 Assert.IsNotNull(res);
                 return res;
             }

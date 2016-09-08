@@ -7,28 +7,18 @@ using System.Threading.Tasks;
 
 namespace CSharp.ResponseClasses
 {
-    /// <summary>
-    /// Setting up OXD ID
-    /// </summary>
-    class RegisterSiteResponse
+    public class RegisterSiteResponse
     {
+        [JsonProperty("status")]
+        public string Status { get; set; }
 
+        [JsonProperty("data")]
+        public RegisterSiteResponseData Data { get; set; }  
+    }
+
+    public class RegisterSiteResponseData
+    {
         [JsonProperty("oxd_id")]
-        private dynamic _oxd_Id;
-
-        public RegisterSiteResponse(dynamic obj)
-        {
-            this._oxd_Id = obj.oxd_id;
-        }
-
-        public String getOxdId()
-        {
-            return _oxd_Id;
-        }
-
-        public void setOxdId(dynamic oxdId)
-        {
-            this._oxd_Id = oxdId;
-        }
+        public string OxdId { get; set; }
     }
 }

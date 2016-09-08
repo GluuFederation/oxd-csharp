@@ -10,7 +10,7 @@ using CSharp.ResponseClasses;
 
 namespace CSharp.client
 {
-    class get_tokens_by_code_test
+    public class get_tokens_by_code_test
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -23,19 +23,19 @@ namespace CSharp.client
         /// <param name="userId"></param>
         /// <param name="userSecret"></param>
         /// <returns></returns>
-        public GetTokensByCodeResponse GetTokenByCode(string host, int port, string userId, string userSecret)
+        public GetTokensByCodeResponse GetTokenByCode(string host, int port, string oxdId, string authCode)
         {
             try
             {
                 CommandClient client = new CommandClient(host, port);
                 GetTokensByCodeParams param = new GetTokensByCodeParams();
-                param.SetOxdId(StoredValues._oxd_id);
-                param.SetCode(get_authorization_code.GetAuthorizationCode(host, port, userId, userSecret));
+                param.SetOxdId(string.IsNullOrEmpty(oxdId)? StoredValues._oxd_id : oxdId);
+                param.SetCode(authCode);
                 param.SetScopes(Lists.newArrayList(new string[] { "openid", "profile" }));
                 Command cmd = new Command(CommandType.get_tokens_by_code);
                 cmd.setParamsObject(param);
                 string commandresponse = client.send(cmd);
-                GetTokensByCodeResponse response = new GetTokensByCodeResponse(JsonConvert.DeserializeObject<dynamic>(commandresponse).data);
+                GetTokensByCodeResponse response = JsonConvert.DeserializeObject<GetTokensByCodeResponse>(commandresponse);
                 Assert.IsNotNull(response);
                 return response;
             }

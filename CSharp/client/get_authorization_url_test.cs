@@ -10,7 +10,7 @@ using CSharp.ResponseClasses;
 
 namespace CSharp.client
 { 
-    class get_authorization_url_test
+    public class get_authorization_url_test
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -20,31 +20,30 @@ namespace CSharp.client
         /// <param name="host"></param>
         /// <param name="port"></param>
         /// <returns></returns>
-        public string GetAuthorizationURL(string host, int port)
+        public GetAuthorizationUrlResponse GetAuthorizationURL(string host, int port, string oxdId = "")
         {
             try
             {
                 CommandClient client = new CommandClient(host, port);
 
                 GetAuthorizationUrlParams param = new GetAuthorizationUrlParams();
-                param.SetOxdId(StoredValues._oxd_id);
-                param.SetAcrValues(new List<string>());
+                param.SetOxdId( string.IsNullOrEmpty(oxdId) ? StoredValues._oxd_id : oxdId);
 
                 Command cmd = new Command(CommandType.get_authorization_url);
                 cmd.setParamsObject(param);
 
                 string response = client.send(cmd);
-                GetAuthorizationUrlResponse res = new GetAuthorizationUrlResponse(JsonConvert.DeserializeObject<dynamic>(response).data);
+                GetAuthorizationUrlResponse res = JsonConvert.DeserializeObject<GetAuthorizationUrlResponse>(response);
 
                 Assert.IsNotNull(res);
-                Assert.IsTrue(!String.IsNullOrEmpty(res.getAuthorizationUrl()));
-                return res.getAuthorizationUrl();
+                Assert.IsTrue(!String.IsNullOrEmpty(res.Data.AuthorizationUrl));
+                return res;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 Logger.Debug(ex.Message);
-                return ex.Message;
+                throw ex;
             }
         }
     }

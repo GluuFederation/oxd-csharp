@@ -12,7 +12,7 @@ using System.Configuration;
 
 namespace CSharp.client
 {
-    class RegisterSiteTest
+    public class RegisterSiteTest
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         /// <summary>
@@ -50,10 +50,10 @@ namespace CSharp.client
                 string commandresponse = client.send(cmdRegisterSite);
 
                 //Process response
-                RegisterSiteResponse response = new RegisterSiteResponse(JsonConvert.DeserializeObject<dynamic>(commandresponse).data);
+                RegisterSiteResponse response = JsonConvert.DeserializeObject<RegisterSiteResponse>(commandresponse);
                 Assert.IsNotNull(response);
-                Assert.IsTrue(!String.IsNullOrEmpty(response.getOxdId()));
-                StoredValues._oxd_id = response.getOxdId();
+                Assert.IsTrue(!String.IsNullOrEmpty(response.Data.OxdId));
+                StoredValues._oxd_id = response.Data.OxdId;
 
                 return response;
             }
@@ -80,8 +80,6 @@ namespace CSharp.client
                 RegisterSiteParams registerSiteParam = new RegisterSiteParams();
                 registerSiteParam.AuthorizationRedirectUri = redirectUrl;
                 registerSiteParam.OpHost = ConfigurationManager.AppSettings["GluuServerUrl"];
-                registerSiteParam.PostLogoutRedirectUri = redirectUrl;
-                registerSiteParam.ClientLogoutUris = new List<string> { "" };
                 registerSiteParam.ClientName = ConfigurationManager.AppSettings["OxdClientName"];
 
                 //Create Register Site command using its params
@@ -91,10 +89,10 @@ namespace CSharp.client
                 CommandClient client = new CommandClient(host, port);
                 string commandresponse = client.send(cmd);
 
-                RegisterSiteResponse response = new RegisterSiteResponse(JsonConvert.DeserializeObject<dynamic>(commandresponse).data);
+                RegisterSiteResponse response = JsonConvert.DeserializeObject<RegisterSiteResponse>(commandresponse);
                 Assert.IsNotNull(response);
-                Assert.IsTrue(!String.IsNullOrEmpty(response.getOxdId()));
-                StoredValues._oxd_id = response.getOxdId();
+                Assert.IsTrue(!String.IsNullOrEmpty(response.Data.OxdId));
+                StoredValues._oxd_id = response.Data.OxdId;
 
                 return response;
             }
@@ -105,6 +103,5 @@ namespace CSharp.client
                 return null;
             }
         }
-
     }
 }

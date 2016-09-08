@@ -7,31 +7,18 @@ using System.Threading.Tasks;
 
 namespace CSharp.ResponseClasses
 {
-    /// <summary>
-    /// Setting up Authorization Url
-    /// </summary>
-    class GetAuthorizationUrlResponse
+    public class GetAuthorizationUrlResponseData
     {
         [JsonProperty("authorization_url")]
-        private String _authorizationUrl;
+        public string AuthorizationUrl { get; set; }
+    }
 
-        public GetAuthorizationUrlResponse()
-        {
-        }
+    public class GetAuthorizationUrlResponse
+    {
+        [JsonProperty("status")]
+        public string Status { get; set; }
 
-        public GetAuthorizationUrlResponse(dynamic obj)
-        {
-            this._authorizationUrl = obj.authorization_url;
-        }
-
-        public String getAuthorizationUrl()
-        {
-            return this._authorizationUrl;
-        }
-
-        public void setAuthorizationUrl(dynamic authorizationUrl)
-        {
-            this._authorizationUrl = authorizationUrl;
-        }
+        [JsonProperty("data")]
+        public GetAuthorizationUrlResponseData Data { get; set; }
     }
 }

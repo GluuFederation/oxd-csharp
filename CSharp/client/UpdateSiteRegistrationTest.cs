@@ -11,7 +11,7 @@ using System.Configuration;
 
 namespace CSharp.client
 {
-    class UpdateSiteRegistrationTest
+    public class UpdateSiteRegistrationTest
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -46,9 +46,9 @@ namespace CSharp.client
                 string commandresponse = client.send(cmdUpdateSite);
 
                 //Process response
-                UpdateSiteResponse response = new UpdateSiteResponse(JsonConvert.DeserializeObject<dynamic>(commandresponse).data);
+                UpdateSiteResponse response = JsonConvert.DeserializeObject<UpdateSiteResponse>(commandresponse);
                 Assert.IsNotNull(response);
-                Assert.IsTrue(!String.IsNullOrEmpty(response.getOxdId()));
+                Assert.AreEqual("ok", response.Status);
                 return response;
             }
             catch (Exception ex)
@@ -57,6 +57,28 @@ namespace CSharp.client
                 Logger.Debug(ex.Message);
                 return null;
             }
+        }
+
+        public UpdateSiteResponse UpdateSiteRegisteration(string host, int port, string oxdId, string newEmail, string postLogoutRedirectUri)
+        {
+            UpdateSiteParams updateSiteParams = new UpdateSiteParams();
+            updateSiteParams.OxdId = oxdId;
+            updateSiteParams.Contacts = new List<string> { newEmail };
+            updateSiteParams.PostLogoutRedirectUri = postLogoutRedirectUri;
+
+            //Create Update Site command with its params
+            Command cmdUpdateSite = new Command(CommandType.update_site_registration);
+            cmdUpdateSite.setParamsObject(updateSiteParams);
+
+            //Send request
+            CommandClient client = new CommandClient(host, port);
+            string commandresponse = client.send(cmdUpdateSite);
+
+            //Process response
+            UpdateSiteResponse response = JsonConvert.DeserializeObject<UpdateSiteResponse>(commandresponse);
+            Assert.IsNotNull(response);
+            Assert.AreEqual("ok", response.Status);
+            return response;
         }
     }
 }
