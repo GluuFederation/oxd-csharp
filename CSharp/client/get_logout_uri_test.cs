@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CSharp.CommonClasses;
+using oxdCSharp.CommandParameters;
 using oxdCSharp.CommandResponses;
 
 namespace CSharp.client
@@ -27,7 +28,7 @@ namespace CSharp.client
                 CommandClient client = new CommandClient(host, port);
 
                 GetLogoutUrlParams param = new GetLogoutUrlParams();
-                param.setOxdId(oxdId);
+                param.OxdId = oxdId;
 
                 Command cmd = new Command(CommandType.get_logout_uri);
                 cmd.setParamsObject(param);

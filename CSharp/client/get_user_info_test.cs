@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CSharp.CommonClasses;
+using oxdCSharp.CommandParameters;
 using oxdCSharp.CommandResponses;
 
 namespace CSharp.client
@@ -28,8 +29,8 @@ namespace CSharp.client
                 CommandClient client = new CommandClient(host, port);
 
                 GetUserInfoParams param = new GetUserInfoParams();
-                param.setOxdId(string.IsNullOrEmpty(oxdId)? StoredValues._oxd_id : oxdId);
-                param.setAccessToken(accessToken);
+                param.OxdId = string.IsNullOrEmpty(oxdId)? StoredValues._oxd_id : oxdId;
+                param.AccessToken = accessToken;
 
                 Command cmd = new Command(CommandType.get_user_info);
                 cmd.setParamsObject(param);

@@ -1,14 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace CSharp.CommonClasses
+namespace oxdCSharp.CommandParameters
 {
-    /// <summary>
-    /// Update Site command params
-    /// </summary>
-    class UpdateSiteParams
+    public class UpdateSiteParams
     {
-        [JsonProperty("oxd_id", Required = Required.Always)]
+        [JsonProperty("oxd_id")]
         public string OxdId { get; set; }
 
         [JsonProperty("authorization_redirect_uri")]
@@ -21,7 +18,7 @@ namespace CSharp.CommonClasses
         public IList<string> ClientLogoutUris { get; set; }
 
         [JsonProperty("response_type")]
-        public string ResponseType { get; set; }
+        public IList<string> ResponseType { get; set; }
 
         [JsonProperty("grant_types")]
         public IList<string> GrantTypes { get; set; }

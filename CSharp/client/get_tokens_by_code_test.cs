@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CSharp.CommonClasses;
+using oxdCSharp.CommandParameters;
 using oxdCSharp.CommandResponses;
 
 namespace CSharp.client
@@ -29,9 +30,8 @@ namespace CSharp.client
             {
                 CommandClient client = new CommandClient(host, port);
                 GetTokensByCodeParams param = new GetTokensByCodeParams();
-                param.SetOxdId(string.IsNullOrEmpty(oxdId)? StoredValues._oxd_id : oxdId);
-                param.SetCode(authCode);
-                param.SetScopes(Lists.newArrayList(new string[] { "openid", "profile" }));
+                param.OxdId = string.IsNullOrEmpty(oxdId)? StoredValues._oxd_id : oxdId;
+                param.Code = authCode;
                 Command cmd = new Command(CommandType.get_tokens_by_code);
                 cmd.setParamsObject(param);
                 string commandresponse = client.send(cmd);

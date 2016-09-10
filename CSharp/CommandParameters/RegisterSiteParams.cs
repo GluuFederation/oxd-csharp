@@ -1,24 +1,13 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace CSharp.CommonClasses
+namespace oxdCSharp.CommandParameters
 {
-    /// <summary>
-    /// Register Site Commad Params
-    /// </summary>
-    class RegisterSiteParams
+    public class RegisterSiteParams
     {
-        /// <summary>
-        /// Authorization Redirect URI
-        /// </summary>
-        /// <remarks>Required Json Property</remarks>
-        [JsonProperty("authorization_redirect_uri", Required = Required.Always)]
+        [JsonProperty("authorization_redirect_uri")]
         public string AuthorizationRedirectUri { get; set; }
 
-        /// <summary>
-        /// OP Host
-        /// </summary>
-        /// <remarks>Optional Json Property (But if missing, must be present in oxd-default-site-config.json file of OXD Server)</remarks>
         [JsonProperty("op_host")]
         public string OpHost { get; set; }
 
@@ -67,18 +56,9 @@ namespace CSharp.CommonClasses
         [JsonProperty("claims_locales")]
         public IList<string> ClaimsLocales { get; set; }
 
-        /// <summary>
-        /// Client ID. It is optional Json property. If specified, it ignores all other parameters and skips new client registration.
-        /// It forces to use existing client with this Client ID and Client Secret
-        /// </summary>
-        /// <remarks>Client Secret is required if this parameter is set</remarks>
         [JsonProperty("client_id")]
         public string ClientId { get; set; }
 
-        /// <summary>
-        /// Client Secret
-        /// </summary>
-        /// <remarks>It is requirede Json property only when the Client ID property is set</remarks>
         [JsonProperty("client_secret")]
         public string ClientSecret { get; set; }
     }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CSharp.CommonClasses;
+using oxdCSharp.CommandParameters;
 using oxdCSharp.CommandResponses;
 
 namespace CSharp.client
@@ -27,7 +28,7 @@ namespace CSharp.client
                 CommandClient client = new CommandClient(host, port);
 
                 GetAuthorizationUrlParams param = new GetAuthorizationUrlParams();
-                param.SetOxdId( string.IsNullOrEmpty(oxdId) ? StoredValues._oxd_id : oxdId);
+                param.OxdId = string.IsNullOrEmpty(oxdId) ? StoredValues._oxd_id : oxdId;
 
                 Command cmd = new Command(CommandType.get_authorization_url);
                 cmd.setParamsObject(param);
