@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CSharp.CommonClasses;
-using CSharp.ResponseClasses;
+using oxdCSharp.Responses;
 using System.Configuration;
 
 namespace CSharp.client

@@ -1,13 +1,24 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CSharp.ResponseClasses
+namespace oxdCSharp.Responses
 {
-    public class UserClaims
+    public class GetUserInfoResponse
+    {
+        [JsonProperty("status")]
+        public string Status { get; set; }
+
+        [JsonProperty("data")]
+        public GetUserInfoResponseData Data { get; set; }
+    }
+
+    public class GetUserInfoResponseData
+    {
+        [JsonProperty("claims")]
+        public GetUserInfoUserClaims UserClaims { get; set; }
+    }
+
+    public class GetUserInfoUserClaims
     {
         [JsonProperty("sub")]
         public IList<string> Sub { get; set; }
@@ -29,20 +40,5 @@ namespace CSharp.ResponseClasses
 
         [JsonProperty("picture")]
         public IList<string> Picture { get; set; }
-    }
-
-    public class GetUserInfoResponseData
-    {
-        [JsonProperty("claims")]
-        public UserClaims UserClaims { get; set; }
-    }
-
-    public class GetUserInfoResponse
-    {
-        [JsonProperty("status")]
-        public string Status { get; set; }
-
-        [JsonProperty("data")]
-        public GetUserInfoResponseData Data { get; set; }
     }
 }

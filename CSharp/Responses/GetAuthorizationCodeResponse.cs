@@ -1,15 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CSharp.ResponseClasses
+namespace oxdCSharp.Responses
 {
-    /// <summary>
-    /// Setting up response for Authorization Code
-    /// </summary>
+    [Obsolete("Not used. Get the Authorization Code using redirect URL from Gluu Server")]
     class GetAuthorizationCodeResponse
     {
         [JsonProperty("code")]

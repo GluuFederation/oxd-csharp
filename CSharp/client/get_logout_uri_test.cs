@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CSharp.CommonClasses;
-using CSharp.ResponseClasses;
+using oxdCSharp.Responses;
 
 namespace CSharp.client
 {
@@ -20,7 +20,7 @@ namespace CSharp.client
         /// <param name="host"></param>
         /// <param name="port"></param>
         /// <returns></returns>
-        public LogoutResponse GetLogoutURL(string host, int port, string oxdId)
+        public GetLogoutUriResponse GetLogoutURL(string host, int port, string oxdId)
         {
             try
             {
@@ -33,7 +33,7 @@ namespace CSharp.client
                 cmd.setParamsObject(param);
 
                 string response = client.send(cmd);
-                LogoutResponse res = JsonConvert.DeserializeObject<LogoutResponse>(response);
+                GetLogoutUriResponse res = JsonConvert.DeserializeObject<GetLogoutUriResponse>(response);
                 Assert.IsNotNull(res.Data.LogoutUri);
                 return res;
             }

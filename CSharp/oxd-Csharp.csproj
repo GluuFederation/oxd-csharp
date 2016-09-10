@@ -88,15 +88,14 @@
     <Compile Include="CommonClasses\StoredValues.cs" />
     <Compile Include="CommonClasses\UpdateSiteParams.cs" />
     <Compile Include="client\RegisterSiteTest.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResponseClasses\GetAuthorizationCodeResponse.cs" />
-    <Compile Include="ResponseClasses\GetAuthorizationUrlResponse.cs" />
-    <Compile Include="ResponseClasses\GetTokensByCodeResponse.cs" />
-    <Compile Include="ResponseClasses\GetUserInfoResponse.cs" />
-    <Compile Include="ResponseClasses\LogoutResponse.cs" />
-    <Compile Include="ResponseClasses\RegisterSiteResponse.cs" />
-    <Compile Include="ResponseClasses\UpdateSiteResponse.cs" />
+    <Compile Include="Responses\GetAuthorizationCodeResponse.cs" />
+    <Compile Include="Responses\GetAuthorizationUrlResponse.cs" />
+    <Compile Include="Responses\GetTokensByCodeResponse.cs" />
+    <Compile Include="Responses\GetUserInfoResponse.cs" />
+    <Compile Include="Responses\GetLogoutUriResponse.cs" />
+    <Compile Include="Responses\RegisterSiteResponse.cs" />
+    <Compile Include="Responses\UpdateSiteResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
