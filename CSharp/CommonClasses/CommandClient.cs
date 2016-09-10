@@ -7,7 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using oxdCSharp.Responses;
+using oxdCSharp.CommandResponses;
 namespace CSharp.CommonClasses
 {
     /// <summary>

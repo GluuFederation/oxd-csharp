@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace oxdCSharp.Responses
+namespace oxdCSharp.CommandResponses
 {
     [Obsolete("Not used. Get the Authorization Code using redirect URL from Gluu Server")]
     class GetAuthorizationCodeResponse

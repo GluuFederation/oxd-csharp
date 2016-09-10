@@ -89,13 +89,13 @@
     <Compile Include="CommonClasses\UpdateSiteParams.cs" />
     <Compile Include="client\RegisterSiteTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Responses\GetAuthorizationCodeResponse.cs" />
-    <Compile Include="Responses\GetAuthorizationUrlResponse.cs" />
-    <Compile Include="Responses\GetTokensByCodeResponse.cs" />
-    <Compile Include="Responses\GetUserInfoResponse.cs" />
-    <Compile Include="Responses\GetLogoutUriResponse.cs" />
-    <Compile Include="Responses\RegisterSiteResponse.cs" />
-    <Compile Include="Responses\UpdateSiteResponse.cs" />
+    <Compile Include="CommandResponses\GetAuthorizationCodeResponse.cs" />
+    <Compile Include="CommandResponses\GetAuthorizationUrlResponse.cs" />
+    <Compile Include="CommandResponses\GetTokensByCodeResponse.cs" />
+    <Compile Include="CommandResponses\GetUserInfoResponse.cs" />
+    <Compile Include="CommandResponses\GetLogoutUriResponse.cs" />
+    <Compile Include="CommandResponses\RegisterSiteResponse.cs" />
+    <Compile Include="CommandResponses\UpdateSiteResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

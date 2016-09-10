@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace oxdCSharp.Responses
+namespace oxdCSharp.CommandResponses
 {
     public class GetTokensByCodeResponse
     {
