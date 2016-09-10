@@ -5,11 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSharp.CommonClasses
+namespace oxdCSharp.CommandParameters
 {
     /// <summary>
     /// Getting and Setting Authorization Code Params
     /// </summary>
+    [Obsolete("Not used. The authroization code must be taken from the redirect url from Gluu server.")]
     class GetAuthorizationCodeParams
     {
         [JsonProperty("oxd_id")]
