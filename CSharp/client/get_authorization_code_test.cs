@@ -28,12 +28,11 @@ namespace CSharp.client
             {
                 CommandClient client = new CommandClient(host, port);
                 GetAuthorizationCodeParams param = new GetAuthorizationCodeParams();
-                param.SetOxdId(StoredValues._oxd_id);
+                //param.SetOxdId(StoredValues._oxd_id);
                 param.SetUserName(userId);
                 param.SetPassword(userSecret);
                 param.SetAcrValues(new List<string>());
-                Command cmd = new Command(CommandType.get_authorization_code);
-                cmd.setParamsObject(param);
+                var cmd = new Command { CommandType = CommandType.get_authorization_code, CommandParams = param };
                 string response = client.send(cmd);
                 GetAuthorizationCodeResponse res = new GetAuthorizationCodeResponse(JsonConvert.DeserializeObject<dynamic>(response).data);
                 Assert.IsNotNull(res);

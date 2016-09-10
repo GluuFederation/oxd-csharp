@@ -28,10 +28,9 @@ namespace CSharp.client
                 CommandClient client = new CommandClient(host, port);
 
                 GetAuthorizationUrlParams param = new GetAuthorizationUrlParams();
-                param.OxdId = string.IsNullOrEmpty(oxdId) ? StoredValues._oxd_id : oxdId;
+                param.OxdId = oxdId;
 
-                Command cmd = new Command(CommandType.get_authorization_url);
-                cmd.setParamsObject(param);
+                var cmd = new Command { CommandType = CommandType.get_authorization_url, CommandParams = param };
 
                 string response = client.send(cmd);
                 GetAuthorizationUrlResponse res = JsonConvert.DeserializeObject<GetAuthorizationUrlResponse>(response);

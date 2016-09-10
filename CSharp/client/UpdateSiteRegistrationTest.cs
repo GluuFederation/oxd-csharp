@@ -28,7 +28,7 @@ namespace CSharp.client
             {
                 //Prepare Update Site Params
                 UpdateSiteParams updateSiteParams = new UpdateSiteParams();
-                updateSiteParams.OxdId = StoredValues._oxd_id;
+                //updateSiteParams.OxdId = StoredValues._oxd_id;
                 updateSiteParams.AuthorizationRedirectUri = ConfigurationManager.AppSettings["AuthorizationRedirectUri"] ;
                 updateSiteParams.PostLogoutRedirectUri = "";                
                 updateSiteParams.AcrValues = new List<string>();
@@ -39,8 +39,7 @@ namespace CSharp.client
                 updateSiteParams.ClientLogoutUris = new List<string> { "http://www.omsttech.com/wp-login.php?action=logout&_wpnonce=a3c70643e9" };
 
                 //Create Update Site command with its params
-                Command cmdUpdateSite = new Command(CommandType.update_site_registration);
-                cmdUpdateSite.setParamsObject(updateSiteParams);
+                var cmdUpdateSite = new Command { CommandType = CommandType.update_site_registration, CommandParams = updateSiteParams };
 
                 //Send request
                 CommandClient client = new CommandClient(host, port);
@@ -68,8 +67,7 @@ namespace CSharp.client
             updateSiteParams.PostLogoutRedirectUri = postLogoutRedirectUri;
 
             //Create Update Site command with its params
-            Command cmdUpdateSite = new Command(CommandType.update_site_registration);
-            cmdUpdateSite.setParamsObject(updateSiteParams);
+            var cmdUpdateSite = new Command { CommandType = CommandType.update_site_registration, CommandParams = updateSiteParams };
 
             //Send request
             CommandClient client = new CommandClient(host, port);

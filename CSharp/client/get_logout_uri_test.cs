@@ -30,8 +30,7 @@ namespace CSharp.client
                 GetLogoutUrlParams param = new GetLogoutUrlParams();
                 param.OxdId = oxdId;
 
-                Command cmd = new Command(CommandType.get_logout_uri);
-                cmd.setParamsObject(param);
+                var cmd = new Command { CommandType = CommandType.get_logout_uri, CommandParams = param };
 
                 string response = client.send(cmd);
                 GetLogoutUriResponse res = JsonConvert.DeserializeObject<GetLogoutUriResponse>(response);

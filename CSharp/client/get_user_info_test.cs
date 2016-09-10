@@ -29,11 +29,10 @@ namespace CSharp.client
                 CommandClient client = new CommandClient(host, port);
 
                 GetUserInfoParams param = new GetUserInfoParams();
-                param.OxdId = string.IsNullOrEmpty(oxdId)? StoredValues._oxd_id : oxdId;
+                param.OxdId = oxdId;
                 param.AccessToken = accessToken;
 
-                Command cmd = new Command(CommandType.get_user_info);
-                cmd.setParamsObject(param);
+                var cmd = new Command { CommandType = CommandType.get_user_info, CommandParams = param };
 
                 string response = client.send(cmd);
                 GetUserInfoResponse res = JsonConvert.DeserializeObject<GetUserInfoResponse>(response);

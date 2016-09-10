@@ -43,8 +43,7 @@ namespace CSharp.client
                 registerSiteParam.ClientName = ConfigurationManager.AppSettings["OxdClientName"];
 
                 //Prepare Register Site command using its params
-                Command cmdRegisterSite = new Command(CommandType.register_site);
-                cmdRegisterSite.setParamsObject(registerSiteParam);
+                var cmdRegisterSite = new Command { CommandType = CommandType.register_site, CommandParams = registerSiteParam };
 
                 //Send request
                 CommandClient client = new CommandClient(host, port);
@@ -54,8 +53,7 @@ namespace CSharp.client
                 RegisterSiteResponse response = JsonConvert.DeserializeObject<RegisterSiteResponse>(commandresponse);
                 Assert.IsNotNull(response);
                 Assert.IsTrue(!String.IsNullOrEmpty(response.Data.OxdId));
-                StoredValues._oxd_id = response.Data.OxdId;
-
+                
                 return response;
             }
             catch (Exception ex)
@@ -84,8 +82,7 @@ namespace CSharp.client
                 registerSiteParam.ClientName = ConfigurationManager.AppSettings["OxdClientName"];
 
                 //Create Register Site command using its params
-                Command cmd = new Command(CommandType.register_site);
-                cmd.setParamsObject(registerSiteParam);
+                var cmd = new Command { CommandType = CommandType.register_site, CommandParams = registerSiteParam };
 
                 CommandClient client = new CommandClient(host, port);
                 string commandresponse = client.send(cmd);
@@ -93,8 +90,7 @@ namespace CSharp.client
                 RegisterSiteResponse response = JsonConvert.DeserializeObject<RegisterSiteResponse>(commandresponse);
                 Assert.IsNotNull(response);
                 Assert.IsTrue(!String.IsNullOrEmpty(response.Data.OxdId));
-                StoredValues._oxd_id = response.Data.OxdId;
-
+                
                 return response;
             }
             catch (Exception ex)

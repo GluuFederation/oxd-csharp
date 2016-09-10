@@ -30,10 +30,9 @@ namespace CSharp.client
             {
                 CommandClient client = new CommandClient(host, port);
                 GetTokensByCodeParams param = new GetTokensByCodeParams();
-                param.OxdId = string.IsNullOrEmpty(oxdId)? StoredValues._oxd_id : oxdId;
+                param.OxdId = oxdId;
                 param.Code = authCode;
-                Command cmd = new Command(CommandType.get_tokens_by_code);
-                cmd.setParamsObject(param);
+                var cmd = new Command { CommandType = CommandType.get_tokens_by_code, CommandParams = param };
                 string commandresponse = client.send(cmd);
                 GetTokensByCodeResponse response = JsonConvert.DeserializeObject<GetTokensByCodeResponse>(commandresponse);
                 Assert.IsNotNull(response);

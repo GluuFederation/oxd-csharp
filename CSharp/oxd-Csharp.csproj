@@ -83,9 +83,7 @@
     <Compile Include="CommandParameters\GetLogoutUrlParams.cs" />
     <Compile Include="CommandParameters\GetTokensByCodeParams.cs" />
     <Compile Include="CommandParameters\GetUserInfoParams.cs" />
-    <Compile Include="CommonClasses\Lists.cs" />
     <Compile Include="CommandParameters\RegisterSiteParams.cs" />
-    <Compile Include="CommonClasses\StoredValues.cs" />
     <Compile Include="CommandParameters\UpdateSiteParams.cs" />
     <Compile Include="client\RegisterSiteTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
