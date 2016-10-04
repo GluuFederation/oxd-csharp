@@ -69,13 +69,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="client\get_authorization_code_test.cs" />
-    <Compile Include="client\get_authorization_url_test.cs" />
-    <Compile Include="client\get_logout_uri_test.cs" />
-    <Compile Include="client\get_tokens_by_code_test.cs" />
-    <Compile Include="client\get_user_info_test.cs" />
-    <Compile Include="client\RegisterSiteTest.cs" />
-    <Compile Include="client\UpdateSiteRegistrationTest.cs" />
+    <Compile Include="Clients\GetAuthorizationUrlClient.cs" />
+    <Compile Include="Clients\GetLogoutUriClient.cs" />
+    <Compile Include="Clients\GetTokensByCodeClient.cs" />
+    <Compile Include="Clients\GetUserInfoClient.cs" />
+    <Compile Include="Clients\RegisterSiteClient.cs" />
+    <Compile Include="Clients\UpdateSiteRegistrationClient.cs" />
     <Compile Include="CommonClasses\Command.cs" />
     <Compile Include="CommonClasses\CommandClient.cs" />
     <Compile Include="CommonClasses\CommandType.cs" />
@@ -122,10 +121,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Clients\" />
-    <Folder Include="C\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
