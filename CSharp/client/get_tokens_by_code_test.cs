@@ -20,11 +20,11 @@ namespace CSharp.client
         /// </summary>
         /// <param name="host"></param>
         /// <param name="port"></param>
-        /// <param name="oxd_id"></param>
-        /// <param name="userId"></param>
-        /// <param name="userSecret"></param>
+        /// <param name="oxdId"></param>
+        /// <param name="authCode"></param>
+        /// <param name="authState"></param>
         /// <returns></returns>
-        public GetTokensByCodeResponse GetTokenByCode(string host, int port, string oxdId, string authCode)
+        public GetTokensByCodeResponse GetTokenByCode(string host, int port, string oxdId, string authCode, string authState)
         {
             try
             {
@@ -32,6 +32,7 @@ namespace CSharp.client
                 GetTokensByCodeParams param = new GetTokensByCodeParams();
                 param.OxdId = oxdId;
                 param.Code = authCode;
+                param.State = authState;
                 var cmd = new Command { CommandType = CommandType.get_tokens_by_code, CommandParams = param };
                 string commandresponse = client.send(cmd);
                 GetTokensByCodeResponse response = JsonConvert.DeserializeObject<GetTokensByCodeResponse>(commandresponse);
