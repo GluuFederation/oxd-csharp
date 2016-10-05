@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CSharp.CommonClasses
+﻿namespace CSharp.CommonClasses
 {
-    /// <summary>
-    /// Setting up Command Type to send on Server
-    /// </summary>
-    public class CommandType
+    public static class CommandType
     {
         public static string register_site = "register_site";
         public static string update_site_registration = "update_site_registration";

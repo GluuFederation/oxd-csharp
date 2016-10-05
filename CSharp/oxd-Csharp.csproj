@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{9B27A6E6-06A0-42E0-AB0C-F5C75253DF79}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>cSharp</RootNamespace>
     <AssemblyName>cSharp</AssemblyName>
@@ -47,6 +47,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json">
@@ -57,6 +60,7 @@
       <HintPath>..\packages\NLog.4.3.4\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -65,34 +69,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="client\get_authorization_code_test.cs" />
-    <Compile Include="client\get_authorization_url_test.cs" />
-    <Compile Include="client\get_logout_uri_test.cs" />
-    <Compile Include="client\get_tokens_by_code_test.cs" />
-    <Compile Include="client\get_user_info_test.cs" />
-    <Compile Include="client\update_site_registration_test.cs" />
+    <Compile Include="Clients\GetAuthorizationUrlClient.cs" />
+    <Compile Include="Clients\GetLogoutUriClient.cs" />
+    <Compile Include="Clients\GetTokensByCodeClient.cs" />
+    <Compile Include="Clients\GetUserInfoClient.cs" />
+    <Compile Include="Clients\RegisterSiteClient.cs" />
+    <Compile Include="Clients\UpdateSiteRegistrationClient.cs" />
     <Compile Include="CommonClasses\Command.cs" />
     <Compile Include="CommonClasses\CommandClient.cs" />
     <Compile Include="CommonClasses\CommandType.cs" />
-    <Compile Include="CommonClasses\GetAuthorizationCodeParams.cs" />
-    <Compile Include="CommonClasses\GetAuthorizationUrlParams.cs" />
-    <Compile Include="CommonClasses\GetLogoutUrlParams.cs" />
-    <Compile Include="CommonClasses\GetTokensByCodeParams.cs" />
-    <Compile Include="CommonClasses\GetUserInfoParams.cs" />
-    <Compile Include="CommonClasses\Lists.cs" />
-    <Compile Include="CommonClasses\RegisterSiteParams.cs" />
-    <Compile Include="CommonClasses\StoredValues.cs" />
-    <Compile Include="CommonClasses\UpdateSiteParams.cs" />
-    <Compile Include="client\register_site_test.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="CommandParameters\GetAuthorizationCodeParams.cs" />
+    <Compile Include="CommandParameters\GetAuthorizationUrlParams.cs" />
+    <Compile Include="CommandParameters\GetLogoutUrlParams.cs" />
+    <Compile Include="CommandParameters\GetTokensByCodeParams.cs" />
+    <Compile Include="CommandParameters\GetUserInfoParams.cs" />
+    <Compile Include="CommandParameters\RegisterSiteParams.cs" />
+    <Compile Include="CommandParameters\UpdateSiteParams.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResponseClasses\GetAuthorizationCodeResponse.cs" />
-    <Compile Include="ResponseClasses\GetAuthorizationUrlResponse.cs" />
-    <Compile Include="ResponseClasses\GetTokensByCodeResponse.cs" />
-    <Compile Include="ResponseClasses\GetUserInfoResponse.cs" />
-    <Compile Include="ResponseClasses\LogoutResponse.cs" />
-    <Compile Include="ResponseClasses\RegisterSiteResponse.cs" />
-    <Compile Include="ResponseClasses\UpdateSiteResponse.cs" />
+    <Compile Include="CommandResponses\GetAuthorizationCodeResponse.cs" />
+    <Compile Include="CommandResponses\GetAuthorizationUrlResponse.cs" />
+    <Compile Include="CommandResponses\GetTokensByCodeResponse.cs" />
+    <Compile Include="CommandResponses\GetUserInfoResponse.cs" />
+    <Compile Include="CommandResponses\GetLogoutUriResponse.cs" />
+    <Compile Include="CommandResponses\RegisterSiteResponse.cs" />
+    <Compile Include="CommandResponses\UpdateSiteResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -121,6 +121,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
