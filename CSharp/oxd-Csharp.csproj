@@ -111,6 +111,7 @@
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="oxd-Csharp.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

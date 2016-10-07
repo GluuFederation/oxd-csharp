@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Gluu.Oxd.OxdCSharp</id>
+    <version>1.0.1</version>
+    <title>Gluu's OXD Server C# Library</title>
+    <authors>Vasanthakumar V</authors>
+    <owners>Mike Schwartz</owners>
+    <projectUrl>https://github.com/GluuFederation/oxd-csharp</projectUrl>
+    <iconUrl>https://www.gluu.org/wp-content/themes/gluu/images/gl.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>oxd-Csharp is a C# .Net client library for the Gluu oxD Server. For information about OXD, visit http://oxd.gluu.org</description>
+    <releaseNotes>Initial version</releaseNotes>
+    <copyright>Copyright 2009-2016 Gluu, Inc.</copyright>
+    <tags>Gluu Oxd-Server oxd-chsarp oxd-lib oxd-library</tags>
+    <dependencies>
+      <group targetFramework="net45">
+        <dependency id="Newtonsoft.Json" version="9.0.1" />
+        <dependency id="NLog" version="4.3.9" />
+        <dependency id="NLog.Config" version="4.3.9" />
+        <dependency id="NLog.Schema" version="4.3.9" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>
