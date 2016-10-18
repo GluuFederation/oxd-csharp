@@ -28,6 +28,7 @@ namespace GluuDemoWebsite.Controllers
             registerSiteInputParams.AuthorizationRedirectUri = oxd.RedirectUrl;
             registerSiteInputParams.OpHost = "https://scim-test.gluu.org";
             registerSiteInputParams.ClientName = "VasOxdTestingClient-CanBeRemoved";
+            registerSiteInputParams.Scope = new List<string> { "openid", "uma_protection", "uma_authorization" };
             
             //Register Site
             var registerSiteResponse = registerSiteClient.RegisterSite(oxd.OxdHost, oxd.OxdPort, registerSiteInputParams);
@@ -106,6 +107,25 @@ namespace GluuDemoWebsite.Controllers
             var userEmail = getUserInfoResponse.Data.UserClaims.Email == null ? string.Empty : getUserInfoResponse.Data.UserClaims.Email.FirstOrDefault();
 
             return Json(new { userName = userName });
+        }
+
+        [HttpPost]
+        public ActionResult GetGat(OxdModel oxd)
+        {
+            var getGatInputParams = new GetGATParams();
+            var getGatClient = new GetGATClient();
+
+            //prepare input params for Getting GAT
+            getGatInputParams.OxdId = oxd.OxdId;
+            getGatInputParams.Scopes = new List<string> {
+                                            "https://scim-test.gluu.org/identity/seam/resource/restv1/scim/vas1",
+                                            "https://scim-test.gluu.org/identity/seam/resource/restv1/scim/vas2" };
+
+            //Get GAT
+            var getGatResponse = getGatClient.GetGat(oxd.OxdHost, oxd.OxdPort, getGatInputParams);
+
+            //Process response
+            return Json(new { getGatResponse = getGatResponse.Data.Rpt });
         }
 
         [HttpPost]

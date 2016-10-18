@@ -78,11 +78,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Clients\GetAuthorizationUrlClient.cs" />
+    <Compile Include="Clients\GetGATClient.cs" />
     <Compile Include="Clients\GetLogoutUriClient.cs" />
     <Compile Include="Clients\GetTokensByCodeClient.cs" />
     <Compile Include="Clients\GetUserInfoClient.cs" />
     <Compile Include="Clients\RegisterSiteClient.cs" />
     <Compile Include="Clients\UpdateSiteRegistrationClient.cs" />
+    <Compile Include="CommandParameters\GetGATParams.cs" />
+    <Compile Include="CommandResponses\GetGATResponse.cs" />
     <Compile Include="CommonClasses\Command.cs" />
     <Compile Include="CommonClasses\CommandClient.cs" />
     <Compile Include="CommonClasses\CommandType.cs" />
