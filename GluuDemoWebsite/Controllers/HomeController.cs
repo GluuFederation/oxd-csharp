@@ -28,7 +28,7 @@ namespace GluuDemoWebsite.Controllers
             registerSiteInputParams.AuthorizationRedirectUri = oxd.RedirectUrl;
             registerSiteInputParams.OpHost = "https://scim-test.gluu.org";
             registerSiteInputParams.ClientName = "VasOxdTestingClient-CanBeRemoved";
-            registerSiteInputParams.Scope = new List<string> { "openid", "uma_protection", "uma_authorization" };
+            registerSiteInputParams.Scope = new List<string> { "openid", "profile", "email", "uma_protection", "uma_authorization" };
             
             //Register Site
             var registerSiteResponse = registerSiteClient.RegisterSite(oxd.OxdHost, oxd.OxdPort, registerSiteInputParams);
