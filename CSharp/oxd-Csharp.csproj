@@ -83,9 +83,12 @@
     <Compile Include="Clients\GetTokensByCodeClient.cs" />
     <Compile Include="Clients\GetUserInfoClient.cs" />
     <Compile Include="Clients\RegisterSiteClient.cs" />
+    <Compile Include="Clients\UmaRsProtectClient.cs" />
     <Compile Include="Clients\UpdateSiteRegistrationClient.cs" />
     <Compile Include="CommandParameters\GetGATParams.cs" />
+    <Compile Include="CommandParameters\UmaRsProtectParams.cs" />
     <Compile Include="CommandResponses\GetGATResponse.cs" />
+    <Compile Include="CommandResponses\UmaRsProtectResponse.cs" />
     <Compile Include="CommonClasses\Command.cs" />
     <Compile Include="CommonClasses\CommandClient.cs" />
     <Compile Include="CommonClasses\CommandType.cs" />

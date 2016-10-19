@@ -62,7 +62,7 @@ namespace oxdCSharp.Clients
             }
             catch (Exception ex)
             {
-                Logger.Log(NLog.LogLevel.Error, ex, "Exception when getting user info of site.");
+                Logger.Log(NLog.LogLevel.Error, ex, "Exception when getting GAT token.");
                 return null;
             }
         }
