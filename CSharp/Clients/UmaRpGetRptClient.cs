@@ -7,20 +7,20 @@ using System;
 namespace oxdCSharp.Clients
 {
     /// <summary>
-    /// A client class which is used to get GAT token
+    /// A client class which is used to get RPT from UMA RP
     /// </summary>
-    public class GetGATClient
+    public class UmaRpGetRptClient
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         /// <summary>
-        /// Gets GAT (Gluu Access Token) from the Resource Provider
+        /// Gets RPT token from UMA RP
         /// </summary>
         /// <param name="host">Oxd Host</param>
         /// <param name="port">Oxd Port</param>
-        /// <param name="getGatParams">Input params for Get GAT command</param>
+        /// <param name="getRptParams">Input params for Get RPT command</param>
         /// <returns></returns>
-        public GetRPTResponse GetGat(string host, int port, GetGATParams getGatParams)
+        public GetRPTResponse GetRPT(string host, int port, UmaRpGetRptParams getRptParams)
         {
             Logger.Info("Verifying input parameters.");
             if (string.IsNullOrEmpty(host))
@@ -33,27 +33,22 @@ namespace oxdCSharp.Clients
                 throw new ArgumentNullException("Oxd Port should be a valid port number.");
             }
 
-            if (getGatParams == null)
+            if (getRptParams == null)
             {
-                throw new ArgumentNullException("The get GAT command params should not be NULL.");
+                throw new ArgumentNullException("The get RPT command params should not be NULL.");
             }
 
-            if (string.IsNullOrEmpty(getGatParams.OxdId))
+            if (string.IsNullOrEmpty(getRptParams.OxdId))
             {
-                throw new MissingFieldException("Oxd ID is required for getting GAT.");
-            }
-
-            if (getGatParams.Scopes == null || getGatParams.Scopes.Count == 0)
-            {
-                throw new MissingFieldException("At least one scope is required for getting GAT.");
+                throw new MissingFieldException("Oxd ID is required for getting RPT from UMA RP.");
             }
 
             try
             {
                 Logger.Info("Preparing and sending command.");
-                var cmdGetGAT = new Command { CommandType = CommandType.uma_rp_get_gat, CommandParams = getGatParams };
+                var cmdGetRPT = new Command { CommandType = CommandType.uma_rp_get_rpt, CommandParams = getRptParams };
                 var commandClient = new CommandClient(host, port);
-                string commandResponse = commandClient.send(cmdGetGAT);
+                string commandResponse = commandClient.send(cmdGetRPT);
 
                 var response = JsonConvert.DeserializeObject<GetRPTResponse>(commandResponse);
                 Logger.Info(string.Format("Got response status as {0} and RPT is {1}", response.Status, response.Data.Rpt));
@@ -62,7 +57,7 @@ namespace oxdCSharp.Clients
             }
             catch (Exception ex)
             {
-                Logger.Log(NLog.LogLevel.Error, ex, "Exception when getting GAT token.");
+                Logger.Log(NLog.LogLevel.Error, ex, "Exception when getting RPT token.");
                 return null;
             }
         }

@@ -4,9 +4,9 @@ using Newtonsoft.Json;
 namespace oxdCSharp.CommandResponses
 {
     /// <summary>
-    /// Response for Get GAT Command
+    /// Response for Get GAT or Get RPT Commands
     /// </summary>
-    public class GetGATResponse
+    public class GetRPTResponse
     {
         /// <summary>
         /// Status of the commad execution
@@ -15,16 +15,16 @@ namespace oxdCSharp.CommandResponses
         public string Status { get; set; }
 
         /// <summary>
-        /// Get GAT command's response Data
+        /// Get RPT command's response Data
         /// </summary>
         [JsonProperty("data")]
-        public GetGATResponseData Data { get; set; }
+        public GetRPTResponseData Data { get; set; }
     }
 
     /// <summary>
-    /// Get GAT Response's data
+    /// Get RPT Response's data
     /// </summary>
-    public class GetGATResponseData
+    public class GetRPTResponseData
     {
         /// <summary>
         /// RPT Token

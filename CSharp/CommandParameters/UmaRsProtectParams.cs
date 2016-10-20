@@ -66,7 +66,7 @@ namespace oxdCSharp.CommandParameters
         /// List of Scopes protected with ticket in a condition
         /// </summary>
         /// <remarks>Optional Field.</remarks>
-        [JsonProperty("ticketScopes")]
+        [JsonProperty("ticketScopes", NullValueHandling = NullValueHandling.Ignore)]
         public IList<string> TicketScopes { get; set; }
     }
 }
