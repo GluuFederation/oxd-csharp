@@ -8,6 +8,11 @@
         public static string get_tokens_by_code = "get_tokens_by_code";
         public static string get_user_info = "get_user_info";
         public static string get_logout_uri = "get_logout_uri";
+        public static string uma_rs_protect = "uma_rs_protect";
+        public static string uma_rs_check_access = "uma_rs_check_access";
+        public static string uma_rp_get_rpt = "uma_rp_get_rpt";
+        public static string uma_rp_authorize_rpt = "uma_rp_authorize_rpt";
+        public static string uma_rp_get_gat = "uma_rp_get_gat";        
         public static string get_authorization_code = "get_authorization_code";
     }
 }

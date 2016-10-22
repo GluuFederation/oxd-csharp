@@ -18,6 +18,8 @@ namespace GluuDemoWebsite.Controllers
             return View();
         }
 
+        #region Main OXD Actions
+
         [HttpPost]
         public ActionResult Register(OxdModel oxd)
         {
@@ -27,7 +29,8 @@ namespace GluuDemoWebsite.Controllers
             //prepare input params for Register Site
             registerSiteInputParams.AuthorizationRedirectUri = oxd.RedirectUrl;
             registerSiteInputParams.OpHost = "https://scim-test.gluu.org";
-            registerSiteInputParams.ClientName = "VasOxdTestingClient-CanBeRemoved";
+            registerSiteInputParams.ClientName = "OxdTestingClient-CanBeRemoved";
+            registerSiteInputParams.Scope = new List<string> { "openid", "profile", "email", "uma_protection", "uma_authorization" };
             
             //Register Site
             var registerSiteResponse = registerSiteClient.RegisterSite(oxd.OxdHost, oxd.OxdPort, registerSiteInputParams);
@@ -109,6 +112,110 @@ namespace GluuDemoWebsite.Controllers
         }
 
         [HttpPost]
+        public ActionResult FullUmaTest(OxdModel oxd)
+        {
+            #region Protecing Resources
+
+            //1. Protect resources
+            var protectResponse = ProtectResources(oxd);
+
+            #endregion
+
+            #region Checking access with empty RPT. Expected => Access Denied with valid Ticket
+
+            //2. Check Access with empty RPT. Expect access denied and a valid ticket
+            var checkAccessResponse = CheckAccess(string.Empty, "/scim", "GET", oxd);
+
+            if(!checkAccessResponse.Data.Access.ToLower().Equals("denied"))
+            {
+                throw new Exception(string.Format("Access Denied expected. But something else {0} is coming.", checkAccessResponse.Data.Access));
+            }
+
+            var ticket = checkAccessResponse.Data.Ticket;
+
+            if(string.IsNullOrEmpty(ticket))
+            {
+                throw new Exception("Expected valid ticket as part of check access. But Null or Empty returned.");
+            }
+
+            #endregion
+
+            #region Obtaining valid RPT. Expected => A valid RPT
+
+            //3. Obtain RPT. Expect a valid RPT is returned.
+            var getRptResponse = ObtainRpt(oxd);
+
+            var rpt = getRptResponse.Data.Rpt;
+
+            if(string.IsNullOrEmpty(rpt))
+            {
+                throw new Exception("Tryting to obtain RPT. But Null or Empty returned.");
+            }
+
+            #endregion  
+
+            #region Checking access with valid RPT. Expected => Access Denied
+
+            //4. Check Access again with valid RPT. Still the access should be granted. Expect access denied
+            checkAccessResponse = null;
+            checkAccessResponse = CheckAccess(rpt, "/scim", "GET", oxd);
+
+            if (!checkAccessResponse.Data.Access.ToLower().Equals("denied"))
+            {
+                throw new Exception(string.Format("Access Denied expected. But something else {0} is coming.", checkAccessResponse.Data.Access));
+            }
+            
+            #endregion
+
+            #region Authorizing RPT. Expected => Status Ok
+
+            //5. Authorize RPT. Expect status should be ok
+            var authorizeRptResponse = AuthorizeRpt(rpt, ticket, oxd);
+
+            if(!authorizeRptResponse.Status.ToLower().Equals("ok"))
+            {
+                throw new Exception(string.Format("Trying to authorize rpt. But got the error as {0} and description is {1}", 
+                    authorizeRptResponse.Data.AuthorizeErrorCode, authorizeRptResponse.Data.AuthorizeErrorDescription));
+            }
+
+            #endregion
+
+            #region Check Access again after authorizing RPT. Exepcted => Access Granted.
+
+            //6. Authorized RPT. Check Access again. Expect access granted.
+            checkAccessResponse = null;
+            checkAccessResponse = CheckAccess(rpt, "/scim", "GET", oxd);
+
+            if(!checkAccessResponse.Data.Access.ToLower().Equals("granted"))
+            {
+                throw new Exception("Access is not granted even after authorizing the RPT.");
+            }
+
+            #endregion
+
+            return Json(new { fullTestStatus = "success" });
+        }
+
+        [HttpPost]
+        public ActionResult GetGat(OxdModel oxd)
+        {
+            var getGatInputParams = new GetGATParams();
+            var getGatClient = new GetGATClient();
+
+            //prepare input params for Getting GAT
+            getGatInputParams.OxdId = oxd.OxdId;
+            getGatInputParams.Scopes = new List<string> {
+                                            "https://scim-test.gluu.org/identity/seam/resource/restv1/scim/vas1",
+                                            "https://scim-test.gluu.org/identity/seam/resource/restv1/scim/vas2" };
+
+            //Get GAT
+            var getGatResponse = getGatClient.GetGat(oxd.OxdHost, oxd.OxdPort, getGatInputParams);
+
+            //Process response
+            return Json(new { getGatResponse = getGatResponse.Data.Rpt });
+        }
+
+        [HttpPost]
         public ActionResult GetLogoutUri(OxdModel oxd)
         {
             var getLogoutUriInputParams = new GetLogoutUrlParams();
@@ -129,18 +236,102 @@ namespace GluuDemoWebsite.Controllers
             return Json(new { authCode = code, authState = state, scope = scope }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
+        #endregion
 
-            return View();
+        #region UMA related methods
+
+        private UmaRsProtectResponse ProtectResources(OxdModel oxdModel)
+        {
+            var protectParams = new UmaRsProtectParams();
+            var protectClient = new UmaRsProtectClient();
+
+            //prepare input params for Protect Resource
+            protectParams.OxdId = oxdModel.OxdId;
+            protectParams.ProtectResources = new List<ProtectResource>
+            {
+                new ProtectResource
+                {
+                    Path = "/scim",
+                    ProtectConditions = new List<ProtectCondition>
+                    {
+                        new ProtectCondition
+                        {
+                            HttpMethods = new List<string> { "GET" },
+                            Scopes = new List<string> { "https://scim-test.gluu.org/identity/seam/resource/restv1/scim/vas1" },
+                            TicketScopes = new List<string> { "https://scim-test.gluu.org/identity/seam/resource/restv1/scim/vas1" }
+                        }
+                    }
+                }
+            };
+
+            //Protect Resources
+            var protectResponse = protectClient.ProtectResources(oxdModel.OxdHost, oxdModel.OxdPort, protectParams);
+
+            //process response
+            if(protectResponse.Status.ToLower().Equals("ok"))
+            {
+                return protectResponse;
+            }
+
+            throw new Exception("Procteting Resource is not successful. Check OXD Server log for error details.");
         }
 
-        public ActionResult Contact()
+        private UmaRsCheckAccessResponse CheckAccess(string rpt, string path, string httpMethod, OxdModel oxdModel)
         {
-            ViewBag.Message = "Your contact page.";
+            var checkAccessParams = new UmaRsCheckAccessParams();
+            var checkAccessClient = new UmaRsCheckAccessClient();
 
-            return View();
+            //prepare input params for Check Access
+            checkAccessParams.OxdId = oxdModel.OxdId;
+            checkAccessParams.RPT = rpt;
+            checkAccessParams.Path = path;
+            checkAccessParams.HttpMethod = httpMethod;
+
+            //Check Access
+            var checkAccessResponse = checkAccessClient.CheckAccess(oxdModel.OxdHost, oxdModel.OxdPort, checkAccessParams);
+
+            //process response
+            return checkAccessResponse;
         }
+
+        private GetRPTResponse ObtainRpt(OxdModel oxdModel)
+        {
+            var getRptParams = new UmaRpGetRptParams();
+            var getRptClient = new UmaRpGetRptClient();
+
+            //prepare input params for Protect Resource
+            getRptParams.OxdId = oxdModel.OxdId;
+            getRptParams.ForceNew = false;
+
+            //Get RPT
+            var getRptResponse = getRptClient.GetRPT(oxdModel.OxdHost, oxdModel.OxdPort, getRptParams);
+
+            //process response
+            if (getRptResponse.Status.ToLower().Equals("ok"))
+            {
+                return getRptResponse;
+            }
+
+            throw new Exception("Obtaining RPT is not successful. Check OXD Server log for error details.");
+        }
+
+        private UmaRpAuthorizeRptResponse AuthorizeRpt(string rpt, string ticket, OxdModel oxdModel)
+        {
+            var authorizeRptParams = new UmaRpAuthorizeRptParams();
+            var authorizeRptClient = new UmaRpAuthorizeRptClient();
+
+            //prepare input params for Check Access
+            authorizeRptParams.OxdId = oxdModel.OxdId;
+            authorizeRptParams.RPT = rpt;
+            authorizeRptParams.Ticket = ticket;
+
+            //Authorize RPT
+            var authorizeRptResponse = authorizeRptClient.AuthorizeRpt(oxdModel.OxdHost, oxdModel.OxdPort, authorizeRptParams);
+
+            //process response
+            return authorizeRptResponse;
+        }
+
+        #endregion
     }
 }

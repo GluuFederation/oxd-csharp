@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Gluu.Oxd.OxdCSharp</id>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <title>Gluu's OXD Server C# Library</title>
     <authors>Vasanthakumar V</authors>
     <owners>Mike Schwartz</owners>
@@ -10,7 +10,7 @@
     <iconUrl>https://www.gluu.org/wp-content/themes/gluu/images/gl.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>oxd-Csharp is a C# .Net client library for the Gluu oxD Server. For information about OXD, visit http://oxd.gluu.org</description>
-    <releaseNotes>Initial version</releaseNotes>
+    <releaseNotes>Added UMA and GAT related APIs</releaseNotes>
     <copyright>Copyright 2009-2016 Gluu, Inc.</copyright>
     <tags>Gluu Oxd-Server oxd-chsarp oxd-lib oxd-library</tags>
     <dependencies>
