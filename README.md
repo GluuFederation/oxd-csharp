@@ -295,3 +295,66 @@ private UmaRsCheckAccessResponse CheckAccess(string rpt, string path, string htt
     return checkAccessResponse;
 }
 ```
+
+##UMA Client API's
+
+###UMA RP - Get RPT
+
+The following are the required information for Getting RPT from RP: 
+
+- *OxdId* 		- The _OXD ID_ of registered site
+- *ForceNew* 	- Indicates whether return new RPT, In General it should be false, so oxd server can cache/reuse same RPT
+
+The following code snippet can be used to get RPT from RP.
+
+```csharp
+private GetRPTResponse GetRpt(OxdModel oxdModel)
+{
+	var getRptParams = new UmaRpGetRptParams();
+    var getRptClient = new UmaRpGetRptClient();
+
+    //prepare input params for Protect Resource
+    getRptParams.OxdId = oxdModel.OxdId;
+    getRptParams.ForceNew = false;
+
+    //Get RPT
+    var getRptResponse = getRptClient.GetRPT(oxdModel.OxdHost, oxdModel.OxdPort, getRptParams);
+
+    //process response
+    if (getRptResponse.Status.ToLower().Equals("ok"))
+    {
+    	return getRptResponse;
+    }
+
+    throw new Exception("Obtaining RPT is not successful. Check OXD Server log for error details.");
+}
+```
+
+###UMA RP - Authorize RPT
+
+The following are the required information for Authorizing RPT from RP: 
+
+- *OxdId*	- The _OXD ID_ of registered site
+- *RPT* 	- Requesting Party Token
+- *Ticket* 	- Ticket from Check Access command response if the resource is protected with Ticket Scope
+
+The following code snippet can be used to authorize RPT from RP.
+
+```csharp
+private UmaRpAuthorizeRptResponse AuthorizeRpt(string rpt, string ticket, OxdModel oxdModel)
+{
+	var authorizeRptParams = new UmaRpAuthorizeRptParams();
+    var authorizeRptClient = new UmaRpAuthorizeRptClient();
+
+    //prepare input params for Check Access
+    authorizeRptParams.OxdId = oxdModel.OxdId;
+    authorizeRptParams.RPT = rpt;
+    authorizeRptParams.Ticket = ticket;
+
+    //Authorize RPT
+    var authorizeRptResponse = authorizeRptClient.AuthorizeRpt(oxdModel.OxdHost, oxdModel.OxdPort, authorizeRptParams);
+
+    //process response
+    return authorizeRptResponse;
+}
+```
