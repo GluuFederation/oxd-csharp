@@ -4,11 +4,11 @@ oxd-Csharp is a .Net library (DLL) to interact with Gluu's OXD Server. The OXD S
 
 #Deployment
 
-You can get the DLL of _oxd-Csharp_ from this repository. Add this DLL as a reference in your .Net web application.
+The **Oxd-Csharp** library can be installed using Nuget Package Manager Console in any .Net project. The Gluu's official Nuget Package page can be found [here](https://www.nuget.org/packages/Gluu.Oxd.OxdCSharp/). Go to the Gluu's official Nuget page and follow the instructions to install the package.
 
 #OXD Server APIs
 
-The Gluu's OXD Server provides six API's for OpenID Connect authentication. The all APIs are listed below.
+The Gluu's OXD Server provides basic six API's for OpenID Connect authentication. The all APIs are listed below.
 
 - Register Site
 - Update Site Registration
