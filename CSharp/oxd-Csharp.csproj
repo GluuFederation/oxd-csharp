@@ -118,10 +118,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="GluuOxdCSharpLibKey.pfx" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="GluuOxdCSharpLibKey.pfx" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
