@@ -358,3 +358,36 @@ private UmaRpAuthorizeRptResponse AuthorizeRpt(string rpt, string ticket, OxdMod
     return authorizeRptResponse;
 }
 ```
+
+##Gluu OAuth2 Access Management API's
+
+###UMA RP Get GAT
+
+The following are the required information for Getting GAT from RP: 
+
+- *OxdId* 	- The _OXD ID_ of registered site
+- *Scopes* 	- Required scopes. RP should know required scopes in advance
+
+The following code snippet can be used to get GAT from RP.
+
+```csharp
+[HttpPost]
+public ActionResult GetGat(OxdModel oxd)
+{
+	var getGatInputParams = new GetGATParams();
+    var getGatClient = new GetGATClient();
+
+    //prepare input params for Getting GAT
+    getGatInputParams.OxdId = oxd.OxdId;
+    getGatInputParams.Scopes = new List<string> {
+    									"https://scim-test.gluu.org/identity/seam/resource/restv1/scim/vas1",
+                                        "https://scim-test.gluu.org/identity/seam/resource/restv1/scim/vas2" 
+                                        };
+
+	//Get GAT
+    var getGatResponse = getGatClient.GetGat(oxd.OxdHost, oxd.OxdPort, getGatInputParams);
+
+    //Process response
+    return Json(new { getGatResponse = getGatResponse.Data.Rpt });
+}
+```
