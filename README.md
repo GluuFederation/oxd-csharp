@@ -17,11 +17,27 @@ The Gluu's OXD Server provides basic six API's for OpenID Connect authentication
 - Get User Info
 - Get Logout URI
 
+The Gluu's OXD Server provides two UMA Resource Server API's. The APIs are listed below
+
+- UMA RS Protect resources
+- UMA RS Check Access
+
+The Gluu's OXD Server provides two UMA Client API's. The APIs are listed below
+
+- UMA RP - Get RPT
+- UMA RP - Authorize RPT
+
+The OXD Server also provides one Gluu OAuth2 Access Management API's. The API is
+
+- UMA RP Get GAT
+
 Click [here](https://oxd.gluu.org/docs/oxdserver/) for the complete overview of OXD Server and its API details.
 
 #Using the _oxd-Csharp_ Library in your web application
 
 You can call the above six APIs of OXD Server using this oxd-Csharp library without worrying about other internal details. All the C# classes invloved in this library are well documented in code so you will get enough information on all the fields and methods of these classes.
+
+##OpenID Connect Authentication APIs
 
 ###Register Site
 
@@ -174,6 +190,35 @@ public ActionResult GetUserInfo(OxdModel oxdModel)
 ```
 
 ###Get Logout URI
+
+The following are the required information for Getting Logout URI: 
+
+- *OxdHost* - Oxd Server's Host address
+- *OxdPort* - Oxd Server's Port number
+- *OxdId* - The _OXD ID_ of registered site
+
+The following code snippet can be used to Get Logout URI.
+
+```csharp
+[HttpPost]
+public ActionResult GetLogoutUri(OxdModel oxdModel)
+{
+	//prepare input params for Getting Logout URI from a site
+    var getLogoutUriInputParams = new GetLogoutUrlParams();
+    getLogoutUriInputParams.OxdId = oxd.OxdId;
+
+    //Get Logout URI
+    var getLogoutUriClient = new GetLogoutUriClient();
+    var getLogoutUriResponse = getLogoutUriClient.GetLogoutURL(oxd.OxdHost, oxd.OxdPort, getLogoutUriInputParams);
+
+    //Process response
+    return Json(new { logoutUri = getLogoutUriResponse.Data.LogoutUri });
+}
+```
+
+##UMA Resource Server API's
+
+###UMA RS Protect Resources
 
 The following are the required information for Getting Logout URI: 
 
