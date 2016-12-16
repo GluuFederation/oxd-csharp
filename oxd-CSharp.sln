@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "oxd-Csharp", "Csharp\oxd-Csharp.csproj", "{9B27A6E6-06A0-42E0-AB0C-F5C75253DF79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleApp", "GluuDemoWebsite\SampleApp.csproj", "{F1C8E06C-7BEE-4490-95C1-06A7B500FAE5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleApp", "SampleApp\SampleApp.csproj", "{F1C8E06C-7BEE-4490-95C1-06A7B500FAE5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
