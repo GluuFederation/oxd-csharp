@@ -12,5 +12,23 @@ namespace oxdCSharp.CommandResponses
         /// </summary>
         [JsonProperty("status")]
         public string Status { get; set; }
+
+        /// <summary>
+        /// Update Site command's response data
+        /// </summary>
+        [JsonProperty("data")]
+        public UpdateSiteResponseData Data { get; set; }
+    }
+
+    /// <summary>
+    /// Update Site Response's Data
+    /// </summary>
+    public class UpdateSiteResponseData
+    {
+        /// <summary>
+        /// Registered OXD Id form the OP server
+        /// </summary>
+        [JsonProperty("oxd_id")]
+        public string OxdId { get; set; }
     }
 }

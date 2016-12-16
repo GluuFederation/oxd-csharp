@@ -30,5 +30,11 @@ namespace oxdCSharp.CommandResponses
         /// </summary>
         [JsonProperty("oxd_id")]
         public string OxdId { get; set; }
+
+        /// <summary>
+        /// OP Host. Useful in case op_host is set in oxd-default-site-config.json (and not provided as parameter)
+        /// </summary>
+        [JsonProperty("op_host")]
+        public string OpHost { get; set; }
     }
 }

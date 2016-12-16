@@ -40,5 +40,13 @@ namespace oxdCSharp.CommandParameters
         /// <remarks><b>OPTIONAL</b> Field.</remarks>
         [JsonProperty("prompt")]
         public string Prompt { get; set; }
+
+        /// <summary>
+        /// Hosted Domain.
+        /// hosted domain google OP parameter https://developers.google.com/identity/protocols/OpenIDConnect#hd-param
+        /// </summary>
+        /// <remarks><b>OPTIONAL</b> Field.</remarks>
+        [JsonProperty("hd")]
+        public string Hd { get; set; }
     }
 }
