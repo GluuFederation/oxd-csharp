@@ -8,6 +8,8 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using oxdCSharp.CommandResponses;
+
+
 namespace CSharp.CommonClasses
 {
     /// <summary>
@@ -16,6 +18,7 @@ namespace CSharp.CommonClasses
     class CommandClient
     {
         IPEndPoint ipEndPoint = null;
+        string oxdHttpUrl = null;
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         /// <summary>
@@ -26,7 +29,21 @@ namespace CSharp.CommonClasses
         public CommandClient(string host, int port)
         {
             ipEndPoint = new IPEndPoint(IPAddress.Parse(host), port);
+
         }
+        /// <summary>
+        /// Setting up Command Client with REST service to communicate via http
+        /// </summary>
+        /// <param name="restserviceURL"></param>
+     
+        public CommandClient(string restserviceURL)
+        {
+            oxdHttpUrl = restserviceURL;
+
+        }
+
+
+
         /// <summary>
         /// Sending Command to server in Json format
         /// </summary>
@@ -34,16 +51,31 @@ namespace CSharp.CommonClasses
         /// <returns>Json Response</returns>
         public string send(Command command)
         {
+            if (ipEndPoint != null)
+                return sendviaSocket(command);
+            else if (!string.IsNullOrEmpty(oxdHttpUrl))
+                return sendviahttp(command);
+            else
+                return null;
+
+            
+        }
+
+
+
+        private string sendviaSocket(Command command)
+        {
+
             try
             {
                 Socket sender = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 sender.Connect(ipEndPoint);
                 Console.WriteLine("Socket connected to {0}", sender.RemoteEndPoint.ToString());
-                
+
                 var json = JsonConvert.SerializeObject(command);
                 if (!String.IsNullOrEmpty(json))
                 {
-                    int le = json.Length.ToString().Length; 
+                    int le = json.Length.ToString().Length;
                     if (le < 4)
                         json = "0" + json.Length + json;
                     byte[] message = Encoding.ASCII.GetBytes(json);
@@ -57,15 +89,6 @@ namespace CSharp.CommonClasses
                     Console.WriteLine("The Json:{0}", returnedJson);
 
                     returnedJson = returnedJson.Remove(0, 4);
-
-                    /////solution 1
-                    //Dictionary<string, object> values = deserializeToDictionary(returnedJson);
-
-
-                    /////solution 2
-                    //var results = JsonConvert.DeserializeObject<dynamic>(returnedJson).status.Value;
-
-
                     sender.Shutdown(SocketShutdown.Both);
                     sender.Close();
                     return returnedJson;
@@ -83,6 +106,20 @@ namespace CSharp.CommonClasses
                 Logger.Debug(ex.Message);
                 return ex.Message;
             }
+
+
+        }
+        private string sendviahttp(Command command)
+        {
+            string endPoint = string.Format("{0}/{1}", oxdHttpUrl, command.CommandType.Replace("_","-"));
+            var json = JsonConvert.SerializeObject(command.CommandParams);
+            var client = new RestClient(endpoint: endPoint,
+                             method: HttpVerb.POST,
+                             postData: json);
+
+
+            var response = client.MakeRequest();
+            return response;
         }
 
         /// <summary>

@@ -83,6 +83,7 @@
     <Compile Include="Clients\GetTokensByCodeClient.cs" />
     <Compile Include="Clients\GetUserInfoClient.cs" />
     <Compile Include="Clients\RegisterSiteClient.cs" />
+    <Compile Include="CommonClasses\RestClient.cs" />
     <Compile Include="Clients\UmaRsCheckAccessClient.cs" />
     <Compile Include="Clients\UmaRpAuthorizeRptClient.cs" />
     <Compile Include="Clients\UmaRpGetRptClient.cs" />

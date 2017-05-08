@@ -15,4 +15,15 @@
         public static string uma_rp_get_gat = "uma_rp_get_gat";        
         public static string get_authorization_code = "get_authorization_code";
     }
+
+    public static class RestCommandType
+    {
+        public static string register_site = "register-site";
+        public static string update_site_registration = "update-site";
+        public static string get_authorization_url = "get-authorization-url";
+        public static string get_tokens_by_code = "get-tokens-by-code";
+        public static string get_user_info = "get-user-info";
+        public static string get_logout_uri = "logout";
+  
+    }
 }

@@ -8,11 +8,14 @@ using CSharp.CommonClasses;
 using oxdCSharp.CommandResponses;
 using oxdCSharp.Clients;
 using oxdCSharp.CommandParameters;
+using System.Configuration;
 
 namespace GluuDemoWebsite.Controllers
 {
     public class HomeController : Controller
     {
+        string httpresturl = ConfigurationManager.AppSettings["oxdtohttp"];
+
         public ActionResult Index()
         {
             return View();
@@ -28,15 +31,31 @@ namespace GluuDemoWebsite.Controllers
 
             //prepare input params for Register Site
             registerSiteInputParams.AuthorizationRedirectUri = oxd.RedirectUrl;
-            registerSiteInputParams.OpHost = "https://scim-test.gluu.org";
-            registerSiteInputParams.ClientName = "OxdTestingClient-CanBeRemoved";
+            registerSiteInputParams.OpHost = ConfigurationManager.AppSettings["GluuServerUrl"]; 
+            registerSiteInputParams.ClientName = ConfigurationManager.AppSettings["OxdClientName"];
             registerSiteInputParams.Scope = new List<string> { "openid", "profile", "email", "uma_protection", "uma_authorization" };
-            
-            //Register Site
-            var registerSiteResponse = registerSiteClient.RegisterSite(oxd.OxdHost, oxd.OxdPort, registerSiteInputParams);
+
+            oxd.OxdHost = ConfigurationManager.AppSettings["oxdhost"];//OXD-Server host IP addresss
+            oxd.OxdPort = Convert.ToInt32(ConfigurationManager.AppSettings["oxdport"]) ;//OXD-Server host listening port number
+
+            if (Session["oxdId"]==null)
+            Session["oxdId"]= ConfigurationManager.AppSettings["oxdid"];
+            oxd.OxdId = Session["oxdId"].ToString();
+
+            if (string.IsNullOrEmpty(oxd.OxdId))
+            {
+               //var registerSiteResponse = registerSiteClient.RegisterSite(oxd.OxdHost, oxd.OxdPort, registerSiteInputParams);
+                var registerSiteResponse = registerSiteClient.RegisterSite(httpresturl, registerSiteInputParams);
+                Session["oxdId"] = registerSiteResponse.Data.OxdId;
+                return Json(new { oxdId = Session["oxdId"] });
+            }
+            else {
+                return Json(new { oxdId = oxd.OxdId });
+            }
+
 
             //Process the response
-            return Json(new { oxdId = registerSiteResponse.Data.OxdId });
+           
         }
 
         [HttpPost]
@@ -51,7 +70,8 @@ namespace GluuDemoWebsite.Controllers
             updateSiteInputParams.PostLogoutRedirectUri = oxd.PostLogoutRedirectUrl;
 
             //Update Site Registration
-            var updateSiteResponse = updateSiteClient.UpdateSiteRegistration(oxd.OxdHost, oxd.OxdPort, updateSiteInputParams);
+           //var updateSiteResponse = updateSiteClient.UpdateSiteRegistration(oxd.OxdHost, oxd.OxdPort, updateSiteInputParams);
+            var updateSiteResponse = updateSiteClient.UpdateSiteRegistration(httpresturl, updateSiteInputParams);
 
             //Process the response
             return Json(new { status = updateSiteResponse.Status });
@@ -67,8 +87,8 @@ namespace GluuDemoWebsite.Controllers
             getAuthUrlInputParams.OxdId = oxd.OxdId;
 
             //Get Auth URL
-            var getAuthUrlResponse = getAuthUrlClient.GetAuthorizationURL(oxd.OxdHost, oxd.OxdPort, getAuthUrlInputParams);
-
+          // var getAuthUrlResponse = getAuthUrlClient.GetAuthorizationURL(oxd.OxdHost, oxd.OxdPort, getAuthUrlInputParams);
+            var getAuthUrlResponse = getAuthUrlClient.GetAuthorizationURL(httpresturl, getAuthUrlInputParams);
             //Process Response
             return Json(new { authUrl = getAuthUrlResponse.Data.AuthorizationUrl });
         }
@@ -85,7 +105,8 @@ namespace GluuDemoWebsite.Controllers
             getTokenByCodeInputParams.State = oxd.AuthState;
 
             //Get Tokens by Code
-            var getTokensByCodeResponse = getTokenByCodeClient.GetTokensByCode(oxd.OxdHost, oxd.OxdPort, getTokenByCodeInputParams);
+           //var getTokensByCodeResponse = getTokenByCodeClient.GetTokensByCode(oxd.OxdHost, oxd.OxdPort, getTokenByCodeInputParams);
+           var getTokensByCodeResponse = getTokenByCodeClient.GetTokensByCode(httpresturl, getTokenByCodeInputParams);
 
             //Process response
             return Json(new { accessToken = getTokensByCodeResponse.Data.AccessToken, refreshToken = getTokensByCodeResponse.Data.RefreshToken });
@@ -102,13 +123,14 @@ namespace GluuDemoWebsite.Controllers
             getUserInfoInputParams.AccessToken = oxd.AccessToken;
 
             //Get User Info
-            var getUserInfoResponse = getUserInfoClient.GetUserInfo(oxd.OxdHost, oxd.OxdPort, getUserInfoInputParams);
+            //var getUserInfoResponse = getUserInfoClient.GetUserInfo(oxd.OxdHost, oxd.OxdPort, getUserInfoInputParams);
+            var getUserInfoResponse = getUserInfoClient.GetUserInfo(httpresturl, getUserInfoInputParams);
 
             //Process response
             var userName = getUserInfoResponse.Data.UserClaims.Name.First();
             var userEmail = getUserInfoResponse.Data.UserClaims.Email == null ? string.Empty : getUserInfoResponse.Data.UserClaims.Email.FirstOrDefault();
 
-            return Json(new { userName = userName });
+            return Json(new { userName = userName, userEmail= userEmail });
         }
 
         [HttpPost]
@@ -225,7 +247,8 @@ namespace GluuDemoWebsite.Controllers
             getLogoutUriInputParams.OxdId = oxd.OxdId;
 
             //Get Logout URI
-            var getLogoutUriResponse = getLogoutUriClient.GetLogoutURL(oxd.OxdHost, oxd.OxdPort, getLogoutUriInputParams);
+            //var getLogoutUriResponse = getLogoutUriClient.GetLogoutURL(oxd.OxdHost, oxd.OxdPort, getLogoutUriInputParams);
+            var getLogoutUriResponse = getLogoutUriClient.GetLogoutURL(httpresturl, getLogoutUriInputParams);
 
             //Process response
             return Json(new { logoutUri = getLogoutUriResponse.Data.LogoutUri });

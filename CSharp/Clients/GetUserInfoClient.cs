@@ -69,5 +69,40 @@ namespace oxdCSharp.Clients
                 return null;
             }
         }
+
+
+
+        /// <summary>
+        ///Gets User Info by access token using HTTP 
+        /// </summary>
+        /// <param name="oxdtohttpurl">Oxd to http REST service URL</param>
+        /// <param name="getUserInfoParams">Input params for Get User Info command via http</param>
+        /// <returns></returns>
+
+        public GetUserInfoResponse GetUserInfo(string oxdtohttpurl, GetUserInfoParams getUserInfoParams)
+        {
+            Logger.Info("Verifying input parameters.");
+            if (string.IsNullOrEmpty(oxdtohttpurl))
+                throw new ArgumentNullException("Oxd Rest Service URL should not be NULL.");
+
+
+            try
+            {
+                var cmdGetUserInfo = new Command { CommandType = RestCommandType.get_user_info, CommandParams = getUserInfoParams };
+                var commandClient = new CommandClient(oxdtohttpurl);
+                string commandResponse = commandClient.send(cmdGetUserInfo);
+                var response = JsonConvert.DeserializeObject<GetUserInfoResponse>(commandResponse);
+                return response;
+            
+
+             }
+            catch (Exception ex)
+            {
+                Logger.Log(NLog.LogLevel.Error, ex, "Exception when getting User Info site.");
+                return null;
+
+            }
+
+}
     }
 }

@@ -35,12 +35,12 @@ namespace oxdCSharp.Clients
                 throw new ArgumentNullException("Oxd Port should be a valid port number.");
             }
 
-            if(getAuthUrlParams == null)
+            if (getAuthUrlParams == null)
             {
                 throw new ArgumentNullException("The get auth url command params should not be NULL.");
             }
 
-            if(string.IsNullOrEmpty(getAuthUrlParams.OxdId))
+            if (string.IsNullOrEmpty(getAuthUrlParams.OxdId))
             {
                 throw new MissingFieldException("Oxd ID is required for getting auth url of site.");
             }
@@ -62,6 +62,36 @@ namespace oxdCSharp.Clients
                 Logger.Log(NLog.LogLevel.Error, ex, "Exception when getting auth url of site.");
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Gets Authorization URL via http using the params 
+        /// </summary>
+        /// <param name="oxdtohttpurl">Oxd to http REST service URL</param>
+        /// <param name="getAuthUrlParams">Input params for Get Authorization URL command via http</param>
+        /// <returns></returns>
+
+        public GetAuthorizationUrlResponse GetAuthorizationURL(string oxdtohttpurl, GetAuthorizationUrlParams getAuthUrlParams)
+        {
+            Logger.Info("Verifying input parameters.");
+            if (string.IsNullOrEmpty(oxdtohttpurl))
+                throw new ArgumentNullException("Oxd Rest Service URL should not be NULL.");
+
+            try
+            {
+                var cmdGetAuthUrl = new Command { CommandType = RestCommandType.get_authorization_url, CommandParams = getAuthUrlParams };
+                var commandClient = new CommandClient(oxdtohttpurl);
+                string commandResponse = commandClient.send(cmdGetAuthUrl);
+                var response = JsonConvert.DeserializeObject<GetAuthorizationUrlResponse>(commandResponse);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(NLog.LogLevel.Error, ex, "Exception when getting Authorization url");
+                return null;
+
+            }
+
         }
     }
 }

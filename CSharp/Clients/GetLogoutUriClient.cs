@@ -37,7 +37,7 @@ namespace oxdCSharp.Clients
 
             if(getLogoutUriParams == null)
             {
-                throw new ArgumentNullException("The get user info command params should not be NULL.");
+                throw new ArgumentNullException("The get logout uri command params should not be NULL.");
             }
 
             if(string.IsNullOrEmpty(getLogoutUriParams.OxdId))
@@ -59,9 +59,41 @@ namespace oxdCSharp.Clients
             }
             catch (Exception ex)
             {
-                Logger.Log(NLog.LogLevel.Error, ex, "Exception when getting user info of site.");
+                Logger.Log(NLog.LogLevel.Error, ex, "Exception when getting logout uri of site.");
                 return null;
             }
         }
+
+
+        /// <summary>
+        /// Gets logout URI of a registered site using http
+        /// </summary>
+        /// <param name="oxdtohttpurl">Oxd to http REST service URL</param>
+        /// <param name="getLogoutUriParams">Input params for Get Logout URI command</param>
+        /// <returns></returns>
+
+        public GetLogoutUriResponse GetLogoutURL(string oxdtohttpurl, GetLogoutUrlParams getLogoutUriParams)
+        {
+            Logger.Info("Verifying input parameters.");
+            if (string.IsNullOrEmpty(oxdtohttpurl))
+                throw new ArgumentNullException("Oxd Rest Service URL should not be NULL.");
+
+            try
+            {
+                var cmdGetLogoutUri = new Command { CommandType = RestCommandType.get_logout_uri, CommandParams = getLogoutUriParams };
+                var commandClient = new CommandClient(oxdtohttpurl);
+                string commandResponse = commandClient.send(cmdGetLogoutUri);
+                var response = JsonConvert.DeserializeObject<GetLogoutUriResponse>(commandResponse);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(NLog.LogLevel.Error, ex, "Exception when getting logout uri of site.");
+                return null;
+
+            }
+
+        }
+
     }
 }

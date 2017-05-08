@@ -24,22 +24,22 @@ namespace oxdCSharp.Clients
         public RegisterSiteResponse RegisterSite(String host, int port, RegisterSiteParams registerSiteParams)
         {
             Logger.Info("Verifying input parameters.");
-            if(string.IsNullOrEmpty(host))
+            if (string.IsNullOrEmpty(host))
             {
                 throw new ArgumentNullException("Oxd Host should not be NULL.");
             }
-            
-            if(port <= 0)
+
+            if (port <= 0)
             {
                 throw new ArgumentNullException("Oxd Port should be a valid port number.");
             }
 
-            if(registerSiteParams == null)
+            if (registerSiteParams == null)
             {
                 throw new ArgumentNullException("The register site command params should not be NULL.");
             }
 
-            if(string.IsNullOrEmpty(registerSiteParams.AuthorizationRedirectUri))
+            if (string.IsNullOrEmpty(registerSiteParams.AuthorizationRedirectUri))
             {
                 throw new MissingFieldException("Authorization Redirect Uri is required.");
             }
@@ -56,11 +56,41 @@ namespace oxdCSharp.Clients
 
                 return response;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Logger.Log(NLog.LogLevel.Error, ex, "Exception when registering site.");
                 return null;
             }
+        }
+        /// <summary>
+        /// Registers a new site via http using the params 
+        /// </summary>
+        /// <param name="oxdtohttpurl">Oxd to http REST service URL</param>
+        /// <param name="registerSiteParams">Input parameters for Register Site via http</param>
+        /// <returns></returns>
+
+        public RegisterSiteResponse RegisterSite(string oxdtohttpurl, RegisterSiteParams registerSiteParams)
+        {
+            Logger.Info("Verifying input parameters.");
+            if (string.IsNullOrEmpty(oxdtohttpurl))
+                throw new ArgumentNullException("Oxd Rest Service URL should not be NULL.");
+            try
+            {
+                var cmdRegisterSite = new Command { CommandType = RestCommandType.register_site, CommandParams = registerSiteParams };
+                var commandClient = new CommandClient(oxdtohttpurl);
+                string commandResponse = commandClient.send(cmdRegisterSite);
+                var response = JsonConvert.DeserializeObject<RegisterSiteResponse>(commandResponse);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(NLog.LogLevel.Error, ex, "Exception when getting logout uri of site.");
+                return null;
+
+            }
+
+
+
         }
     }
 }

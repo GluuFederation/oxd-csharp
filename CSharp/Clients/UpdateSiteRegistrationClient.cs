@@ -37,7 +37,7 @@ namespace oxdCSharp.Clients
                 throw new ArgumentNullException("Oxd Port should be a valid port number.");
             }
 
-            if(updateSiteParams == null)
+            if (updateSiteParams == null)
             {
                 throw new ArgumentNullException("The update site command params should not be NULL.");
             }
@@ -64,6 +64,40 @@ namespace oxdCSharp.Clients
                 Logger.Log(NLog.LogLevel.Error, ex, "Exception when updating site.");
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Updates already registered site with input params via http
+        /// </summary>
+        /// <param name="oxdtohttpurl">Oxd to http REST service URL</param>
+        /// <param name="registerSiteParams">Input parameters for Register Site via http</param>
+        /// <returns></returns>
+
+        public UpdateSiteResponse UpdateSiteRegistration(string oxdtohttpurl, UpdateSiteParams registerSiteParams)
+        {
+            Logger.Info("Verifying input parameters.");
+            if (string.IsNullOrEmpty(oxdtohttpurl))
+                throw new ArgumentNullException("Oxd Rest Service URL should not be NULL.");
+
+
+            try
+            {
+                var cmdUpdateSite = new Command { CommandType = RestCommandType.update_site_registration, CommandParams = registerSiteParams };
+                var commandClient = new CommandClient(oxdtohttpurl);
+                string commandResponse = commandClient.send(cmdUpdateSite);
+                var response = JsonConvert.DeserializeObject<UpdateSiteResponse>(commandResponse);
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(NLog.LogLevel.Error, ex, "Exception when updating Client Info.");
+                return null;
+
+            }
+
+
+
         }
     }
 }

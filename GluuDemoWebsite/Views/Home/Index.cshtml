@@ -14,15 +14,7 @@
             var redirectUrl = jQuery("#authRedirectUrl");
             var oxdId = jQuery("#oxdId")
 
-            if (oxdHost.val() === "") {
-                oxdHost.notify("Host is required", "warning");
-                return;
-            }
-
-            if (oxdPort.val() === "") {
-                oxdPort.notify("Port is required", "warning");
-                return;
-            }
+           
 
             if (redirectUrl.val() === "") {
                 redirectUrl.notify("Redirect URL is must", "error");
@@ -108,10 +100,11 @@
             var w = 450;
             var h = 450;
             var url = jQuery("#authUrl").val();
+            
             var left = (screen.width/2)-(w/2);
-            var top = (screen.height/2)-(h/2);
-            var w = window.open(url, "Gluu Login", 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
-            alert("Please authorize and copy paste the auth code and auth state in the new window.");
+            var top = (screen.height / 2) - (h / 2);
+            window.location.href = url;
+            
             jQuery("#btnToken").prop("disabled", false);
         });
 
@@ -124,15 +117,6 @@
             var authCode = jQuery("#authCode");
             var authState = jQuery("#authState");            
 
-            if (oxdHost.val() === "") {
-                oxdHost.notify("Host is required", "warning");
-                return;
-            }
-
-            if (oxdPort.val() === "") {
-                oxdPort.notify("Port is required", "warning");
-                return;
-            }
 
             if (oxdId.val() === "") {
                 oxdId.notify("Site registration is must. Register the site first.", "error");
@@ -169,15 +153,6 @@
             var oxdId = jQuery("#oxdId")
             var accessToken = jQuery("#accessToken")
 
-            if (oxdHost.val() === "") {
-                oxdHost.notify("Host is required", "warning");
-                return;
-            }
-
-            if (oxdPort.val() === "") {
-                oxdPort.notify("Port is required", "warning");
-                return;
-            }
 
             if (oxdId.val() === "") {
                 oxdId.notify("Site registration is must. Register the site first.", "error");
@@ -209,15 +184,7 @@
             var oxdPort = jQuery("#oxdPort");
             var oxdId = jQuery("#oxdId");
 
-            if (oxdHost.val() === "") {
-                oxdHost.notify("Host is required", "warning");
-                return;
-            }
-
-            if (oxdPort.val() === "") {
-                oxdPort.notify("Port is required", "warning");
-                return;
-            }
+          
 
             if (oxdId.val() === "") {
                 oxdId.notify("Site registration is must. Register the site first.", "error");
@@ -239,15 +206,6 @@
             var oxdPort = jQuery("#oxdPort");
             var oxdId = jQuery("#oxdId");
 
-            if (oxdHost.val() === "") {
-                oxdHost.notify("Host is required", "warning");
-                return;
-            }
-
-            if (oxdPort.val() === "") {
-                oxdPort.notify("Port is required", "warning");
-                return;
-            }
 
             if (oxdId.val() === "") {
                 oxdId.notify("Site registration is must. Register the site first.", "error");
@@ -265,21 +223,12 @@
         });
 
         jQuery('#btnLogout').click(function (event) {
-            //event.preventDefault();
-
+           
             var oxdHost = jQuery("#oxdHost");
             var oxdPort = jQuery("#oxdPort")
             var oxdId = jQuery("#oxdId")
 
-            if (oxdHost.val() === "") {
-                oxdHost.notify("Host is required", "warning");
-                return;
-            }
-
-            if (oxdPort.val() === "") {
-                oxdPort.notify("Port is required", "warning");
-                return;
-            }
+          
 
             if (oxdId.val() === "") {
                 oxdId.notify("Site registration is must. Register the site first.", "error");
@@ -308,26 +257,15 @@
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">OXD Server Configs</h3>
+                <h3 class="panel-title"></h3>
             </div>
             <div class="panel-body">
                 <form class="form-horizontal">
-                    <div class="form-group">
-                        <label for="oxdHost" class="col-sm-2 control-label">OXD Host</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="oxdHost" placeholder="Host IP Address">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="oxdPort" class="col-sm-2 control-label">OXD Port</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="oxdPort" placeholder="Port number">
-                        </div>
-                    </div>
+ 
                     <div class="form-group">
                         <label for="oxdId" class="col-sm-2 control-label">OXD Id</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="oxdId" placeholder="Oxd Id" disabled="disabled">
+                            <input type="text" class="form-control" id="oxdId" placeholder="Oxd Id" value="@Session["oxdId"]" disabled="disabled" >
                         </div>
                     </div>
                 </form>
@@ -359,15 +297,18 @@
             <div class="form-group">
                 <label for="email" class="col-sm-2 control-label">Email</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="email" placeholder="Email address" disabled="disabled">
-                </div>
-                <label for="postLogoutRedirectUrl" class="col-sm-2 control-label">Post Logout Redirect Url</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="postLogoutRedirectUrl" placeholder="url" disabled="disabled">
+                    <input type="text" class="form-control" id="email" placeholder="Email address">
                 </div>
             </div>
             <div class="form-group">
-                <input class="btn btn-default" type="button" value="Update" id="btnUpdate" disabled="disabled">
+                <label for="postLogoutRedirectUrl" class="col-sm-2 control-label">Post Logout Redirect Url</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="postLogoutRedirectUrl" placeholder="url" >
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input class="btn btn-default" type="button" value="Update" id="btnUpdate">
             </div>
         </form>
     </div>
@@ -378,11 +319,11 @@
             <div class="form-group">
                 <label for="authUrl" class="col-sm-2 control-label">Auth URL</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="authUrl" placeholder="Redirect URL" disabled="disabled">
+                    <input type="text" class="form-control" id="authUrl" placeholder="Authorization URL" disabled="disabled">
                 </div>
             </div>
             <div class="form-group">
-                <input class="btn btn-default" type="button" value="Get Auth Url" id="btnAuthUrl" disabled="disabled">
+                <input class="btn btn-default" type="button" value="Get Auth Url" id="btnAuthUrl">
             </div>
         </form>
     </div>
@@ -393,13 +334,13 @@
             <div class="form-group">
                 <label for="authCode" class="col-sm-2 control-label">Auth Code</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="authCode" placeholder="Auth Code" disabled="disabled">
+                    <input type="text" class="form-control" id="authCode" placeholder="Auth Code" value=@Request.Params["code"] disabled="disabled">
                 </div>
             </div>
             <div class="form-group">
                 <label for="authState" class="col-sm-2 control-label">Auth State</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="authState" placeholder="Auth State" disabled="disabled">
+                    <input type="text" class="form-control" id="authState" placeholder="Auth State" value=@Request.Params["state"]  disabled="disabled">
                 </div>
             </div>
             <div class="form-group">
@@ -424,7 +365,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <input class="btn btn-default" type="button" value="Get Tokens" id="btnToken" disabled="disabled">
+                <input class="btn btn-default" type="button" value="Get Tokens" id="btnToken" >
             </div>
         </form>
     </div>
@@ -494,14 +435,5 @@
             </div>
         </form>
     </div>
-    @*<div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>*@
+
 </div>

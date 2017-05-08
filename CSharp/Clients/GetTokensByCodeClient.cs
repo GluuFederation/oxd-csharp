@@ -35,22 +35,22 @@ namespace oxdCSharp.Clients
                 throw new ArgumentNullException("Oxd Port should be a valid port number.");
             }
 
-            if(getTokensByCodeParams == null)
+            if (getTokensByCodeParams == null)
             {
                 throw new ArgumentNullException("The get tokens by code command params should not be NULL.");
             }
 
-            if(string.IsNullOrEmpty(getTokensByCodeParams.OxdId))
+            if (string.IsNullOrEmpty(getTokensByCodeParams.OxdId))
             {
                 throw new MissingFieldException("Oxd ID is required for getting tokens.");
             }
 
-            if(string.IsNullOrEmpty(getTokensByCodeParams.Code))
+            if (string.IsNullOrEmpty(getTokensByCodeParams.Code))
             {
                 throw new MissingFieldException("Auth Code is required for getting tokens.");
             }
 
-            if(string.IsNullOrEmpty(getTokensByCodeParams.State))
+            if (string.IsNullOrEmpty(getTokensByCodeParams.State))
             {
                 throw new MissingFieldException("Auth State is required for getting tokens.");
             }
@@ -73,5 +73,36 @@ namespace oxdCSharp.Clients
                 return null;
             }
         }
+
+        /// <summary>
+        /// Gets different type of tokens by Code using http
+        /// </summary>
+        /// <param name="oxdtohttpurl">Oxd to http REST service URL</param>
+        /// <param name="getTokensByCodeParams">Input params for Get Tokens by Code command</param>
+        /// <returns></returns>
+
+        public GetTokensByCodeResponse GetTokensByCode(string oxdtohttpurl, GetTokensByCodeParams getTokensByCodeParams)
+        {
+            Logger.Info("Verifying input parameters.");
+            if (string.IsNullOrEmpty(oxdtohttpurl))
+                throw new ArgumentNullException("Oxd Rest Service URL should not be NULL.");
+
+            try
+            {
+                var cmdGetTokensByCode = new Command { CommandType = RestCommandType.get_tokens_by_code, CommandParams = getTokensByCodeParams };
+                var commandClient = new CommandClient(oxdtohttpurl);
+                string commandResponse = commandClient.send(cmdGetTokensByCode);
+                var response = JsonConvert.DeserializeObject<GetTokensByCodeResponse>(commandResponse);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(NLog.LogLevel.Error, ex, "Exception when getting Token Code.");
+                return null;
+
+            }
+
+        }
+
     }
 }
