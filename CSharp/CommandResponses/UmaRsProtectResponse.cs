@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace oxdCSharp.CommandResponses
+namespace oxdCSharp.UMA.CommandResponses
 {
     /// <summary>
     /// Response for UMA RS Protect command

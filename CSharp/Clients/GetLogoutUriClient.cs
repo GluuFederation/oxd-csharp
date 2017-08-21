@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;
-using CSharp.CommonClasses;
+using oxdCSharp.CommonClasses;
 using oxdCSharp.CommandParameters;
 using oxdCSharp.CommandResponses;
 using System.Diagnostics.Contracts;
@@ -21,7 +21,7 @@ namespace oxdCSharp.Clients
         /// <param name="host">Oxd Host</param>
         /// <param name="port">Oxd Port</param>
         /// <param name="getLogoutUriParams">Input params for Get Logout URI command</param>
-        /// <returns></returns>
+        /// <returns>Logout Url</returns>
         public GetLogoutUriResponse GetLogoutURL(string host, int port, GetLogoutUrlParams getLogoutUriParams)
         {
             Logger.Info("Verifying input parameters.");
@@ -68,20 +68,20 @@ namespace oxdCSharp.Clients
         /// <summary>
         /// Gets logout URI of a registered site using http
         /// </summary>
-        /// <param name="oxdtohttpurl">Oxd to http REST service URL</param>
+        /// <param name="oxdWebUrl">Oxd to http REST service URL</param>
         /// <param name="getLogoutUriParams">Input params for Get Logout URI command</param>
-        /// <returns></returns>
+        /// <returns>Logout Url</returns>
 
-        public GetLogoutUriResponse GetLogoutURL(string oxdtohttpurl, GetLogoutUrlParams getLogoutUriParams)
+        public GetLogoutUriResponse GetLogoutURL(string oxdWebUrl, GetLogoutUrlParams getLogoutUriParams)
         {
             Logger.Info("Verifying input parameters.");
-            if (string.IsNullOrEmpty(oxdtohttpurl))
+            if (string.IsNullOrEmpty(oxdWebUrl))
                 throw new ArgumentNullException("Oxd Rest Service URL should not be NULL.");
 
             try
             {
                 var cmdGetLogoutUri = new Command { CommandType = RestCommandType.get_logout_uri, CommandParams = getLogoutUriParams };
-                var commandClient = new CommandClient(oxdtohttpurl);
+                var commandClient = new CommandClient(oxdWebUrl);
                 string commandResponse = commandClient.send(cmdGetLogoutUri);
                 var response = JsonConvert.DeserializeObject<GetLogoutUriResponse>(commandResponse);
                 return response;

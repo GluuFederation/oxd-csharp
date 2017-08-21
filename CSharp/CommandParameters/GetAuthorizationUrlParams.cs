@@ -16,6 +16,14 @@ namespace oxdCSharp.CommandParameters
         public string OxdId { get; set; }
 
         /// <summary>
+        /// Protection Acccess Token.
+        /// </summary>
+        /// <remarks><b>REQUIRED</b> Field.</remarks>
+        [JsonProperty("protection_access_token")]
+        public string ProtectionAccessToken { get; set; }
+
+
+        /// <summary>
         /// Scope. 
         /// If value not set, by default, the command takes Scopes that was registered during Register Site Command.
         /// </summary>

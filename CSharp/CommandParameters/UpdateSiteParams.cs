@@ -16,6 +16,13 @@ namespace oxdCSharp.CommandParameters
         public string OxdId { get; set; }
 
         /// <summary>
+        /// Protection Acccess Token.
+        /// </summary>
+        /// <remarks><b>REQUIRED</b> Field.</remarks>
+        [JsonProperty("protection_access_token")]
+        public string ProtectionAccessToken { get; set; }
+
+        /// <summary>
         /// Authorization Redirect URI
         /// </summary>
         /// <remarks><b>OPTIONAL</b> Field.</remarks>
@@ -30,11 +37,11 @@ namespace oxdCSharp.CommandParameters
         public string PostLogoutRedirectUri { get; set; }
 
         /// <summary>
-        /// Client Logout URIs
+        /// Client Front Channel Logout URIs
         /// </summary>
         /// <remarks><b>OPTIONAL</b> Field.</remarks>
-        [JsonProperty("client_logout_uris")]
-        public IList<string> ClientLogoutUris { get; set; }
+        [JsonProperty("client_frontchannel_logout_uris")]
+        public IList<string> ClientFrontChannelLogoutUris { get; set; }
 
         /// <summary>
         /// Response Type

@@ -6,9 +6,9 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSharp.CommonClasses
+namespace oxdCSharp.CommonClasses
 {
-    public class RestClient
+    internal class RestClient
     {
         public string EndPoint { get; set; }
         public HttpVerb Method { get; set; }
@@ -46,12 +46,12 @@ namespace CSharp.CommonClasses
         }
 
 
-        public string MakeRequest()
+        public string MakeRequest(string accesstoken)
         {
-            return MakeRequest("");
+            return MakeRequest("", accesstoken);
         }
 
-        public string MakeRequest(string parameters)
+        public string MakeRequest(string parameters, string accesstoken)
         {
             var request = (HttpWebRequest)WebRequest.Create(EndPoint + parameters);
            
@@ -61,6 +61,8 @@ namespace CSharp.CommonClasses
             request.Method = Method.ToString();
             request.ContentLength = 0;
             request.ContentType = ContentType;
+            if (!string.IsNullOrEmpty(accesstoken))
+                request.Headers.Add("Authorization", "Bearer " + accesstoken);
 
             if (!string.IsNullOrEmpty(PostData) && Method == HttpVerb.POST)
             {

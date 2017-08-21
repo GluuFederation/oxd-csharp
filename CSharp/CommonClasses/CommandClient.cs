@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using oxdCSharp.CommandResponses;
 
 
-namespace CSharp.CommonClasses
+namespace oxdCSharp.CommonClasses
 {
     /// <summary>
     /// Command client for communicating with Server
@@ -79,7 +79,7 @@ namespace CSharp.CommonClasses
                     if (le < 4)
                         json = "0" + json.Length + json;
                     byte[] message = Encoding.ASCII.GetBytes(json);
-                    sender.Send(message);
+                                       sender.Send(message);
                     byte[] buffer = new byte[10000];
                     int lengthOfReturnedBuffer = sender.Receive(buffer);
                     char[] chars = new char[lengthOfReturnedBuffer];
@@ -87,7 +87,7 @@ namespace CSharp.CommonClasses
                     int charLen = d.GetChars(buffer, 0, lengthOfReturnedBuffer, chars, 0);
                     String returnedJson = new String(chars);
                     Console.WriteLine("The Json:{0}", returnedJson);
-
+                    
                     returnedJson = returnedJson.Remove(0, 4);
                     sender.Shutdown(SocketShutdown.Both);
                     sender.Close();
@@ -113,13 +113,31 @@ namespace CSharp.CommonClasses
         {
             string endPoint = string.Format("{0}/{1}", oxdHttpUrl, command.CommandType.Replace("_","-"));
             var json = JsonConvert.SerializeObject(command.CommandParams);
+
+            var protectionAccessToken = GetprotectionAccessTokenFromCommand(command);
+           
             var client = new RestClient(endpoint: endPoint,
                              method: HttpVerb.POST,
                              postData: json);
 
 
-            var response = client.MakeRequest();
+            var response = client.MakeRequest(protectionAccessToken);
             return response;
+        }
+
+        private string GetprotectionAccessTokenFromCommand(Command command)
+        {
+            try
+            {
+                var protectionAccessToken = command.CommandParams.GetType().GetProperty("ProtectionAccessToken").GetValue(command.CommandParams, null);
+                return protectionAccessToken;
+            }
+            catch(Exception ex)
+            {
+
+                return null;
+            }
+            
         }
 
         /// <summary>

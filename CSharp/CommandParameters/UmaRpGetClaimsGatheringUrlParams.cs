@@ -1,12 +1,13 @@
 ﻿using Newtonsoft.Json;
 
-namespace oxdCSharp.CommandParameters
+namespace oxdCSharp.UMA.CommandParameters
 {
-    /// <summary>
-    /// Params for Get Tokens By Code Command
-    /// </summary>
-    public class GetTokensByCodeParams
+
+
+   public class UmaRpGetClaimsGatheringUrlParams
     {
+
+
         /// <summary>
         /// Registered OXD Id.
         /// </summary>
@@ -15,24 +16,26 @@ namespace oxdCSharp.CommandParameters
         public string OxdId { get; set; }
 
         /// <summary>
-        /// Protection Acccess Token.
+        /// Ticket
+        /// </summary>
+        /// <remarks><b>REQUIRED</b> Field.</remarks>
+        [JsonProperty("ticket")]
+        public string ticket { get; set; }
+
+        /// <summary>
+        /// ClaimsRedirectURI
+        /// </summary>
+        /// <remarks><b>REQUIRED</b> Field.</remarks>
+        [JsonProperty("claims_redirect_uri")]
+        public string ClaimsRedirectURI { get; set; }
+
+
+        /// <summary>
+        /// ProtectionAccessToken (PAT)
         /// </summary>
         /// <remarks><b>REQUIRED</b> Field.</remarks>
         [JsonProperty("protection_access_token")]
         public string ProtectionAccessToken { get; set; }
 
-        /// <summary>
-        /// Code from OP redirect URL
-        /// </summary>
-        /// <remarks><b>REQUIRED</b> Field.</remarks>
-        [JsonProperty("code")]
-        public string Code { get; set; }
-
-        /// <summary>
-        /// State from OP redirect URL
-        /// </summary>
-        /// <remarks><b>REQUIRED</b> Field.</remarks>
-        [JsonProperty("state")]
-        public string State { get; set; }
     }
 }

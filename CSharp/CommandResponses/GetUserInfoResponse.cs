@@ -30,54 +30,9 @@ namespace oxdCSharp.CommandResponses
         /// User Claims
         /// </summary>
         [JsonProperty("claims")]
-        public GetUserInfoUserClaims UserClaims { get; set; }
+        public Dictionary<string, List<string>> UserClaims = new Dictionary<string, List<string>>();
+
     }
 
-    /// <summary>
-    /// User Claims returned by Get User Info command
-    /// </summary>
-    public class GetUserInfoUserClaims
-    {
-        /// <summary>
-        /// Sub
-        /// </summary>
-        [JsonProperty("sub")]
-        public IList<string> Sub { get; set; }
 
-        /// <summary>
-        /// Name of the user
-        /// </summary>
-        [JsonProperty("name")]
-        public IList<string> Name { get; set; }
-
-        /// <summary>
-        /// Given Name of the user
-        /// </summary>
-        [JsonProperty("given_name")]
-        public IList<string> GivenName { get; set; }
-
-        /// <summary>
-        /// Family Name of the user
-        /// </summary>
-        [JsonProperty("family_name")]
-        public IList<string> FamilyName { get; set; }
-
-        /// <summary>
-        /// Preferred User Name of the user
-        /// </summary>
-        [JsonProperty("preferred_username")]
-        public IList<string> PreferredUsername { get; set; }
-
-        /// <summary>
-        /// Email of the user
-        /// </summary>
-        [JsonProperty("email")]
-        public IList<string> Email { get; set; }
-
-        /// <summary>
-        /// Picture of the user
-        /// </summary>
-        [JsonProperty("picture")]
-        public IList<string> Picture { get; set; }
-    }
 }

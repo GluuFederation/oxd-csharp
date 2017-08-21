@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace oxdCSharp.CommandParameters
+namespace oxdCSharp.UMA.CommandParameters
 {
     /// <summary>
     /// Params for UMA RS Check Access command
@@ -34,5 +34,14 @@ namespace oxdCSharp.CommandParameters
         /// <remarks><b>REQUIRED</b> Field.</remarks>
         [JsonProperty("http_method")]
         public string HttpMethod { get; set; }
+
+
+
+        /// <summary>
+        /// Protection Acccess Token.
+        /// </summary>
+        /// <remarks><b>REQUIRED</b> Field.</remarks>
+        [JsonProperty("protection_access_token")]
+        public string ProtectionAccessToken { get; set; }
     }
 }

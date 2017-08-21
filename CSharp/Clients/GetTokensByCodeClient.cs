@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;
-using CSharp.CommonClasses;
+using oxdCSharp.CommonClasses;
 using oxdCSharp.CommandParameters;
 using oxdCSharp.CommandResponses;
 using System.Diagnostics.Contracts;
@@ -77,20 +77,20 @@ namespace oxdCSharp.Clients
         /// <summary>
         /// Gets different type of tokens by Code using http
         /// </summary>
-        /// <param name="oxdtohttpurl">Oxd to http REST service URL</param>
+        /// <param name="oxdWebUrl">Oxd to http REST service URL</param>
         /// <param name="getTokensByCodeParams">Input params for Get Tokens by Code command</param>
         /// <returns></returns>
 
-        public GetTokensByCodeResponse GetTokensByCode(string oxdtohttpurl, GetTokensByCodeParams getTokensByCodeParams)
+        public GetTokensByCodeResponse GetTokensByCode(string oxdWebUrl, GetTokensByCodeParams getTokensByCodeParams)
         {
             Logger.Info("Verifying input parameters.");
-            if (string.IsNullOrEmpty(oxdtohttpurl))
+            if (string.IsNullOrEmpty(oxdWebUrl))
                 throw new ArgumentNullException("Oxd Rest Service URL should not be NULL.");
 
             try
             {
                 var cmdGetTokensByCode = new Command { CommandType = RestCommandType.get_tokens_by_code, CommandParams = getTokensByCodeParams };
-                var commandClient = new CommandClient(oxdtohttpurl);
+                var commandClient = new CommandClient(oxdWebUrl);
                 string commandResponse = commandClient.send(cmdGetTokensByCode);
                 var response = JsonConvert.DeserializeObject<GetTokensByCodeResponse>(commandResponse);
                 return response;

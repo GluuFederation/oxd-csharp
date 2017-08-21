@@ -1,10 +1,10 @@
-﻿using CSharp.CommonClasses;
+﻿using oxdCSharp.CommonClasses;
 using Newtonsoft.Json;
-using oxdCSharp.CommandParameters;
-using oxdCSharp.CommandResponses;
+using oxdCSharp.UMA.CommandParameters;
+using oxdCSharp.UMA.CommandResponses;
 using System;
 
-namespace oxdCSharp.Clients
+namespace oxdCSharp.UMA.Clients
 {
     /// <summary>
     /// A client class which is used to get RPT from UMA RP
@@ -61,5 +61,56 @@ namespace oxdCSharp.Clients
                 return null;
             }
         }
+
+
+
+
+
+
+        /// <summary>
+        /// Gets RPT token from UMA RP
+        /// </summary>
+        /// <param name="oxdweburl">oxdweburl</param>
+        /// <param name="getRptParams">Input params for Get RPT command</param>
+        /// <returns></returns>
+        public GetRPTResponse GetRPT(string oxdweburl, UmaRpGetRptParams getRptParams)
+        {
+
+            if (getRptParams == null)
+            {
+                throw new ArgumentNullException("The get RPT command params should not be NULL.");
+            }
+
+            if (string.IsNullOrEmpty(getRptParams.OxdId))
+            {
+                throw new MissingFieldException("Oxd ID is required for getting RPT from UMA RP.");
+            }
+
+            try
+            {
+
+                var commandClient = new CommandClient(oxdweburl);
+                return GetRPTResponse(getRptParams, commandClient);
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(NLog.LogLevel.Error, ex, "Exception when getting RPT token.");
+                return null;
+            }
+        }
+
+
+
+        private GetRPTResponse GetRPTResponse(UmaRpGetRptParams getRptParams,CommandClient oxdcommand)
+        {
+            var cmdGetRPT = new Command { CommandType = CommandType.uma_rp_get_rpt, CommandParams = getRptParams };            
+            string commandResponse = oxdcommand.send(cmdGetRPT);
+            var response = JsonConvert.DeserializeObject<GetRPTResponse>(commandResponse);
+            Logger.Info(string.Format("Got response status as {0} and RPT is {1}", response.Status, response.Data.Rpt));
+            return response;
+        }
+
+
+
     }
 }

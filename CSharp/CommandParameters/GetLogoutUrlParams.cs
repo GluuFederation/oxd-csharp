@@ -15,6 +15,14 @@ namespace oxdCSharp.CommandParameters
         public string OxdId { get; set; }
 
         /// <summary>
+        /// Protection Acccess Token.
+        /// </summary>
+        /// <remarks><b>REQUIRED</b> Field.</remarks>
+        [JsonProperty("protection_access_token")]
+        public string ProtectionAccessToken { get; set; }
+
+
+        /// <summary>
         /// ID Token Hint. OXD Server will use last used ID Token
         /// </summary>
         /// <remarks><b>OPTIONAL</b> Field.</remarks>

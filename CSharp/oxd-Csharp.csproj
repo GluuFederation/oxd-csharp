@@ -54,7 +54,8 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>GluuOxdCSharpLibKey.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -77,31 +78,37 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Clients\GetAccessTokenByRefreshTokenClient.cs" />
     <Compile Include="Clients\GetAuthorizationUrlClient.cs" />
-    <Compile Include="Clients\GetGATClient.cs" />
+    <Compile Include="Clients\GetClientTokenClient.cs" />
     <Compile Include="Clients\GetLogoutUriClient.cs" />
     <Compile Include="Clients\GetTokensByCodeClient.cs" />
     <Compile Include="Clients\GetUserInfoClient.cs" />
     <Compile Include="Clients\RegisterSiteClient.cs" />
+    <Compile Include="Clients\SetupClientClient.cs" />
+    <Compile Include="Clients\UmaRpGetClaimsGatheringUrlClient.cs" />
+    <Compile Include="CommandParameters\GetAccessTokenByRefreshTokenParams.cs" />
+    <Compile Include="CommandParameters\GetClientTokenParams.cs" />
+    <Compile Include="CommandParameters\SetupClientParams.cs" />
+    <Compile Include="CommandParameters\UmaRpGetClaimsGatheringUrlParams.cs" />
+    <Compile Include="CommandResponses\GetAccessTokenByRefreshTokenResponse.cs" />
+    <Compile Include="CommandResponses\UmaRpGetClaimsGatheringUrlResponse.cs" />
+    <Compile Include="CommandResponses\GetClientTokenResponse.cs" />
+    <Compile Include="CommandResponses\SetupClientResponse.cs" />
     <Compile Include="CommonClasses\RestClient.cs" />
     <Compile Include="Clients\UmaRsCheckAccessClient.cs" />
-    <Compile Include="Clients\UmaRpAuthorizeRptClient.cs" />
     <Compile Include="Clients\UmaRpGetRptClient.cs" />
     <Compile Include="Clients\UmaRsProtectClient.cs" />
     <Compile Include="Clients\UpdateSiteRegistrationClient.cs" />
-    <Compile Include="CommandParameters\GetGATParams.cs" />
-    <Compile Include="CommandParameters\UmaRpAuthorizeRptParams.cs" />
     <Compile Include="CommandParameters\UmaRpGetRptParams.cs" />
     <Compile Include="CommandParameters\UmaRsCheckAccessParams.cs" />
     <Compile Include="CommandParameters\UmaRsProtectParams.cs" />
-    <Compile Include="CommandResponses\GetGATResponse.cs" />
-    <Compile Include="CommandResponses\UmaRpAuthorizeRptResponse.cs" />
+    <Compile Include="CommandResponses\GetRPTResponse.cs" />
     <Compile Include="CommandResponses\UmaRsCheckAccessResponse.cs" />
     <Compile Include="CommandResponses\UmaRsProtectResponse.cs" />
     <Compile Include="CommonClasses\Command.cs" />
     <Compile Include="CommonClasses\CommandClient.cs" />
     <Compile Include="CommonClasses\CommandType.cs" />
-    <Compile Include="CommandParameters\GetAuthorizationCodeParams.cs" />
     <Compile Include="CommandParameters\GetAuthorizationUrlParams.cs" />
     <Compile Include="CommandParameters\GetLogoutUrlParams.cs" />
     <Compile Include="CommandParameters\GetTokensByCodeParams.cs" />
@@ -109,7 +116,6 @@
     <Compile Include="CommandParameters\RegisterSiteParams.cs" />
     <Compile Include="CommandParameters\UpdateSiteParams.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CommandResponses\GetAuthorizationCodeResponse.cs" />
     <Compile Include="CommandResponses\GetAuthorizationUrlResponse.cs" />
     <Compile Include="CommandResponses\GetTokensByCodeResponse.cs" />
     <Compile Include="CommandResponses\GetUserInfoResponse.cs" />
@@ -119,7 +125,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="GluuOxdCSharpLibKey.pfx" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

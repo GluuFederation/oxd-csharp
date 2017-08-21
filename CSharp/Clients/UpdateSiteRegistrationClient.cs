@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using CSharp.CommonClasses;
+using oxdCSharp.CommonClasses;
 using oxdCSharp.CommandParameters;
 using oxdCSharp.CommandResponses;
 using System.Configuration;
@@ -69,21 +69,21 @@ namespace oxdCSharp.Clients
         /// <summary>
         /// Updates already registered site with input params via http
         /// </summary>
-        /// <param name="oxdtohttpurl">Oxd to http REST service URL</param>
+        /// <param name="oxdWebUrl">Oxd Web REST service URL</param>
         /// <param name="registerSiteParams">Input parameters for Register Site via http</param>
         /// <returns></returns>
 
-        public UpdateSiteResponse UpdateSiteRegistration(string oxdtohttpurl, UpdateSiteParams registerSiteParams)
+        public UpdateSiteResponse UpdateSiteRegistration(string oxdWebUrl, UpdateSiteParams registerSiteParams)
         {
             Logger.Info("Verifying input parameters.");
-            if (string.IsNullOrEmpty(oxdtohttpurl))
+            if (string.IsNullOrEmpty(oxdWebUrl))
                 throw new ArgumentNullException("Oxd Rest Service URL should not be NULL.");
 
 
             try
             {
                 var cmdUpdateSite = new Command { CommandType = RestCommandType.update_site_registration, CommandParams = registerSiteParams };
-                var commandClient = new CommandClient(oxdtohttpurl);
+                var commandClient = new CommandClient(oxdWebUrl);
                 string commandResponse = commandClient.send(cmdUpdateSite);
                 var response = JsonConvert.DeserializeObject<UpdateSiteResponse>(commandResponse);
                 return response;

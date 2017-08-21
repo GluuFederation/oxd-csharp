@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace oxdCSharp.CommandParameters
+namespace oxdCSharp.UMA.CommandParameters
 {
     /// <summary>
     /// Params for UMA RS Protect command
@@ -21,6 +21,13 @@ namespace oxdCSharp.CommandParameters
         /// <remarks><b>REQUIRED</b> Field.</remarks>
         [JsonProperty("resources")]
         public IList<ProtectResource> ProtectResources { get; set; }
+
+        /// <summary>
+        /// Protection Acccess Token.
+        /// </summary>
+        /// <remarks><b>REQUIRED</b> Field.</remarks>
+        [JsonProperty("protection_access_token")]
+        public string ProtectionAccessToken { get; set; }
     }
 
     /// <summary>
@@ -68,5 +75,8 @@ namespace oxdCSharp.CommandParameters
         /// <remarks>Optional Field.</remarks>
         [JsonProperty("ticketScopes", NullValueHandling = NullValueHandling.Ignore)]
         public IList<string> TicketScopes { get; set; }
+
+
+        
     }
 }

@@ -94,11 +94,11 @@ namespace oxdCSharp.CommandParameters
         public IList<string> ClientRequestUris { get; set; }
 
         /// <summary>
-        /// Client Logout URIs
+        /// Client Front Channel Logout URIs
         /// </summary>
         /// <remarks><b>OPTIONAL</b> Field.</remarks>
-        [JsonProperty("client_logout_uris")]
-        public IList<string> ClientLogoutUris { get; set; }
+        [JsonProperty("client_frontchannel_logout_uris")]
+        public IList<string> ClientFrontChannelLogoutUris { get; set; }
 
         /// <summary>
         /// Client Sector Identifier URIs
@@ -144,5 +144,23 @@ namespace oxdCSharp.CommandParameters
         /// <remarks><b>OPTIONAL</b> Field.</remarks>
         [JsonProperty("client_secret")]
         public string ClientSecret { get; set; }
+
+        /// <summary>
+        /// oxd_rp_programming_language.
+        /// Programming language: For example Csharp
+        /// </summary>
+        /// <remarks><b>OPTIONAL</b> Field.</remarks>
+        [JsonProperty("oxd_rp_programming_language")]
+        internal string ProgrammingLanguage { get; set; }
+
+
+        /// <summary>
+        /// Claims Redirect URI.
+        /// Must be used together with ClientId.
+        /// </summary>
+        /// <remarks><b>OPTIONAL</b> Field.</remarks>
+        [JsonProperty("claims_redirect_uri")]
+        public string ClaimsRedirecturi { get; set; }
+
     }
 }

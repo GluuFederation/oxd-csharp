@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;
-using CSharp.CommonClasses;
+using oxdCSharp.CommonClasses;
 using oxdCSharp.CommandParameters;
 using oxdCSharp.CommandResponses;
 using System.Diagnostics.Contracts;
@@ -59,7 +59,7 @@ namespace oxdCSharp.Clients
                 string commandResponse = commandClient.send(cmdGetUserInfo);
 
                 var response = JsonConvert.DeserializeObject<GetUserInfoResponse>(commandResponse);
-                Logger.Info(string.Format("Got response status as {0} and name is {1}", response.Status, response.Data.UserClaims.Name.First()));
+               Logger.Info(string.Format("Got response status as {0} and name is {1}", response.Status, response.Data.UserClaims["name"].FirstOrDefault()));
 
                 return response;
             }
@@ -75,21 +75,21 @@ namespace oxdCSharp.Clients
         /// <summary>
         ///Gets User Info by access token using HTTP 
         /// </summary>
-        /// <param name="oxdtohttpurl">Oxd to http REST service URL</param>
+        /// <param name="oxdWebUrl">Oxd Web REST service URL</param>
         /// <param name="getUserInfoParams">Input params for Get User Info command via http</param>
         /// <returns></returns>
 
-        public GetUserInfoResponse GetUserInfo(string oxdtohttpurl, GetUserInfoParams getUserInfoParams)
+        public GetUserInfoResponse GetUserInfo(string oxdWebUrl, GetUserInfoParams getUserInfoParams)
         {
             Logger.Info("Verifying input parameters.");
-            if (string.IsNullOrEmpty(oxdtohttpurl))
+            if (string.IsNullOrEmpty(oxdWebUrl))
                 throw new ArgumentNullException("Oxd Rest Service URL should not be NULL.");
 
 
             try
             {
                 var cmdGetUserInfo = new Command { CommandType = RestCommandType.get_user_info, CommandParams = getUserInfoParams };
-                var commandClient = new CommandClient(oxdtohttpurl);
+                var commandClient = new CommandClient(oxdWebUrl);
                 string commandResponse = commandClient.send(cmdGetUserInfo);
                 var response = JsonConvert.DeserializeObject<GetUserInfoResponse>(commandResponse);
                 return response;

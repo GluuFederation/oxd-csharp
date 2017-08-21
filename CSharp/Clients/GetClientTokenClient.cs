@@ -1,17 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
 using Newtonsoft.Json;
-using System;
 using oxdCSharp.CommonClasses;
 using oxdCSharp.CommandParameters;
 using oxdCSharp.CommandResponses;
-using System.Diagnostics.Contracts;
 
 namespace oxdCSharp.Clients
 {
-    /// <summary>
-    /// A client class which is used to Get Authorization URL using Oxd Server
-    /// </summary>
-    public class GetAuthorizationUrlClient
+   public class GetClientTokenClient
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -20,9 +15,9 @@ namespace oxdCSharp.Clients
         /// </summary>
         /// <param name="host">Oxd Host</param>
         /// <param name="port">Oxd Port</param>
-        /// <param name="getAuthUrlParams">Input params for Get Authorization URL command</param>
-        /// <returns></returns>
-        public GetAuthorizationUrlResponse GetAuthorizationURL(string host, int port, GetAuthorizationUrlParams getAuthUrlParams)
+        /// <param name="getClientTokenParams">Input params to Get  Client Acccess Token  command</param>
+        /// <returns>Client Token</returns>
+        public GetClientTokenResponse GetClientToken(string host, int port, GetClientTokenParams getClientTokenParams)
         {
             Logger.Info("Verifying input parameters.");
             if (string.IsNullOrEmpty(host))
@@ -35,12 +30,12 @@ namespace oxdCSharp.Clients
                 throw new ArgumentNullException("Oxd Port should be a valid port number.");
             }
 
-            if (getAuthUrlParams == null)
+            if (getClientTokenParams == null)
             {
                 throw new ArgumentNullException("The get auth url command params should not be NULL.");
             }
 
-            if (string.IsNullOrEmpty(getAuthUrlParams.OxdId))
+            if (string.IsNullOrEmpty(getClientTokenParams.OxdId))
             {
                 throw new MissingFieldException("Oxd ID is required for getting auth url of site.");
             }
@@ -48,12 +43,12 @@ namespace oxdCSharp.Clients
             try
             {
                 Logger.Info("Preparing and sending command.");
-                var cmdGetAuthUrl = new Command { CommandType = CommandType.get_authorization_url, CommandParams = getAuthUrlParams };
+                var cmdGetClientAccessToken = new Command { CommandType = CommandType.get_client_token, CommandParams = getClientTokenParams };
                 var commandClient = new CommandClient(host, port);
-                string commandResponse = commandClient.send(cmdGetAuthUrl);
+                string commandResponse = commandClient.send(cmdGetClientAccessToken);
 
-                var response = JsonConvert.DeserializeObject<GetAuthorizationUrlResponse>(commandResponse);
-                Logger.Info(string.Format("Got response status as {0} and auth url is {1}", response.Status, response.Data.AuthorizationUrl));
+                var response = JsonConvert.DeserializeObject<GetClientTokenResponse>(commandResponse);
+                Logger.Info(string.Format("Got response status as {0} and auth url is {1}", response.Status, response.Data.accessToken));
 
                 return response;
             }
@@ -65,24 +60,24 @@ namespace oxdCSharp.Clients
         }
 
         /// <summary>
-        /// Gets Authorization URL via http using the params 
+        /// Gets Client Access Token
         /// </summary>
-        /// <param name="oxdWebUrl">Oxd to http REST service URL</param>
-        /// <param name="getAuthUrlParams">Input params for Get Authorization URL command via http</param>
-        /// <returns></returns>
-
-        public GetAuthorizationUrlResponse GetAuthorizationURL(string oxdWebUrl, GetAuthorizationUrlParams getAuthUrlParams)
+        /// <param name="oxdtohttpurl">Oxd to http REST service URL</param>
+        /// <param name="getClientTokenParams">Input params to Get  Client Acccess Token  command</param>
+        /// <returns>Client Token</returns>
+       
+        public GetClientTokenResponse GetClientToken(string oxdtohttpurl, GetClientTokenParams getClientTokenParams)
         {
             Logger.Info("Verifying input parameters.");
-            if (string.IsNullOrEmpty(oxdWebUrl))
+            if (string.IsNullOrEmpty(oxdtohttpurl))
                 throw new ArgumentNullException("Oxd Rest Service URL should not be NULL.");
 
             try
             {
-                var cmdGetAuthUrl = new Command { CommandType = RestCommandType.get_authorization_url, CommandParams = getAuthUrlParams };
-                var commandClient = new CommandClient(oxdWebUrl);
-                string commandResponse = commandClient.send(cmdGetAuthUrl);
-                var response = JsonConvert.DeserializeObject<GetAuthorizationUrlResponse>(commandResponse);
+                var cmdGetClientAccessToken = new Command { CommandType = RestCommandType.get_client_token, CommandParams = getClientTokenParams };
+                var commandClient = new CommandClient(oxdtohttpurl);
+                string commandResponse = commandClient.send(cmdGetClientAccessToken);
+                var response = JsonConvert.DeserializeObject<GetClientTokenResponse>(commandResponse);
                 return response;
             }
             catch (Exception ex)
