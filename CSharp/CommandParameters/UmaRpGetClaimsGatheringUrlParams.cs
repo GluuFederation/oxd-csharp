@@ -20,7 +20,7 @@ namespace oxdCSharp.UMA.CommandParameters
         /// </summary>
         /// <remarks><b>REQUIRED</b> Field.</remarks>
         [JsonProperty("ticket")]
-        public string ticket { get; set; }
+        public string Ticket { get; set; }
 
         /// <summary>
         /// ClaimsRedirectURI

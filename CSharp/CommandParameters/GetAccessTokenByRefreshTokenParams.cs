@@ -35,5 +35,12 @@ namespace oxdCSharp.CommandParameters
         /// <remarks><b>Optional</b> Field.</remarks>
         [JsonProperty("scope")]
         public List<string> scope { get; set; }
+
+        /// <summary>
+        /// Protection Acccess Token.
+        /// </summary>
+        /// <remarks><b>REQUIRED</b> Field.</remarks>
+        [JsonProperty("protection_access_token")]
+        public string ProtectionAccessToken { get; set; }
     }
 }

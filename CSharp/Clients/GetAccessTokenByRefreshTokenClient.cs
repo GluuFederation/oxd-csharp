@@ -17,7 +17,7 @@ namespace oxdCSharp.Clients
         /// <param name="port">Oxd Port</param>
         /// <param name="getAccessTokenByRefreshTokenParams">Input params for Get Access Token By Refresh Token command</param>
         /// <returns></returns>
-        public GetAccessTokenByRefreshTokenResponse GetClaimsGatheringUrl(string host, int port, GetAccessTokenByRefreshTokenParams getAccessTokenByRefreshTokenParams)
+        public GetAccessTokenByRefreshTokenResponse GetAccessTokenByRefreshToken(string host, int port, GetAccessTokenByRefreshTokenParams getAccessTokenByRefreshTokenParams)
         {
             Logger.Info("Verifying input parameters.");
             if (string.IsNullOrEmpty(host))
@@ -67,7 +67,7 @@ namespace oxdCSharp.Clients
         /// <param name="oxdweburl">Oxd Web url</param>
         /// <param name="getAccessTokenByRefreshTokenParams">Input params for Get Access Token By Refresh Token command</param>
         /// <returns></returns>
-        public GetAccessTokenByRefreshTokenResponse GetClaimsGatheringUrl(string oxdweburl, GetAccessTokenByRefreshTokenParams getAccessTokenByRefreshTokenParams)
+        public GetAccessTokenByRefreshTokenResponse GetAccessTokenByRefreshToken(string oxdweburl, GetAccessTokenByRefreshTokenParams getAccessTokenByRefreshTokenParams)
         {
             Logger.Info("Verifying input parameters.");
 
