@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
+
+
 namespace GluuDemoWebsite.Models
 {
-    public class OxdModel
+    public class OxdSetting 
     {
         [JsonProperty("oxd_host")]
         public string OxdHost { get; set; }
@@ -11,17 +13,11 @@ namespace GluuDemoWebsite.Models
         [JsonProperty("oxd_host_port")]
         public int OxdPort { get; set; }
 
-        [JsonProperty("redirectUrl")]
-        public string RedirectUrl { get; set; }        
-
         [JsonProperty("oxd_id")]
         public string OxdId { get; set; }
 
         [JsonProperty("post_logout_redirect_uri")]
         public string PostLogoutRedirectUrl { get; set; }
-
-        [JsonProperty("oxdEmail")]
-        public string OxdEmail { get; set; }
 
         [JsonProperty("application_type")]
         public string ApplicationType { get; set; }
@@ -36,26 +32,15 @@ namespace GluuDemoWebsite.Models
         public IList<string> Scope { get; set; }
 
         [JsonProperty("acr_values")]
-        public IList<string> AcrValues { get; set; } 
+        public string AcrValues { get; set; }
 
-         [JsonProperty("authorization_redirect_uri")]
+        [JsonProperty("authorization_redirect_uri")]
         public string AuthUrl { get; set; }
 
-        [JsonProperty("authCode")]
-        public string AuthCode { get; set; }
 
-        [JsonProperty("authState")]
-        public string AuthState { get; set; }
-
-        [JsonProperty("accessToken")]
-        public string AccessToken { get; set; }
-
-        [JsonProperty("refreshToken")]
-        public string RefreshToken { get; set; }
-
-        [JsonProperty("ophost")]
+        [JsonProperty("op_host")]
         public string OpHost { get; set; }
-        
+
         [JsonProperty("connection_type")]
         public string ConnectionType { get; set; }
 
@@ -69,12 +54,10 @@ namespace GluuDemoWebsite.Models
         public string ClientId { get; set; }
 
         [JsonProperty("client_secret")]
-        public string ClientSecret { get; set; }  
+        public string ClientSecret { get; set; }
 
         [JsonProperty("dynamic_registration")]
-        public string DynamicRegistration { get; set; }
-
-        
+        public bool DynamicRegistration { get; set; }
 
     }
 }

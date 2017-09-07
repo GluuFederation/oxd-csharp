@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewBag.Title = "UMA";
+}
+
+<script>
+    $(document).ready(function () {
+        
+        jQuery('#btnProtect').click(function (event) {
+            jQuery.post("/Home/ProtectResources",
+                {  },
+                function (data) {
+                    jQuery("#divResult").html("UMA RS Protect: <br/>" + data.Response);
+                }
+            );
+        });
+
+        jQuery('#btnCheckAccess').click(function (event) {
+            jQuery.post("/Home/CheckAccess",
+                {  },
+                function (data) {
+                    jQuery("#divResult").html("UMA RS Check Access: <br/>" + data.Response);
+                }
+            );
+        });
+
+        jQuery('#btnGetRpt').click(function (event) {
+            jQuery.post("/Home/ObtainRpt",
+                { },
+                function (data) {
+                    jQuery("#divResult").html("UMA RP Get RPT: <br/>" + data.Response);
+                }
+            );
+        });
+
+        jQuery('#btnGetClaimsGatheringUrl').click(function (event) {
+            jQuery.post("/Home/GetClaimsGatheringUrl",
+                { },
+                function (data) {
+                    jQuery("#divResult").html("UMA RP Get Claims Gathering URL: <br/>" + data.Response);
+                }
+            );
+        });
+
+    });
+</script>
+
+<div class="container">
+<h1>oxd C# Application - UMA</h1>
+    <div class="row">
+        <div class="col-md-4">
+            <ul class="list-group">
+                <li class="list-group-item"><input type="button" id="btnProtect" name="btnProtect" class="btn-link" value="UMA RS Protect" /></li>
+                <li class="list-group-item"><input type="button" id="btnCheckAccess" name="btnCheckAccess" class="btn-link" value="UMA RS Check Access" /></li>
+                <li class="list-group-item"><input type="button" id="btnGetRpt" name="btnGetRpt" class="btn-link" value="UMA RP Get RPT" /></li>
+                <li class="list-group-item"><input type="button" id="btnGetClaimsGatheringUrl" name="btnGetClaimsGatheringUrl" class="btn-link" value="UMA RP Get Claims-Gathering URL" /></li>
+            </ul>
+        </div>
+    </div>
+    <div id="divResult"></div>
+</div>

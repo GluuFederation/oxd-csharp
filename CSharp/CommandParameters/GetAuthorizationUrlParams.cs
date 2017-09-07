@@ -6,8 +6,19 @@ namespace oxdCSharp.CommandParameters
     /// <summary>
     /// Params for Get Authorization URL Command
     /// </summary>
+    /// 
+
+
+   
     public class GetAuthorizationUrlParams
     {
+
+    
+        [JsonProperty("custom_parameters")]
+        public Dictionary<string,string> custom_parameters = new Dictionary<string, string>();
+      
+
+
         /// <summary>
         /// Registered OXD Id.
         /// </summary>
@@ -48,5 +59,11 @@ namespace oxdCSharp.CommandParameters
         /// <remarks><b>OPTIONAL</b> Field.</remarks>
         [JsonProperty("prompt")]
         public string Prompt { get; set; }
+
+
+        
+      
     }
+   
+
 }

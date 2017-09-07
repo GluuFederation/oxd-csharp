@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewBag.Title = "UserInfo";
+}
+
+<script>
+    $(document).ready(function () {
+
+
+        jQuery('#btnLogout').click(function (event) {
+            jQuery.post("/Home/Logout",
+                    {},
+                    function (data) {
+                        window.location.href = data.LogoutUri;
+                    }
+                );
+        });
+
+    });
+</script>
+
+<div class="jumbotron"><h1>Gluu oxd C# Application</h1></div>
+<h2>User Info</h2>
+<div class="col-md-12" align="right">
+    <p><input type="button" id="btnLogout" name="btnLogout" class="btn-link" value="Logout" /></p>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <form name="gluu-form" action="" method="get">
+            <div class="form-group">
+                <label for="user_name">Name</label>
+                <input type="text" class="form-control" id="user_name" name="user_name" placeholder="Name" value="@Session["userName"]" disabled="disabled" />
+            </div>
+            <div class="form-group">
+                <label for="user_mail">Email</label>
+                <input type="email" class="form-control" id="user_mail" name="user_mail" placeholder="Email" value="@Session["userEmail"]" disabled="disabled" />
+            </div>
+
+        </form>
+    </div>
+</div>

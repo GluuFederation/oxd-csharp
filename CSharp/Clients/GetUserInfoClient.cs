@@ -59,7 +59,7 @@ namespace oxdCSharp.Clients
                 string commandResponse = commandClient.send(cmdGetUserInfo);
 
                 var response = JsonConvert.DeserializeObject<GetUserInfoResponse>(commandResponse);
-               Logger.Info(string.Format("Got response status as {0} and name is {1}", response.Status, response.Data.UserClaims["name"].FirstOrDefault()));
+                Logger.Info(string.Format("Got response status as {0} and name is {1}", response.Status, response.Data.UserClaims["name"].FirstOrDefault()));
 
                 return response;
             }

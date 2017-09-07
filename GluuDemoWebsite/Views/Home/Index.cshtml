@@ -1,439 +1,67 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿
+@{
+    ViewBag.Title = "Login";
 }
 
-<script type="text/javascript">
 
-    jQuery(function () {
-        
-        jQuery('#btnRegister').click(function (event) {
-            //event.preventDefault();
+<script>
+    $(document).ready(function () {
+        jQuery("#formLogin").hide();
 
-            var oxdHost = jQuery("#oxdHost");
-            var oxdPort = jQuery("#oxdPort")
-            var redirectUrl = jQuery("#authRedirectUrl");
-            var oxdId = jQuery("#oxdId")
-
-           
-
-            if (redirectUrl.val() === "") {
-                redirectUrl.notify("Redirect URL is must", "error");
-                return;
+        $(".rbLoginType").change(function () {
+            switch ($(this).val()) {
+                case "openid":
+                    var formLogin = jQuery("#formLogin");
+                    var openIDLogin = jQuery("#openIDLogin");
+                    openIDLogin.css("display", "block");
+                    formLogin.css("display", "none");
+                    break;
+                case "loginform":
+                    var formLogin = jQuery("#formLogin");
+                    var openIDLogin = jQuery("#openIDLogin");
+                    formLogin.css("display", "block");
+                    openIDLogin.css("display", "none");
+                    break;
             }
+        });
 
-            jQuery.post("/Home/Register",
-                { oxdHost: oxdHost.val(), oxdPort: oxdPort.val(), redirectUrl: redirectUrl.val(), oxdId: oxdId.val() },
+
+        jQuery('#OpenIDLogin').click(function (event) {
+            jQuery.post("/Home/Index",
+                {  },
                 function (data) {
-                    jQuery("#oxdId").val(data.oxdId);
-                    jQuery("#oxdId").notify("Site registration is successful.", "success");
-
-                    jQuery("#email").prop("disabled", false);
-                    jQuery("#postLogoutRedirectUrl").prop("disabled", false);
-                    jQuery("#btnUpdate").prop("disabled", false);
+                    window.location.href = data.authUrl;
                 }
             );
         });
 
-        jQuery('#btnUpdate').click(function (event) {
-            //event.preventDefault();
-
-            var oxdHost = jQuery("#oxdHost");
-            var oxdPort = jQuery("#oxdPort")
-            var redirectUrl = jQuery("#authRedirectUrl");
-            var oxdId = jQuery("#oxdId");
-            var email = jQuery("#email");
-            var postLogoutRedirectUrl = jQuery("#postLogoutRedirectUrl");
-            
-            if (oxdId.val() === "") {
-                jQuery("#btnRegister").notify("OxdId is empty. It seems there is not registration... Register first", "error");
-                return;
-            }
-
-            jQuery.post("/Home/Update",
-                { oxdHost: oxdHost.val(), oxdPort: oxdPort.val(), redirectUrl: redirectUrl.val(), oxdId: oxdId.val(), oxdEmail: email.val(), postLogoutRedirectUrl: postLogoutRedirectUrl.val() },
-                function (data) {
-                    //jQuery("#oxdId").val(data.oxdId);
-                    if (data.status === "ok")
-                    {
-                        jQuery("#oxdId").notify("Site update is successful.", "success");
-
-                        jQuery("#btnAuthUrl").prop("disabled", false);
-                    }
-                    else
-                    {
-                        jQuery("#btnUpdate").notify("Site update is failed.", "error");
-                    }
-                }
-            );
-        });
-
-        jQuery('#btnAuthUrl').click(function (event) {
-            //event.preventDefault();
-
-            var oxdHost = jQuery("#oxdHost");
-            var oxdPort = jQuery("#oxdPort")
-            var redirectUrl = jQuery("#authRedirectUrl");
-            var oxdId = jQuery("#oxdId");
-
-            if (oxdId.val() === "") {
-                jQuery("#btnAuthUrl").notify("OxdId is empty. It seems there is not registration... Register first", "error");
-                return;
-            }
-
-            jQuery.post("/Home/AuthUrl",
-                { oxdHost: oxdHost.val(), oxdPort: oxdPort.val(), redirectUrl: redirectUrl.val(), oxdId: oxdId.val() },
-                function (data) {
-                    jQuery("#authUrl").val(data.authUrl);
-                    jQuery("#authUrl").notify("Got Auth Url.", "success");
-
-                    jQuery("#btnCode").prop("disabled", false);
-                }
-            );
-        });
-
-        jQuery('#btnCode').click(function (event) {
-            //event.preventDefault();
-
-            jQuery("#authCode").prop("disabled", false);
-            jQuery("#authState").prop("disabled", false);
-
-            var w = 450;
-            var h = 450;
-            var url = jQuery("#authUrl").val();
-            
-            var left = (screen.width/2)-(w/2);
-            var top = (screen.height / 2) - (h / 2);
-            window.location.href = url;
-            
-            jQuery("#btnToken").prop("disabled", false);
-        });
-
-        jQuery('#btnToken').click(function (event) {
-            //event.preventDefault();
-
-            var oxdHost = jQuery("#oxdHost");
-            var oxdPort = jQuery("#oxdPort");
-            var oxdId = jQuery("#oxdId");
-            var authCode = jQuery("#authCode");
-            var authState = jQuery("#authState");            
-
-
-            if (oxdId.val() === "") {
-                oxdId.notify("Site registration is must. Register the site first.", "error");
-                return;
-            }
-
-            if (authCode.val() === "") {
-                authCode.notify("Get the auth code by using above section", "error");
-                return;
-            }
-
-            if (authState.val() === "") {
-                authState.notify("Get the auth state by using above section", "error");
-                return;
-            }
-
-            jQuery.post("/Home/GetTokens",
-                { oxdHost: oxdHost.val(), oxdPort: oxdPort.val(), oxdId: oxdId.val(), authCode: authCode.val(), authState: authState.val() },
-                function (data) {
-                    jQuery("#accessToken").val(data.accessToken);
-                    jQuery("#refreshToken").val(data.refreshToken);
-                    jQuery("#accessToken").notify("Token retrival is successful.", "success");
-
-                    jQuery("#btnUser").prop("disabled", false);
-                }
-            );
-        });
-
-        jQuery('#btnUser').click(function (event) {
-            //event.preventDefault();
-
-            var oxdHost = jQuery("#oxdHost");
-            var oxdPort = jQuery("#oxdPort")
-            var oxdId = jQuery("#oxdId")
-            var accessToken = jQuery("#accessToken")
-
-
-            if (oxdId.val() === "") {
-                oxdId.notify("Site registration is must. Register the site first.", "error");
-                return;
-            }
-
-            if (accessToken.val() === "") {
-                accessToken.notify("Get the tokens first", "error");
-                return;
-            }
-
-            jQuery.post("/Home/GetUserInfo",
-                { oxdHost: oxdHost.val(), oxdPort: oxdPort.val(), oxdId: oxdId.val(), accessToken: accessToken.val() },
-                function (data) {
-                    
-                    jQuery("#userName").val(data.userName);
-                    jQuery("#userEmail").val(data.userEmail);
-                    jQuery("#userName").notify("User information is successful.", "success");
-
-                    //jQuery("#btnUser").prop("disabled", false);
-                }
-            );
-        });
-
-        jQuery('#btnUmaFull').click(function (event) {
-            //event.preventDefault();
-
-            var oxdHost = jQuery("#oxdHost");
-            var oxdPort = jQuery("#oxdPort");
-            var oxdId = jQuery("#oxdId");
-
-          
-
-            if (oxdId.val() === "") {
-                oxdId.notify("Site registration is must. Register the site first.", "error");
-                return;
-            }
-
-            jQuery.post("/Home/FullUmaTest",
-                { oxdHost: oxdHost.val(), oxdPort: oxdPort.val(), oxdId: oxdId.val() },
-                function (data) {
-                    alert("The UMA full test is executed with status : " + data.fullTestStatus);
-                }
-            );
-        });
-
-        jQuery('#btnGetGat').click(function (event) {
-            //event.preventDefault();
-
-            var oxdHost = jQuery("#oxdHost");
-            var oxdPort = jQuery("#oxdPort");
-            var oxdId = jQuery("#oxdId");
-
-
-            if (oxdId.val() === "") {
-                oxdId.notify("Site registration is must. Register the site first.", "error");
-                return;
-            }
-
-            jQuery.post("/Home/GetGat",
-                { oxdHost: oxdHost.val(), oxdPort: oxdPort.val(), oxdId: oxdId.val()},
-                function (data) {
-
-                    jQuery("#txtGat").val(data.getGatResponse);
-                    jQuery("#btnLogout").notify("Getting GAT is successful.", "success");
-                }
-            );
-        });
-
-        jQuery('#btnLogout').click(function (event) {
-           
-            var oxdHost = jQuery("#oxdHost");
-            var oxdPort = jQuery("#oxdPort")
-            var oxdId = jQuery("#oxdId")
-
-          
-
-            if (oxdId.val() === "") {
-                oxdId.notify("Site registration is must. Register the site first.", "error");
-                return;
-            }
-
-            jQuery.post("/Home/GetLogoutUri",
-                { oxdHost: oxdHost.val(), oxdPort: oxdPort.val(), oxdId: oxdId.val() },
-                function (data) {                    
-                    jQuery("#logoutUri").val(data.logoutUri);
-                    window.location.href = data.logoutUri;
-                }
-            );
-        });
     });
-
 </script>
 
-<div class="jumbotron">
-    <h1>Gluu OXD C# Library Demo web application</h1>
-    <p class="lead">This ASP .Net MVC application is used to demo the Gluu's OXD Server C# Library APIs.</p>
-</div>
+<div class="jumbotron"><h1>Gluu oxd C# Application</h1></div>
 
-<div class="row">
+    <form name="gluu-form" action="" method="post">
+        <br><br>
+        <div runat="server" id="formLogin" style="display:none" class="jumbotron">
+            <div class="form-group">
+                <label for="username">User Name</label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="Enter UserName" />
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="text" class="form-control" id="password" name="password" placeholder="Enter Password" />
+            </div>
+            <input type="button" name="Login" value="Login" class="btn btn-info">
 
-    <div class="col-md-12">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"></h3>
-            </div>
-            <div class="panel-body">
-                <form class="form-horizontal">
- 
-                    <div class="form-group">
-                        <label for="oxdId" class="col-sm-2 control-label">OXD Id</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="oxdId" placeholder="Oxd Id" value="@Session["oxdId"]" disabled="disabled" >
-                        </div>
-                    </div>
-                </form>
-            </div>
         </div>
-    </div>
-        
-</div>
+        <div runat="server" id="openIDLogin">
+            <input type="button" name="OpenIDLogin" value="Login by OpenID Provider" id="OpenIDLogin" class="btn btn-success">
+            <br><br>
+        </div>
+        <input type="radio" name="loginMode" id="openid" value="openid" checked class="rbLoginType"> Login by OpenID Provider<br>
+        <input type="radio" name="loginMode" id="loginform" value="loginform" class="rbLoginType"> Show Login form
 
-<div class="row">
-    <div class="col-md-12">
-        <h2>Register Site</h2>
-        <form>
-            <div class="form-group">
-                <label for="authRedirectUrl" class="col-sm-2 control-label">Redirect URL</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="authRedirectUrl" placeholder="Redirect URL">
-                </div>
-            </div>
-            <div class="form-group">
-                <input class="btn btn-primary" type="button" value="Register" id="btnRegister">
-            </div>
-        </form>
-    </div>
+    </form><br /><br /><br /><br /><br />
+    <a href="~/Home/Setting" class="btn btn-default">Settings</a>
 
-    <div class="col-md-12">
-        <h2>Update Site</h2>
-        <form>
-            <div class="form-group">
-                <label for="email" class="col-sm-2 control-label">Email</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="email" placeholder="Email address">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="postLogoutRedirectUrl" class="col-sm-2 control-label">Post Logout Redirect Url</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="postLogoutRedirectUrl" placeholder="url" >
-                </div>
-            </div>
 
-            <div class="form-group">
-                <input class="btn btn-default" type="button" value="Update" id="btnUpdate">
-            </div>
-        </form>
-    </div>
-
-    <div class="col-md-12">
-        <h2>Get Auth URL</h2>
-        <form>
-            <div class="form-group">
-                <label for="authUrl" class="col-sm-2 control-label">Auth URL</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="authUrl" placeholder="Authorization URL" disabled="disabled">
-                </div>
-            </div>
-            <div class="form-group">
-                <input class="btn btn-default" type="button" value="Get Auth Url" id="btnAuthUrl">
-            </div>
-        </form>
-    </div>
-
-    <div class="col-md-12">
-        <h2>Getting Code and State</h2>
-        <form>
-            <div class="form-group">
-                <label for="authCode" class="col-sm-2 control-label">Auth Code</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="authCode" placeholder="Auth Code" value=@Request.Params["code"] disabled="disabled">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="authState" class="col-sm-2 control-label">Auth State</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="authState" placeholder="Auth State" value=@Request.Params["state"]  disabled="disabled">
-                </div>
-            </div>
-            <div class="form-group">
-                <input class="btn btn-default" type="button" value="Get Code and State" id="btnCode" disabled="disabled">
-            </div>
-        </form>
-    </div>
-
-    <div class="col-md-12">
-        <h2>Getting Tokens</h2>
-        <form>
-            <div class="form-group">
-                <label for="accessToken" class="col-sm-2 control-label">Access Token</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="accessToken" placeholder="Access Token" disabled="disabled">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="refreshToken" class="col-sm-2 control-label">Refresh Token</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="refreshToken" placeholder="Refresh Token" disabled="disabled">
-                </div>
-            </div>
-            <div class="form-group">
-                <input class="btn btn-default" type="button" value="Get Tokens" id="btnToken" >
-            </div>
-        </form>
-    </div>
-
-    <div class="col-md-12">
-        <h2>Getting User Info</h2>
-        <form>
-            <div class="form-group">
-                <input class="btn btn-default" type="button" value="Get UserInfo" id="btnUser" disabled="disabled">
-            </div>
-            <div class="form-group">
-                <label for="userName" class="col-sm-2 control-label">User Name</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="userName" placeholder="user name" disabled="disabled">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="userEmail" class="col-sm-2 control-label">User Email</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="userEmail" placeholder="user email" disabled="disabled">
-                </div>
-            </div>
-        </form>
-    </div>
-
-    <div class="col-md-12">
-        <h2>UMA Section</h2>
-        <form>
-            <div class="form-group">
-                <input class="btn btn-default" type="button" value="Full UMA Test" id="btnUmaFull">
-            </div>
-            @*<div class="form-group">
-                <label for="txtGat" class="col-sm-2 control-label">GAT Token</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="txtGat" disabled="disabled">
-                </div>
-            </div>*@
-        </form>
-    </div>
-
-    <div class="col-md-12">
-        <h2>GAT Section</h2>
-        <form>
-            <div class="form-group">
-                <input class="btn btn-default" type="button" value="Get GAT" id="btnGetGat">
-            </div>
-            <div class="form-group">
-                <label for="txtGat" class="col-sm-2 control-label">GAT Token</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="txtGat" disabled="disabled">
-                </div>
-            </div>
-        </form>
-    </div>
-
-    <div class="col-md-12">
-        <h2>Getting Logout URI</h2>
-        <form>
-            <div class="form-group">
-                <input class="btn btn-default" type="button" value="Get Logout Uri" id="btnLogout">
-            </div>
-            <div class="form-group">
-                <label for="logoutUri" class="col-sm-2 control-label">Logout URI</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="logoutUri" placeholder="logout uri" disabled="disabled">
-                </div>
-            </div>
-        </form>
-    </div>
-
-</div>
