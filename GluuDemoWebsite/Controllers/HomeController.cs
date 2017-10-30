@@ -423,11 +423,9 @@ namespace GluuDemoWebsite.Controllers
             }
 
 
-            //Process response
-
-          
-            Session["userName"] = getUserInfoResponse.Data.UserClaims["name"].FirstOrDefault();
-            Session["userEmail"] = getUserInfoResponse.Data.UserClaims["email"] == null ? string.Empty : getUserInfoResponse.Data.UserClaims["email"].FirstOrDefault();
+            //Process response          
+            Session["userName"] = getUserInfoResponse.Data.UserClaims.Name.First();
+            Session["userEmail"] = getUserInfoResponse.Data.UserClaims.Email == null ? string.Empty : getUserInfoResponse.Data.UserClaims.Email.FirstOrDefault();
             #endregion
 
             return RedirectToAction("UserInfo");

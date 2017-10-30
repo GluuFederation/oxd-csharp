@@ -36,17 +36,17 @@ namespace oxdCSharp.Clients
                 throw new ArgumentNullException("Oxd Port should be a valid port number.");
             }
 
-            if(getUserInfoParams == null)
+            if (getUserInfoParams == null)
             {
                 throw new ArgumentNullException("The get user info command params should not be NULL.");
             }
 
-            if(string.IsNullOrEmpty(getUserInfoParams.OxdId))
+            if (string.IsNullOrEmpty(getUserInfoParams.OxdId))
             {
                 throw new MissingFieldException("Oxd ID is required for getting user info.");
             }
 
-            if(string.IsNullOrEmpty(getUserInfoParams.AccessToken))
+            if (string.IsNullOrEmpty(getUserInfoParams.AccessToken))
             {
                 throw new MissingFieldException("Access Token is required for getting user info.");
             }
@@ -57,11 +57,11 @@ namespace oxdCSharp.Clients
                 var cmdGetUserInfo = new Command { CommandType = CommandType.get_user_info, CommandParams = getUserInfoParams };
                 var commandClient = new CommandClient(host, port);
                 string commandResponse = commandClient.send(cmdGetUserInfo);
-
                 var response = JsonConvert.DeserializeObject<GetUserInfoResponse>(commandResponse);
-                Logger.Info(string.Format("Got response status as {0} and name is {1}", response.Status, response.Data.UserClaims["name"].FirstOrDefault()));
-
                 return response;
+                Logger.Info(string.Format("Got response status as {0} and name is {1}", response.Status, response.Data.UserClaims.Name.FirstOrDefault()));
+
+
             }
             catch (Exception ex)
             {
@@ -93,9 +93,9 @@ namespace oxdCSharp.Clients
                 string commandResponse = commandClient.send(cmdGetUserInfo);
                 var response = JsonConvert.DeserializeObject<GetUserInfoResponse>(commandResponse);
                 return response;
-            
 
-             }
+
+            }
             catch (Exception ex)
             {
                 Logger.Log(NLog.LogLevel.Error, ex, "Exception when getting User Info site.");
@@ -103,6 +103,6 @@ namespace oxdCSharp.Clients
 
             }
 
-}
+        }
     }
 }
