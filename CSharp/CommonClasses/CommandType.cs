@@ -1,4 +1,4 @@
-﻿namespace oxdCSharp.CommonClasses
+﻿namespace CSharp.CommonClasses
 {
 
 

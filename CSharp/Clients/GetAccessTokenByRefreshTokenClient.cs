@@ -1,7 +1,7 @@
 ﻿using System;
 using oxdCSharp.CommandParameters;
 using oxdCSharp.CommandResponses;
-using oxdCSharp.CommonClasses;
+using CSharp.CommonClasses;
 using Newtonsoft.Json;
 
 

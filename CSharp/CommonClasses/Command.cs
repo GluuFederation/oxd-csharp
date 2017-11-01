@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace oxdCSharp.CommonClasses
+namespace CSharp.CommonClasses
 {
     internal class Command 
     {

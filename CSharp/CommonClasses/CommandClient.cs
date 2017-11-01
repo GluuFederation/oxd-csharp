@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using oxdCSharp.CommandResponses;
 
 
-namespace oxdCSharp.CommonClasses
+namespace CSharp.CommonClasses
 {
     /// <summary>
     /// Command client for communicating with Server

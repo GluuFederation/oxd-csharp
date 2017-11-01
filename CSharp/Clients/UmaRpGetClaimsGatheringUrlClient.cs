@@ -1,6 +1,6 @@
 ﻿using System;
 using oxdCSharp.UMA.CommandParameters;
-using oxdCSharp.CommonClasses;
+using CSharp.CommonClasses;
 using Newtonsoft.Json;
 using oxdCSharp.UMA.CommandResponses;
 

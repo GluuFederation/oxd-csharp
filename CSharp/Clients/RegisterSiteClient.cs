@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
-using oxdCSharp.CommonClasses;
+using CSharp.CommonClasses;
 using oxdCSharp.CommandParameters;
 using oxdCSharp.CommandResponses;
 using System.Diagnostics.Contracts;
