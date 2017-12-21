@@ -7,28 +7,34 @@ using System;
 namespace oxdCSharp.UMA.Clients
 {
     /// <summary>
-    /// A client class which is used to protect UMA Resource in Resource Server
+    /// A class which is used to protect UMA Resource in Resource Server
     /// </summary>
     public class UmaRsProtectClient
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         /// <summary>
-        /// oxd-local Protects set of UMA resources in Resource Server
+        /// Protects set of UMA resources in Resource Server using oxd-server
         /// </summary>
-        /// <param name="host">Oxd Host</param>
-        /// <param name="port">Oxd Port</param>
+        /// <param name="oxdHost">The IP address of the oxd-server</param>
+        /// <param name="oxdPort">The port of the oxd-server</param>
         /// <param name="umaRsProtectParams">Input params for UMA RS Protect command</param>
-        /// <returns></returns>
-        public UmaRsProtectResponse ProtectResources(string host, int port, UmaRsProtectParams umaRsProtectParams)
+        /// <returns>UmaRsProtectResponse</returns>
+        /// <example>
+        /// <b>Example response:</b>
+        /// {
+        /// 	"status": "ok"
+        /// }
+        /// </example>
+        public UmaRsProtectResponse ProtectResources(string oxdHost, int oxdPort, UmaRsProtectParams umaRsProtectParams)
         {
             Logger.Info("Verifying input parameters.");
-            if (string.IsNullOrEmpty(host))
+            if (string.IsNullOrEmpty(oxdHost))
             {
                 throw new ArgumentNullException("Oxd Host should not be NULL.");
             }
 
-            if (port <= 0)
+            if (oxdPort <= 0)
             {
                 throw new ArgumentNullException("Oxd Port should be a valid port number.");
             }
@@ -52,7 +58,7 @@ namespace oxdCSharp.UMA.Clients
             {
                 Logger.Info("Preparing and sending command.");
                 var cmdUmaRsProtect = new Command { CommandType = CommandType.uma_rs_protect, CommandParams = umaRsProtectParams };
-                var commandClient = new CommandClient(host, port);
+                var commandClient = new CommandClient(oxdHost, oxdPort);
                 string commandResponse = commandClient.send(cmdUmaRsProtect);
 
                 var response = JsonConvert.DeserializeObject<UmaRsProtectResponse>(commandResponse);
@@ -69,12 +75,18 @@ namespace oxdCSharp.UMA.Clients
 
 
         /// <summary>
-        /// oxd-web Protects set of UMA resources in Resource Server
+        /// Protects set of UMA resources in Resource Server using oxd-https-extension
         /// </summary>
-        /// <param name="oxdWebUrl">Oxd Web url</param>
+        /// <param name="oxdHttpsExtensionUrl">oxd-https-extension REST service URL</param>
         /// <param name="umaRsProtectParams">Input params for UMA RS Protect command</param>
-        /// <returns></returns>
-        public UmaRsProtectResponse ProtectResources(string oxdWebUrl, UmaRsProtectParams umaRsProtectParams)
+        /// <returns>UmaRsProtectResponse</returns>
+        /// <example>
+        /// <b>Example response:</b>
+        /// {
+        /// 	"status": "ok"
+        /// }
+        /// </example>
+        public UmaRsProtectResponse ProtectResources(string oxdHttpsExtensionUrl, UmaRsProtectParams umaRsProtectParams)
         {
            
             if (umaRsProtectParams == null)
@@ -98,7 +110,7 @@ namespace oxdCSharp.UMA.Clients
                 var cmdUmaRsProtect = new Command { CommandType = CommandType.uma_rs_protect, CommandParams = umaRsProtectParams };
 
 
-                var commandClient = new CommandClient(oxdWebUrl);
+                var commandClient = new CommandClient(oxdHttpsExtensionUrl);
                 string commandResponse = commandClient.send(cmdUmaRsProtect);
                 var response = JsonConvert.DeserializeObject<UmaRsProtectResponse>(commandResponse);
                 Logger.Info(string.Format("Got response status as {0}", response.Status));

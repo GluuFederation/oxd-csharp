@@ -7,28 +7,69 @@ using System;
 namespace oxdCSharp.UMA.Clients
 {
     /// <summary>
-    /// A client class which is used to check access of a UMA resource in Resource Server
+    /// A class which is used to check access of a UMA resource in Resource Server
     /// </summary>
     public class UmaRsCheckAccessClient
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         /// <summary>
-        /// oxd-local Checks Access for UMA RS resource
+        /// Checks Access for UMA RS resource using oxd-server
         /// </summary>
-        /// <param name="host">Oxd Host</param>
-        /// <param name="port">Oxd Port</param>
+        /// <param name="oxdHost">The IP address of the oxd-server</param>
+        /// <param name="oxdPort">The port of the oxd-server</param>
         /// <param name="umaRsCheckAccessParams">Input params for UMA RS Check Access command</param>
-        /// <returns></returns>
-        public UmaRsCheckAccessResponse CheckAccess(string host, int port, UmaRsCheckAccessParams umaRsCheckAccessParams)
+        /// <returns>UmaRsCheckAccessResponse</returns>
+        /// <example>
+        /// <b>Access Granted Response:</b>
+        /// {
+        ///     "status":"ok",
+        ///     "data":{
+        ///         "access":"granted"
+        ///     }
+        /// }
+        /// </example>
+        /// <example>
+        /// <b>Access Denied with Ticket Response:</b>
+        /// {
+        /// 	"status": "ok",
+        /// 	"data": {
+        /// 		"access": "denied",
+        /// 		"www-authenticate_header": "UMA realm=\"rs\",as_uri=\"https://as.example.com\",error=\"insufficient_scope\",ticket=\"d26c30fd-eb94-40da-9f61-0c424acedf0e\"",
+        /// 		"ticket": "d26c30fd-eb94-40da-9f61-0c424acedf0e",
+        /// 		"error": null,
+        /// 		"error_description": null
+        /// 	}
+        /// }
+        /// </example>
+        /// <example>
+        /// <b>Access Denied without Ticket Response:</b>
+        /// {
+        /// 	"status": "ok",
+        /// 	"data": {
+        /// 		"access": "denied",
+        /// 	}
+        /// }
+        /// </example>
+        /// <example>
+        /// <b>Resource is not Protected:</b>
+        /// {
+        ///     "status":"error",
+        ///     "data":{
+        ///         "error":"invalid_request",
+        ///         "error_description":"Resource is not protected. Please protect your resource first with uma_rs_protect command."
+        ///     }
+        /// }
+        /// </example>
+        public UmaRsCheckAccessResponse CheckAccess(string oxdHost, int oxdPort, UmaRsCheckAccessParams umaRsCheckAccessParams)
         {
             Logger.Info("Verifying input parameters.");
-            if (string.IsNullOrEmpty(host))
+            if (string.IsNullOrEmpty(oxdHost))
             {
                 throw new ArgumentNullException("Oxd Host should not be NULL.");
             }
 
-            if (port <= 0)
+            if (oxdPort <= 0)
             {
                 throw new ArgumentNullException("Oxd Port should be a valid port number.");
             }
@@ -57,7 +98,7 @@ namespace oxdCSharp.UMA.Clients
             {
                 Logger.Info("Preparing and sending command.");
                 var cmdUmaRsCheckAccess = new Command { CommandType = CommandType.uma_rs_check_access, CommandParams = umaRsCheckAccessParams };
-                var commandClient = new CommandClient(host, port);
+                var commandClient = new CommandClient(oxdHost, oxdPort);
                 string commandResponse = commandClient.send(cmdUmaRsCheckAccess);
 
                 var response = JsonConvert.DeserializeObject<UmaRsCheckAccessResponse>(commandResponse);
@@ -82,14 +123,54 @@ namespace oxdCSharp.UMA.Clients
         }
 
 
-
         /// <summary>
-        /// oxd-web Checks Access for UMA RS resource
+        /// Checks Access for UMA RS resource using oxd-https-extension
         /// </summary>
-        /// <param name="oxdweburl">Oxd Web url</param>
+        /// <param name="oxdHttpsExtensionUrl">oxd-https-extension REST service URL</param>
         /// <param name="umaRsCheckAccessParams">Input params for UMA RS Check Access command</param>
-        /// <returns></returns>
-        public UmaRsCheckAccessResponse CheckAccess(string oxdweburl, UmaRsCheckAccessParams umaRsCheckAccessParams)
+        /// <returns>UmaRsCheckAccessResponse</returns>
+        /// <example>
+        /// <b>Access Granted Response:</b>
+        /// {
+        ///     "status":"ok",
+        ///     "data":{
+        ///         "access":"granted"
+        ///     }
+        /// }
+        /// </example>
+        /// <example>
+        /// <b>Access Denied with Ticket Response:</b>
+        /// {
+        /// 	"status": "ok",
+        /// 	"data": {
+        /// 		"access": "denied",
+        /// 		"www-authenticate_header": "UMA realm=\"rs\",as_uri=\"https://as.example.com\",error=\"insufficient_scope\",ticket=\"d26c30fd-eb94-40da-9f61-0c424acedf0e\"",
+        /// 		"ticket": "d26c30fd-eb94-40da-9f61-0c424acedf0e",
+        /// 		"error": null,
+        /// 		"error_description": null
+        /// 	}
+        /// }
+        /// </example>
+        /// <example>
+        /// <b>Access Denied without Ticket Response:</b>
+        /// {
+        /// 	"status": "ok",
+        /// 	"data": {
+        /// 		"access": "denied",
+        /// 	}
+        /// }
+        /// </example>
+        /// <example>
+        /// <b>Resource is not Protected:</b>
+        /// {
+        ///     "status":"error",
+        ///     "data":{
+        ///         "error":"invalid_request",
+        ///         "error_description":"Resource is not protected. Please protect your resource first with uma_rs_protect command."
+        ///     }
+        /// }
+        /// </example>
+        public UmaRsCheckAccessResponse CheckAccess(string oxdHttpsExtensionUrl, UmaRsCheckAccessParams umaRsCheckAccessParams)
         {
             Logger.Info("Verifying input parameters.");
            
@@ -118,7 +199,7 @@ namespace oxdCSharp.UMA.Clients
             {
                 Logger.Info("Preparing and sending command.");
                 var cmdUmaRsCheckAccess = new Command { CommandType = CommandType.uma_rs_check_access, CommandParams = umaRsCheckAccessParams };
-                var commandClient = new CommandClient(oxdweburl);
+                var commandClient = new CommandClient(oxdHttpsExtensionUrl);
                 string commandResponse = commandClient.send(cmdUmaRsCheckAccess);
 
                 var response = JsonConvert.DeserializeObject<UmaRsCheckAccessResponse>(commandResponse);

@@ -9,7 +9,7 @@ namespace oxdCSharp.CommandResponses
 {
 
     /// <summary>
-    /// Response for Get Access token From Refresh token command
+    /// Response for Get Access token By Refresh token command
     /// </summary>
     public class GetAccessTokenByRefreshTokenResponse
     {
@@ -27,6 +27,9 @@ namespace oxdCSharp.CommandResponses
         public GetAccessTokenByRefreshTokenResponseData Data { get; set; }
     }
 
+    /// <summary>
+    /// Get Access token By Refresh token Response's Data
+    /// </summary>
     public class GetAccessTokenByRefreshTokenResponseData
     {
 

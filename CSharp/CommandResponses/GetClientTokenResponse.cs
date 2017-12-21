@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace oxdCSharp.CommandResponses
 {
+    /// <summary>
+    /// Response for Get Client Token Command
+    /// </summary>
     public class GetClientTokenResponse
     {
 
@@ -24,6 +27,10 @@ namespace oxdCSharp.CommandResponses
         
 
     }
+
+    /// <summary>
+    /// Get Client Token Response's Data
+    /// </summary>
     public class GetClientTokenResponseData
     {
         /// <summary>

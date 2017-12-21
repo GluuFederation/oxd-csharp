@@ -14,11 +14,10 @@ namespace oxdCSharp.CommandParameters
         [JsonProperty("oxd_id")]
         public string OxdId { get; set; }
 
-
         /// <summary>
         /// Protection Acccess Token.
         /// </summary>
-        /// <remarks><b>REQUIRED</b> Field.</remarks>
+        /// <remarks><b>REQUIRED</b> Field (oxd-https-extension).</remarks>
         [JsonProperty("protection_access_token")]
         public string ProtectionAccessToken { get; set; }
 

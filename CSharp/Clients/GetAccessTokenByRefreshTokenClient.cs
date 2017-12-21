@@ -7,25 +7,40 @@ using Newtonsoft.Json;
 
 namespace oxdCSharp.Clients
 {
+    /// <summary>
+    /// A class which is used to get a new access token using refresh token
+    /// </summary>
     public class GetAccessTokenByRefreshTokenClient
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
         /// <summary>
-        /// oxd-local Get Access Token By Refresh Token
+        /// Get Access Token By Refresh Token using oxd-server
         /// </summary>
-        /// <param name="host">Oxd Host</param>
-        /// <param name="port">Oxd Port</param>
+        /// <param name="oxdHost">The IP address of the oxd-server</param>
+        /// <param name="oxdPort">The port of the oxd-server</param>
         /// <param name="getAccessTokenByRefreshTokenParams">Input params for Get Access Token By Refresh Token command</param>
-        /// <returns></returns>
-        public GetAccessTokenByRefreshTokenResponse GetAccessTokenByRefreshToken(string host, int port, GetAccessTokenByRefreshTokenParams getAccessTokenByRefreshTokenParams)
+        /// <returns>GetAccessTokenByRefreshTokenResponse</returns>
+        /// <example>
+        /// <b>Example response:</b>
+        /// {
+        /// 	"status": "ok",
+        /// 	"data": {
+        /// 		"access_token": "fb5b52be-fd99-46b7-b87a-6167f86ae4bb",
+        /// 		"expires_in": "299",
+        /// 		"refresh_token": "49850248-ee70-4d21-85b2-949476c26e1b"
+        /// 	}
+        /// }
+        /// </example>
+        public GetAccessTokenByRefreshTokenResponse GetAccessTokenByRefreshToken(string oxdHost, int oxdPort, GetAccessTokenByRefreshTokenParams getAccessTokenByRefreshTokenParams)
         {
             Logger.Info("Verifying input parameters.");
-            if (string.IsNullOrEmpty(host))
+            if (string.IsNullOrEmpty(oxdHost))
             {
                 throw new ArgumentNullException("Oxd Host should not be NULL.");
             }
 
-            if (port <= 0)
+            if (oxdPort <= 0)
             {
                 throw new ArgumentNullException("Oxd Port should be a valid port number.");
             }
@@ -45,7 +60,7 @@ namespace oxdCSharp.Clients
             {
                 Logger.Info("Preparing and sending command.");
                 var cmdgetAccessTokenByRefreshToken = new Command { CommandType = CommandType.get_access_token_by_refresh_token, CommandParams = getAccessTokenByRefreshTokenParams };
-                var commandClient = new CommandClient(host, port);
+                var commandClient = new CommandClient(oxdHost, oxdPort);
                 string commandResponse = commandClient.send(cmdgetAccessTokenByRefreshToken);
 
                 var response = JsonConvert.DeserializeObject<GetAccessTokenByRefreshTokenResponse>(commandResponse);
@@ -60,14 +75,24 @@ namespace oxdCSharp.Clients
         }
 
 
-
         /// <summary>
-        /// oxd-web Get Access Token By Refresh Token
+        /// Get Access Token By Refresh Token using oxd-https-extension
         /// </summary>
-        /// <param name="oxdweburl">Oxd Web url</param>
+        /// <param name="oxdHttpsExtensionUrl">oxd-https-extension REST service URL</param>
         /// <param name="getAccessTokenByRefreshTokenParams">Input params for Get Access Token By Refresh Token command</param>
-        /// <returns></returns>
-        public GetAccessTokenByRefreshTokenResponse GetAccessTokenByRefreshToken(string oxdweburl, GetAccessTokenByRefreshTokenParams getAccessTokenByRefreshTokenParams)
+        /// <returns>GetAccessTokenByRefreshTokenResponse</returns>
+        /// <example>
+        /// <b>Example response:</b>
+        /// {
+        /// 	"status": "ok",
+        /// 	"data": {
+        /// 		"access_token": "fb5b52be-fd99-46b7-b87a-6167f86ae4bb",
+        /// 		"expires_in": "299",
+        /// 		"refresh_token": "49850248-ee70-4d21-85b2-949476c26e1b"
+        /// 	}
+        /// }
+        /// </example>
+        public GetAccessTokenByRefreshTokenResponse GetAccessTokenByRefreshToken(string oxdHttpsExtensionUrl, GetAccessTokenByRefreshTokenParams getAccessTokenByRefreshTokenParams)
         {
             Logger.Info("Verifying input parameters.");
 
@@ -83,12 +108,11 @@ namespace oxdCSharp.Clients
             }
 
 
-
             try
             {
                 Logger.Info("Preparing and sending command.");
                 var cmdgetAccessTokenByRefreshToken = new Command { CommandType = CommandType.get_access_token_by_refresh_token, CommandParams = getAccessTokenByRefreshTokenParams };
-                var commandClient = new CommandClient(oxdweburl);
+                var commandClient = new CommandClient(oxdHttpsExtensionUrl);
                 string commandResponse = commandClient.send(cmdgetAccessTokenByRefreshToken);
 
                 var response = JsonConvert.DeserializeObject<GetAccessTokenByRefreshTokenResponse>(commandResponse);

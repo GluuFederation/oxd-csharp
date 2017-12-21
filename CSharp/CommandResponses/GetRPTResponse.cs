@@ -1,5 +1,6 @@
 ﻿
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace oxdCSharp.UMA.CommandResponses
 {
@@ -31,16 +32,13 @@ namespace oxdCSharp.UMA.CommandResponses
         /// </summary>
         [JsonProperty("access_token")]
         public string Rpt { get; set; }
-
-
+        
         /// <summary>
         /// token_type
         /// </summary>
         [JsonProperty("token_type")]
         public string token_type { get; set; }
-
-
-
+        
         /// <summary>
         /// persisted claims token (PCT)
         /// </summary>
@@ -65,5 +63,28 @@ namespace oxdCSharp.UMA.CommandResponses
         [JsonProperty("error_description")]
         public string ErrorDescription { get; set; }
 
+        /// <summary>
+        /// Need Info Details
+        /// </summary>
+        [JsonProperty("details")]
+        public ErrorDetails Details { get; set; }
+    }
+
+    /// <summary>
+    /// Need Info Error Details
+    /// </summary>
+    public class ErrorDetails
+    {
+        /// <summary>
+        /// Error
+        /// </summary>
+        [JsonProperty("error")]
+        public string Error { get; set; }
+
+        /// <summary>
+        /// Ticket to Get the Claims
+        /// </summary>
+        [JsonProperty("ticket")]
+        public string Ticket { get; set; }
     }
 }

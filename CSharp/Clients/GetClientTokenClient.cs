@@ -6,26 +6,41 @@ using oxdCSharp.CommandResponses;
 
 namespace oxdCSharp.Clients
 {
-   public class GetClientTokenClient
+    /// <summary>
+    /// A class which is used to get the client token which can be used for protection
+    /// </summary>
+    public class GetClientTokenClient
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         /// <summary>
-        /// Gets Authorization URL of a site using input params
+        /// Gets Client Access Token using oxd-server
         /// </summary>
-        /// <param name="host">Oxd Host</param>
-        /// <param name="port">Oxd Port</param>
+        /// <param name="oxdHost">The IP address of the oxd-server</param>
+        /// <param name="oxdPort">The port of the oxd-server</param>
         /// <param name="getClientTokenParams">Input params to Get  Client Acccess Token  command</param>
-        /// <returns>Client Token</returns>
-        public GetClientTokenResponse GetClientToken(string host, int port, GetClientTokenParams getClientTokenParams)
+        /// <returns>GetClientTokenResponse</returns>
+        /// <example>
+        /// <b>Example response:</b>
+        /// {
+        /// 	"status": "ok",
+        /// 	"data": {
+        /// 		"access_token": "7ec389c5-64f8-49a3-a80c-e3e16d134bcb",
+        /// 		"expires_in": 299,
+        /// 		"refresh_token": null,
+        /// 		"scope": "openid"
+        /// 	}
+        /// }
+        /// </example>
+        public GetClientTokenResponse GetClientToken(string oxdHost, int oxdPort, GetClientTokenParams getClientTokenParams)
         {
             Logger.Info("Verifying input parameters.");
-            if (string.IsNullOrEmpty(host))
+            if (string.IsNullOrEmpty(oxdHost))
             {
                 throw new ArgumentNullException("Oxd Host should not be NULL.");
             }
 
-            if (port <= 0)
+            if (oxdPort <= 0)
             {
                 throw new ArgumentNullException("Oxd Port should be a valid port number.");
             }
@@ -34,17 +49,13 @@ namespace oxdCSharp.Clients
             {
                 throw new ArgumentNullException("The get auth url command params should not be NULL.");
             }
-
-            if (string.IsNullOrEmpty(getClientTokenParams.OxdId))
-            {
-                throw new MissingFieldException("Oxd ID is required for getting auth url of site.");
-            }
+            
 
             try
             {
                 Logger.Info("Preparing and sending command.");
                 var cmdGetClientAccessToken = new Command { CommandType = CommandType.get_client_token, CommandParams = getClientTokenParams };
-                var commandClient = new CommandClient(host, port);
+                var commandClient = new CommandClient(oxdHost, oxdPort);
                 string commandResponse = commandClient.send(cmdGetClientAccessToken);
 
                 var response = JsonConvert.DeserializeObject<GetClientTokenResponse>(commandResponse);
@@ -59,23 +70,35 @@ namespace oxdCSharp.Clients
             }
         }
 
+
         /// <summary>
-        /// Gets Client Access Token
+        /// Gets Client Access Token using oxd-https-extension
         /// </summary>
-        /// <param name="oxdtohttpurl">Oxd to http REST service URL</param>
+        /// <param name="oxdHttpsExtensionUrl">oxd-https-extension REST service URL</param>
         /// <param name="getClientTokenParams">Input params to Get  Client Acccess Token  command</param>
-        /// <returns>Client Token</returns>
-       
-        public GetClientTokenResponse GetClientToken(string oxdtohttpurl, GetClientTokenParams getClientTokenParams)
+        /// <returns>GetClientTokenResponse</returns>
+        /// <example>
+        /// <b>Example response:</b>
+        /// {
+        /// 	"status": "ok",
+        /// 	"data": {
+        /// 		"access_token": "7ec389c5-64f8-49a3-a80c-e3e16d134bcb",
+        /// 		"expires_in": 299,
+        /// 		"refresh_token": null,
+        /// 		"scope": "openid"
+        /// 	}
+        /// }
+        /// </example>
+        public GetClientTokenResponse GetClientToken(string oxdHttpsExtensionUrl, GetClientTokenParams getClientTokenParams)
         {
             Logger.Info("Verifying input parameters.");
-            if (string.IsNullOrEmpty(oxdtohttpurl))
+            if (string.IsNullOrEmpty(oxdHttpsExtensionUrl))
                 throw new ArgumentNullException("Oxd Rest Service URL should not be NULL.");
 
             try
             {
                 var cmdGetClientAccessToken = new Command { CommandType = RestCommandType.get_client_token, CommandParams = getClientTokenParams };
-                var commandClient = new CommandClient(oxdtohttpurl);
+                var commandClient = new CommandClient(oxdHttpsExtensionUrl);
                 string commandResponse = commandClient.send(cmdGetClientAccessToken);
                 var response = JsonConvert.DeserializeObject<GetClientTokenResponse>(commandResponse);
                 return response;

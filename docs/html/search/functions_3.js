@@ -1,0 +1,5 @@
+var searchData=
+[
+  ['registersite',['RegisterSite',['../interfaceoxd_c_sharp_1_1_clients_1_1_i_register_site_client.html#a8bd2b5b7e15a94876920a859d9114053',1,'oxdCSharp.Clients.IRegisterSiteClient.RegisterSite()'],['../classoxd_c_sharp_1_1_clients_1_1_register_site_client.html#af56c5f8900442a7fb6780daa01982cdc',1,'oxdCSharp.Clients.RegisterSiteClient.RegisterSite(CommandClient commandClient, Command cmdRegisterSite)'],['../classoxd_c_sharp_1_1_clients_1_1_register_site_client.html#aaca283b8bf4ed0de9e641381bb37f141',1,'oxdCSharp.Clients.RegisterSiteClient.RegisterSite(string oxdWebUrl, RegisterSiteParams registerSiteParams)']]],
+  ['removesite',['RemoveSite',['../classoxd_c_sharp_1_1_clients_1_1_remove_site_client.html#a6144e6ae3cf5edba63700de48310b051',1,'oxdCSharp.Clients.RemoveSiteClient.RemoveSite(String host, int port, RemoveSiteParams removeSiteParams)'],['../classoxd_c_sharp_1_1_clients_1_1_remove_site_client.html#a81edba8da143288bdd58b47641e5af2e',1,'oxdCSharp.Clients.RemoveSiteClient.RemoveSite(string oxdWebUrl, RemoveSiteParams removeSiteParams)']]]
+];

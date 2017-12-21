@@ -156,11 +156,17 @@ namespace oxdCSharp.CommandParameters
 
         /// <summary>
         /// Claims Redirect URI.
-        /// Must be used together with ClientId.
         /// </summary>
         /// <remarks><b>OPTIONAL</b> Field.</remarks>
         [JsonProperty("claims_redirect_uri")]
-        public string ClaimsRedirecturi { get; set; }
+        public IList<string> ClaimsRedirecturi { get; set; }
+
+        /// <summary>
+        /// Protection Acccess Token.
+        /// </summary>
+        /// <remarks><b>REQUIRED</b> Field (oxd-https-extension).</remarks>
+        [JsonProperty("protection_access_token")]
+        public string ProtectionAccessToken { get; set; }
 
     }
 }

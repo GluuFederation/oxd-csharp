@@ -3,11 +3,11 @@
 namespace oxdCSharp.UMA.CommandParameters
 {
 
-
-   public class UmaRpGetClaimsGatheringUrlParams
+    /// <summary>
+    /// Params for UMA RP - Get Claims Gathering Url command
+    /// </summary>
+    public class UmaRpGetClaimsGatheringUrlParams
     {
-
-
         /// <summary>
         /// Registered OXD Id.
         /// </summary>
@@ -29,11 +29,10 @@ namespace oxdCSharp.UMA.CommandParameters
         [JsonProperty("claims_redirect_uri")]
         public string ClaimsRedirectURI { get; set; }
 
-
         /// <summary>
         /// ProtectionAccessToken (PAT)
         /// </summary>
-        /// <remarks><b>REQUIRED</b> Field.</remarks>
+        /// <remarks><b>REQUIRED</b> Field (oxd-https-extension).</remarks>
         [JsonProperty("protection_access_token")]
         public string ProtectionAccessToken { get; set; }
 

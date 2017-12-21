@@ -7,28 +7,74 @@ using System;
 namespace oxdCSharp.UMA.Clients
 {
     /// <summary>
-    /// A client class which is used to get RPT from UMA RP
+    /// A class which is used to get RPT from UMA RP
     /// </summary>
     public class UmaRpGetRptClient
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         /// <summary>
-        /// Gets RPT token from UMA RP
+        /// Gets RPT token from UMA RP using oxd-server
         /// </summary>
-        /// <param name="host">Oxd Host</param>
-        /// <param name="port">Oxd Port</param>
+        /// <param name="oxdHost">The IP address of the oxd-server</param>
+        /// <param name="oxdPort">The port of the oxd-server</param>
         /// <param name="getRptParams">Input params for Get RPT command</param>
-        /// <returns></returns>
-        public GetRPTResponse GetRPT(string host, int port, UmaRpGetRptParams getRptParams)
+        /// <returns>GetRPTResponse</returns>
+        /// <example>
+        /// <b>Success Response:</b>
+        /// {
+        ///      "status":"ok",
+        ///      "data":{
+        ///          "access_token":"SSJHBSUSSJHVhjsgvhsgvshgsv",
+        ///          "token_type":"Bearer",
+        ///          "pct":"c2F2ZWRjb25zZW50",
+        ///          "upgraded":true
+        ///      }
+        /// }
+        /// </example>
+        /// <example>
+        /// <b>Needs Info Error Response:</b>
+        /// {
+        /// 	"status": "error",
+        /// 	"data": {
+        /// 		"error": "need_info",
+        /// 		"error_description": "The authorization server needs additional information in order to determine whether the client is authorized to have these permissions.",
+        /// 		"details": {
+        /// 			"error": "need_info",
+        /// 			"ticket": "ZXJyb3JfZGV0YWlscw==",
+        /// 			"required_claims": [{
+        /// 				"claim_token_format": [
+        /// 					"http://openid.net/specs/openid-connect-core-1_0.html#IDToken"
+        /// 				],
+        /// 				"claim_type": "urn:oid:0.9.2342.19200300.100.1.3",
+        /// 				"friendly_name": "email",
+        /// 				"issuer": ["https://example.com/idp"],
+        /// 				"name": "email23423453ou453"
+        /// 			}],
+        /// 			"redirect_user": "https://as.example.com/rqp_claims?id=2346576421"
+        /// 		}
+        /// 	}
+        /// }
+        /// </example>
+        /// <example>
+        /// <b>Invalid Ticket Error Response:</b>
+        /// {
+        ///     "status":"error",
+        ///     "data":{
+        ///             "error":"invalid_ticket",
+        ///             "error_description":"Ticket is not valid (outdated or not present on Authorization Server)."
+        ///            }
+        /// }
+        /// </example>
+        public GetRPTResponse GetRPT(string oxdHost, int oxdPort, UmaRpGetRptParams getRptParams)
         {
             Logger.Info("Verifying input parameters.");
-            if (string.IsNullOrEmpty(host))
+            if (string.IsNullOrEmpty(oxdHost))
             {
                 throw new ArgumentNullException("Oxd Host should not be NULL.");
             }
 
-            if (port <= 0)
+            if (oxdPort <= 0)
             {
                 throw new ArgumentNullException("Oxd Port should be a valid port number.");
             }
@@ -47,7 +93,7 @@ namespace oxdCSharp.UMA.Clients
             {
                 Logger.Info("Preparing and sending command.");
                 var cmdGetRPT = new Command { CommandType = CommandType.uma_rp_get_rpt, CommandParams = getRptParams };
-                var commandClient = new CommandClient(host, port);
+                var commandClient = new CommandClient(oxdHost, oxdPort);
                 string commandResponse = commandClient.send(cmdGetRPT);
 
                 var response = JsonConvert.DeserializeObject<GetRPTResponse>(commandResponse);
@@ -63,17 +109,59 @@ namespace oxdCSharp.UMA.Clients
         }
 
 
-
-
-
-
         /// <summary>
-        /// Gets RPT token from UMA RP
+        /// Gets RPT token from UMA RP using oxd-https-extension
         /// </summary>
-        /// <param name="oxdweburl">oxdweburl</param>
+        /// <param name="oxdHttpsExtensionUrl">oxd-https-extension REST service URL</param>
         /// <param name="getRptParams">Input params for Get RPT command</param>
-        /// <returns></returns>
-        public GetRPTResponse GetRPT(string oxdweburl, UmaRpGetRptParams getRptParams)
+        /// <returns>GetRPTResponse</returns>
+        /// <example>
+        /// <b>Success Response:</b>
+        /// {
+        ///      "status":"ok",
+        ///      "data":{
+        ///          "access_token":"SSJHBSUSSJHVhjsgvhsgvshgsv",
+        ///          "token_type":"Bearer",
+        ///          "pct":"c2F2ZWRjb25zZW50",
+        ///          "upgraded":true
+        ///      }
+        /// }
+        /// </example>
+        /// <example>
+        /// <b>Needs Info Error Response:</b>
+        /// {
+        /// 	"status": "error",
+        /// 	"data": {
+        /// 		"error": "need_info",
+        /// 		"error_description": "The authorization server needs additional information in order to determine whether the client is authorized to have these permissions.",
+        /// 		"details": {
+        /// 			"error": "need_info",
+        /// 			"ticket": "ZXJyb3JfZGV0YWlscw==",
+        /// 			"required_claims": [{
+        /// 				"claim_token_format": [
+        /// 					"http://openid.net/specs/openid-connect-core-1_0.html#IDToken"
+        /// 				],
+        /// 				"claim_type": "urn:oid:0.9.2342.19200300.100.1.3",
+        /// 				"friendly_name": "email",
+        /// 				"issuer": ["https://example.com/idp"],
+        /// 				"name": "email23423453ou453"
+        /// 			}],
+        /// 			"redirect_user": "https://as.example.com/rqp_claims?id=2346576421"
+        /// 		}
+        /// 	}
+        /// }
+        /// </example>
+        /// <example>
+        /// <b>Invalid Ticket Error Response:</b>
+        /// {
+        ///     "status":"error",
+        ///     "data":{
+        ///             "error":"invalid_ticket",
+        ///             "error_description":"Ticket is not valid (outdated or not present on Authorization Server)."
+        ///            }
+        /// }
+        /// </example>
+        public GetRPTResponse GetRPT(string oxdHttpsExtensionUrl, UmaRpGetRptParams getRptParams)
         {
 
             if (getRptParams == null)
@@ -89,7 +177,7 @@ namespace oxdCSharp.UMA.Clients
             try
             {
 
-                var commandClient = new CommandClient(oxdweburl);
+                var commandClient = new CommandClient(oxdHttpsExtensionUrl);
                 return GetRPTResponse(getRptParams, commandClient);
             }
             catch (Exception ex)

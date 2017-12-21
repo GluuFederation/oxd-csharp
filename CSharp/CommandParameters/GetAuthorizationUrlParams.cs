@@ -6,19 +6,8 @@ namespace oxdCSharp.CommandParameters
     /// <summary>
     /// Params for Get Authorization URL Command
     /// </summary>
-    /// 
-
-
-   
     public class GetAuthorizationUrlParams
     {
-
-    
-        [JsonProperty("custom_parameters")]
-        public Dictionary<string,string> custom_parameters = new Dictionary<string, string>();
-      
-
-
         /// <summary>
         /// Registered OXD Id.
         /// </summary>
@@ -29,7 +18,7 @@ namespace oxdCSharp.CommandParameters
         /// <summary>
         /// Protection Acccess Token.
         /// </summary>
-        /// <remarks><b>REQUIRED</b> Field.</remarks>
+        /// <remarks><b>REQUIRED</b> Field (oxd-https-extension).</remarks>
         [JsonProperty("protection_access_token")]
         public string ProtectionAccessToken { get; set; }
 
@@ -60,9 +49,14 @@ namespace oxdCSharp.CommandParameters
         [JsonProperty("prompt")]
         public string Prompt { get; set; }
 
+        /// <summary>
+        /// Custom Parameters
+        /// </summary>
+        /// <remarks><b>OPTIONAL</b> Field.</remarks>
+        [JsonProperty("custom_parameters")]
+        public Dictionary<string, string> custom_parameters = new Dictionary<string, string>();
 
-        
-      
+
     }
    
 

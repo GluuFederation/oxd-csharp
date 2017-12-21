@@ -9,28 +9,37 @@ using System.Diagnostics.Contracts;
 namespace oxdCSharp.Clients
 {
     /// <summary>
-    /// A client class which is used to get logout URI of a site using Oxd Server
+    /// A class which is used to get logout URI of a site
     /// </summary>
     public class GetLogoutUriClient
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         /// <summary>
-        /// Gets logout URI of a registered site using Oxd Server
+        /// Gets logout URI of a registered site using oxd-server
         /// </summary>
-        /// <param name="host">Oxd Host</param>
-        /// <param name="port">Oxd Port</param>
+        /// <param name="oxdHost">The IP address of the oxd-server</param>
+        /// <param name="oxdPort">The port of the oxd-server</param>
         /// <param name="getLogoutUriParams">Input params for Get Logout URI command</param>
-        /// <returns>Logout Url</returns>
-        public GetLogoutUriResponse GetLogoutURL(string host, int port, GetLogoutUrlParams getLogoutUriParams)
+        /// <returns>GetLogoutUriResponse</returns>
+        /// <example>
+        /// <b>Example response:</b>
+        /// {
+        /// 	"status": "ok",
+        /// 	"data": {
+        /// 		"uri": "https://idp-hostname/oxauth/restv1/end_session?id_token_hint=eyJraWQiOgt6yxMMltA"
+        /// 	}
+        /// }
+        /// </example>
+        public GetLogoutUriResponse GetLogoutURL(string oxdHost, int oxdPort, GetLogoutUrlParams getLogoutUriParams)
         {
             Logger.Info("Verifying input parameters.");
-            if (string.IsNullOrEmpty(host))
+            if (string.IsNullOrEmpty(oxdHost))
             {
                 throw new ArgumentNullException("Oxd Host should not be NULL.");
             }
 
-            if (port <= 0)
+            if (oxdPort <= 0)
             {
                 throw new ArgumentNullException("Oxd Port should be a valid port number.");
             }
@@ -49,7 +58,7 @@ namespace oxdCSharp.Clients
             {
                 Logger.Info("Preparing and sending command.");
                 var cmdGetLogoutUri = new Command { CommandType = CommandType.get_logout_uri, CommandParams = getLogoutUriParams };
-                var commandClient = new CommandClient(host, port);
+                var commandClient = new CommandClient(oxdHost, oxdPort);
                 string commandResponse = commandClient.send(cmdGetLogoutUri);
 
                 var response = JsonConvert.DeserializeObject<GetLogoutUriResponse>(commandResponse);
@@ -66,22 +75,30 @@ namespace oxdCSharp.Clients
 
 
         /// <summary>
-        /// Gets logout URI of a registered site using http
+        /// Gets logout URI of a registered site using oxd-https-extension
         /// </summary>
-        /// <param name="oxdWebUrl">Oxd to http REST service URL</param>
+        /// <param name="oxdHttpsExtensionUrl">oxd-https-extension REST service URL</param>
         /// <param name="getLogoutUriParams">Input params for Get Logout URI command</param>
-        /// <returns>Logout Url</returns>
-
-        public GetLogoutUriResponse GetLogoutURL(string oxdWebUrl, GetLogoutUrlParams getLogoutUriParams)
+        /// <returns>GetLogoutUriResponse</returns>
+        /// <example>
+        /// <b>Example response:</b>
+        /// {
+        /// 	"status": "ok",
+        /// 	"data": {
+        /// 		"uri": "https://idp-hostname/oxauth/restv1/end_session?id_token_hint=eyJraWQiOgt6yxMMltA"
+        /// 	}
+        /// }
+        /// </example>
+        public GetLogoutUriResponse GetLogoutURL(string oxdHttpsExtensionUrl, GetLogoutUrlParams getLogoutUriParams)
         {
             Logger.Info("Verifying input parameters.");
-            if (string.IsNullOrEmpty(oxdWebUrl))
+            if (string.IsNullOrEmpty(oxdHttpsExtensionUrl))
                 throw new ArgumentNullException("Oxd Rest Service URL should not be NULL.");
 
             try
             {
                 var cmdGetLogoutUri = new Command { CommandType = RestCommandType.get_logout_uri, CommandParams = getLogoutUriParams };
-                var commandClient = new CommandClient(oxdWebUrl);
+                var commandClient = new CommandClient(oxdHttpsExtensionUrl);
                 string commandResponse = commandClient.send(cmdGetLogoutUri);
                 var response = JsonConvert.DeserializeObject<GetLogoutUriResponse>(commandResponse);
                 return response;

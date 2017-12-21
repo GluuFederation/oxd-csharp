@@ -45,23 +45,27 @@ namespace oxdCSharp.CommandResponses
         /// </summary>
         [JsonProperty("client_secret")]
         public string clientSecret { get; set; }
-
-
+        
         /// <summary>
         ///Client access token form the OP server
         /// </summary>
         [JsonProperty("client_registration_access_token")]
         public string clientRegistrationAccessToken { get; set; }
 
-
+        /// <summary>
+        /// Client Registration Uri
+        /// </summary>
         [JsonProperty("client_registration_client_uri")]
         public string clientRegistrationClientUri { get; set; }
 
+        /// <summary>
+        /// Client Issued time
+        /// </summary>
         [JsonProperty("client_id_issued_at")]
         public long clientIdIssuedAt { get; set; }
 
         /// <summary>
-        ///Client expire
+        /// Client expire time
         /// </summary>
         [JsonProperty("client_secret_expires_at")]
         public long clientSecretExpiresAt { get; set; }

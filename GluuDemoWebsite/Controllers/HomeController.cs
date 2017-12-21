@@ -19,7 +19,6 @@ using System.Threading.Tasks;
 using oxdCSharp.UMA.CommandResponses;
 using oxdCSharp.UMA.CommandParameters;
 using oxdCSharp.UMA.Clients;
-using oxdCSharp.UMA.UMA.Clients;
 
 namespace GluuDemoWebsite.Controllers
 {
@@ -752,7 +751,6 @@ namespace GluuDemoWebsite.Controllers
 
             getClientAccessTokenParams.clientId = clientid;
             getClientAccessTokenParams.clientSecret = clientsecret;
-            getClientAccessTokenParams.OxdId = oxd_id;
             getClientAccessTokenParams.opHost = op_host;
 
             return getClientAccessTokenParams;
