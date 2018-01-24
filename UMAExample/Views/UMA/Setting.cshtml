@@ -9,7 +9,7 @@
 
     jQuery(function () {
 
-
+        
         $("input[name='conn_type_radio']").change(function () {
             if ($(this).val() == "local") {
 
@@ -25,8 +25,8 @@
 
 
         $(document).ready(function (e) {
-
-            $.getJSON("/Home/Loadoxdsettings", function (data) {
+            
+            $.getJSON("/UMA/Loadoxdsettings", function (data) {
                 
                 var obj = $.parseJSON(data);
                 jQuery("#clientName").val(obj.client_name);
@@ -37,7 +37,6 @@
                 jQuery("#logouturi").val(obj.post_logout_redirect_uri);
                 jQuery("#clientid").val(obj.client_id);
                 jQuery("#clientsecret").val(obj.client_secret);
-
 
                 if (!obj.oxd_id) {
                     $("#btnRegister").prop('disabled', false);
@@ -80,28 +79,25 @@
 
         jQuery('#btnRegister').click(function (event) {
             //event.preventDefault();
-            
+
             var ophostId = jQuery("#ophostId");
             var redirectUrl = jQuery("#redirecturlid")
-            var PostLogoutRedirectUrl = jQuery("#logouturi");
             var OxdPort = jQuery("#conn_type");
             var clientid = jQuery("#clientid");
             var clientsecret = jQuery("#clientsecret");
             var client_name = jQuery("#clientName");
             var connectiontype = jQuery("input[name=conn_type_radio]:checked");
             var httpresturl = "";
-            
-            if (connectiontype.val() == 'web')
-            {
+
+            if (connectiontype.val() == 'web') {
                 httpresturl = jQuery("#conn_type").val();
             }
-            
-            jQuery.post("/Home/SetupClient",
+
+            jQuery.post("/UMA/SetupClient",
                 {
                     OpHost: ophostId.val(),
                     RedirectUrl: redirectUrl.val(),
                     ConnectionType: connectiontype.val(),
-                    PostLogoutRedirectUrl: PostLogoutRedirectUrl.val(),
                     OxdPort: OxdPort.val(),
                     HttpRestUrl: httpresturl,
                     ClientName: client_name.val(),
@@ -119,99 +115,31 @@
                     $("#btnUpdate").prop('disabled', "disabled");
                     $("#clientArea").css("display", "block");
                     $("#btnEdit").prop('disabled', false);
-                }
-            );
+                });
         });
 
+        jQuery('#btnProtect').click(function (event) {
 
-
-        jQuery('#ophostId').change(function (event) {
-            var ophostId = jQuery("#ophostId");
-            jQuery.post("/Home/CheckRegistrationEndPoint", { ophostId: ophostId.val() }, function (data) {
-                
-                if (data == true) {
-                    $("#clientArea").css("display", "none");
-                }
-                else {
-                    $("#clientArea").css("display", "block");
-                }
-            });
-        });
-
-
-
-        jQuery('#btnUpdate').click(function (event) {
-            //event.preventDefault();
-            
-            var ophostId = jQuery("#ophostId");
-            var redirectUrl = jQuery("#redirecturlid")
-            var PostLogoutRedirectUrl = jQuery("#logouturi");
-            var OxdPort = jQuery("#conn_type");
-            var client_id = jQuery("#clientid");
-            var client_secret = jQuery("#clientsecret");
-            var OxdId = jQuery("#oxdId");
-            var client_name = jQuery("#clientName");
-            var connectiontype = jQuery("input[name=conn_type_radio]:checked");
-            var httpresturl = "";
-            
-            if (connectiontype.val() == 'web') {
-                httpresturl = jQuery("#conn_type").val();
-            }
-            
-            jQuery.post("/Home/Update",
-                {
-                    OpHost: ophostId.val(),
-                    RedirectUrl: redirectUrl.val(),
-                    ConnectionType: connectiontype.val(),
-                    PostLogoutRedirectUrl: PostLogoutRedirectUrl.val(),
-                    OxdPort: OxdPort.val(),
-                    HttpRestUrl: httpresturl,
-                    ClientName: client_name.val(),
-                    ClientId: client_id.val(),
-                    ClientSecret: client_secret.val(),
-                    OxdId: OxdId.val()
-                },
+            jQuery.post("/UMA/RSProtect",
+                { },
                 function (data) {
-
-                    alert(data.status);
-                }
-            );
-
-            Enable('disabled');
-            $("#btnRegister").prop('disabled', "disabled");
-            $("#btnUpdate").prop('disabled', "disabled");
-            $("#btnEdit").prop('disabled', false);
-            $("#clientArea").css("display", "block");
+                    jQuery("#divResult").html("Response: <br/>" + data.Response);
+                });
         });
-
-
-
-        jQuery('#btnEdit').click(function (event) {
-            //event.preventDefault();
-
-            Enable(false);
-            $("#btnUpdate").prop('disabled', false);
-            $("#btnEdit").prop('disabled', "disabled");
-            
-
-        });
-
 
 
         jQuery('#btnDelete').click(function (event) {
-            // $("form")[0].reset();
             $("#clientArea").css("display", "none");
             $("form")[0].reset();
             Enable(false);
             $("#btnRegister").prop('disabled', false);
             $("#btnEdit").prop('disabled', "disabled");
 
-            jQuery.post("/Home/Deleteoxdsettings",
+            jQuery.post("/UMA/Deleteoxdsettings",
                 function (data) {
                 }
             );
         });
-
 
 
         function Enable(enalbed) {
@@ -250,29 +178,23 @@
                     <div class="form-group">
                         <label class="control-label col-sm-3" style="text-align: left">URI of the OpenID Connect Provider:</label>
                         <div class="col-sm-8">
-                            <input type="url" class="form-control col-sm-8" id="ophostId" placeholder="ex: https://gluu.idphost.com" required>
+                            <input type="url" class="form-control col-sm-8" id="ophostId" placeholder="e.g: https://gluu.idphost.com" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-3" style="text-align: left">Authorization Redirect URI:</label>
                         <div class="col-sm-8">
-                            <input type="url" class="form-control col-sm-8" id="redirecturlid" placeholder="ex: https://client.example.com" required>
+                            <input type="url" class="form-control col-sm-8" id="redirecturlid" placeholder="e.g: https://client.example.com" required>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-3" style="text-align: left">Post logout URI:</label>
-                        <div class="col-sm-8">
-                            <input type="url" class="form-control col-sm-8" id="logouturi" placeholder="ex: https://client.example.com/logout" required>
-                        </div>
-                    </div>
 
 
                     <div class="form-group">
                         <label class="control-label col-sm-3" style="text-align: left">oxd Connection Type:</label>
                         <div id="RadioDiv" class="ip_box col-sm-8">
-                            <label class="radio-inline"> <input type="radio" name="conn_type_radio" id="conn_type_radio" value="local" checked="checked"> Local</label>
-                            <label class="radio-inline"> <input type="radio" name="conn_type_radio" id="conn_type_radio" value="web"> web</label>
+                            <label class="radio-inline"> <input type="radio" name="conn_type_radio" id="conn_type_radio" value="local" checked="checked"> oxd-server</label>
+                            <label class="radio-inline"> <input type="radio" name="conn_type_radio" id="conn_type_radio" value="web"> oxd-https-extension</label>
                         </div>
                         <div id="conn">
                             <label class="control-label col-sm-3" id="conn_label" style="text-align: left"></label>
@@ -307,10 +229,8 @@
                     <div class="row">
                         &nbsp;
                         <button type="button" class="btn btn-success" value="Register" id="btnRegister" style="text-align: left;">Register</button>
-                        <button type="button" class="btn  btn-primary" value="Update" id="btnUpdate" style="text-align: left">Update</button>
-                        <button type="button" class="btn  btn-primary" value="Edit" id="btnEdit" style="text-align: left">Edit</button>
-                        <button type="button" class="btn  btn-danger" value="Delete" id="btnDelete" style="text-align: left">Delete</button>
-                        <a href="~/Home/Index" class="btn btn-default">Login Page</a>
+                        <button type="button" class="btn btn-danger" value="Delete" id="btnDelete" style="text-align: left">Delete</button>
+                        <button type="button" class="btn btn-info" value="ProtectResource" id="btnProtect" style="text-align: left;">Protect Resource</button>
 
                     </div>
 
@@ -321,7 +241,7 @@
 
 
                     </div>
-
+                    <div id="divResult"></div>
 
                 </form>
 

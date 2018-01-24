@@ -222,6 +222,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\MakeWebRequest.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\OxdModel.cs" />
     <Compile Include="Models\OxdSetting.cs" />
@@ -258,6 +259,7 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="oxd_config.json" />
+    <Content Include="README.md" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\ai.1.0.3-build05630.js" />
     <Content Include="Scripts\ai.1.0.3-build05630.min.js" />
@@ -316,6 +318,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\UserInfo.cshtml" />
     <Content Include="Views\Home\UMA.cshtml" />
+    <Content Include="Views\Home\Resource.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

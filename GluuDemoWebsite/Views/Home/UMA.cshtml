@@ -38,6 +38,20 @@
                 { },
                 function (data) {
                     jQuery("#divResult").html("UMA RP Get Claims Gathering URL: <br/>" + data.Response);
+                    window.location.href = data.Response;
+                }
+            );
+        });
+
+
+        jQuery('#btnGetResource').click(function (event) {
+            jQuery.post("/Home/GetResource",
+                {},
+                function (data) {
+                    jQuery("#divResult").html("Resource: <br/>" + data.Response);
+                    if (data.action == "redirect") {
+                        window.location.href = data.Response;
+                    }
                 }
             );
         });
@@ -47,15 +61,12 @@
 
 <div class="container">
 <h1>oxd C# Application - UMA</h1>
+    
     <div class="row">
         <div class="col-md-4">
-            <ul class="list-group">
-                <li class="list-group-item"><input type="button" id="btnProtect" name="btnProtect" class="btn-link" value="UMA RS Protect" /></li>
-                <li class="list-group-item"><input type="button" id="btnCheckAccess" name="btnCheckAccess" class="btn-link" value="UMA RS Check Access" /></li>
-                <li class="list-group-item"><input type="button" id="btnGetRpt" name="btnGetRpt" class="btn-link" value="UMA RP Get RPT" /></li>
-                <li class="list-group-item"><input type="button" id="btnGetClaimsGatheringUrl" name="btnGetClaimsGatheringUrl" class="btn-link" value="UMA RP Get Claims-Gathering URL" /></li>
-            </ul>
+            <input type="button" id="btnGetResource" name="btnGetResource" class="btn btn-success" value="Get Resource" />
         </div>
     </div>
+
     <div id="divResult"></div>
 </div>

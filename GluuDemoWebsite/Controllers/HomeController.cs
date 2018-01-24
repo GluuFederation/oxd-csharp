@@ -101,8 +101,9 @@ namespace GluuDemoWebsite.Controllers
             setupClientInputParams.ClientName = oxd.ClientName;
             setupClientInputParams.Scope = scope;
             setupClientInputParams.GrantTypes = grant_types;
-           // setupClientInputParams.ClientId = oxd.ClientId;
-           // setupClientInputParams.ClientSecret = oxd.ClientSecret;
+            //setupClientInputParams.ClientId = oxd.ClientId;
+            //setupClientInputParams.ClientSecret = oxd.ClientSecret;
+            setupClientInputParams.ClaimsRedirecturi = new List<string> { ConfigurationManager.AppSettings["ClaimsRedirectURI"] };
 
             var setupClientResponse = new SetupClientResponse();
 
@@ -128,6 +129,7 @@ namespace GluuDemoWebsite.Controllers
                 return Json(new { oxdId = oxd.OxdId, clientId = clientid, clientSecret = clientsecret });
             }
         }
+
         /// <summary>
         /// Write oxd settings into json file
         /// </summary>
@@ -158,6 +160,7 @@ namespace GluuDemoWebsite.Controllers
             string updatejsonstring = Newtonsoft.Json.JsonConvert.SerializeObject(oxdsettings, Newtonsoft.Json.Formatting.None);
             System.IO.File.WriteAllText(Server.MapPath(@ConfigurationManager.AppSettings["oxd_config"]), updatejsonstring);
         }
+
         /// <summary>
         /// update oxd server and settings json file
         /// </summary>
@@ -261,7 +264,6 @@ namespace GluuDemoWebsite.Controllers
         /// </summary>
         /// <param name="oxd"></param>
         /// <returns></returns>
-
         [HttpPost]
         public ActionResult Index(OxdModel oxd)
         {
@@ -437,11 +439,12 @@ namespace GluuDemoWebsite.Controllers
 
             return View();
         }
+
+
         /// <summary>
         /// Returns the logout URL
         /// </summary>
         /// <returns></returns>
-
         public ActionResult Logout()
         {
             var getLogoutUriInputParams = new GetLogoutUrlParams();
@@ -478,11 +481,11 @@ namespace GluuDemoWebsite.Controllers
             return Json(new { LogoutUri = getLogoutUriResponse.Data.LogoutUri });
 
         }
+
         /// <summary>
         /// Checks for the registration_endpoint of the ophost
         /// </summary>
         /// <returns></returns>
-
         [HttpPost]
         public ActionResult CheckRegistrationEndPoint()
         {
@@ -526,14 +529,15 @@ namespace GluuDemoWebsite.Controllers
         #endregion
 
 
-        #region UMA related methods
-
         public ActionResult UMA()
         {
             Loadoxdsettings();
             return View();
         }
 
+
+        #region UMA methods for functionality Test
+        
         [HttpPost]
         public ActionResult ProtectResources()
         {
@@ -546,7 +550,7 @@ namespace GluuDemoWebsite.Controllers
             {
                 new ProtectResource
                 {
-                    Path = "/scim",
+                    Path = "/GetAll",
                     ProtectConditions = new List<ProtectCondition>
                     {
                         new ProtectCondition
@@ -558,7 +562,7 @@ namespace GluuDemoWebsite.Controllers
                     }
                 }
             };
-
+            
             var protectResponse = new UmaRsProtectResponse();
 
             //For OXD Local
@@ -593,7 +597,7 @@ namespace GluuDemoWebsite.Controllers
             var checkAccessClient = new UmaRsCheckAccessClient();
 
             string rpt = "";
-            string path = "/scim";
+            string path = "/GetAll";
             string httpMethod = "GET";
 
             if (Session["rpt"] != null)
@@ -646,9 +650,14 @@ namespace GluuDemoWebsite.Controllers
             if (Session["uma_ticket"] != null)
                 ticket = Session["uma_ticket"].ToString();
 
+            string state = "";
+            if (Session["uma_state"] != null)
+                state = Session["uma_state"].ToString();
+
             //prepare input params for Protect Resource
             getRptParams.OxdId = oxd_id;
             getRptParams.ticket = ticket;
+            getRptParams.state = state;
 
 
             var getRptResponse = new GetRPTResponse();
@@ -678,6 +687,12 @@ namespace GluuDemoWebsite.Controllers
                 return Json(new { Response = JsonConvert.SerializeObject(getRptResponse.Data) });
             }
 
+            if (getRptResponse.Status.ToLower().Equals("error") && getRptResponse.Data.Error.ToLower().Equals("need_info"))
+            {
+                Session["uma_ticket"] = getRptResponse.Data.Details.Ticket;
+                return Json(new { Response = "error: need_info" });
+            }
+
             throw new Exception("Obtaining RPT is not successful. Check OXD Server log for error details.");
         }
 
@@ -694,7 +709,7 @@ namespace GluuDemoWebsite.Controllers
             //prepare input params for Check Access
             getClaimsGatheringUrlParams.OxdId = oxd_id;
             getClaimsGatheringUrlParams.Ticket = ticket;
-            getClaimsGatheringUrlParams.ClaimsRedirectURI = "https://client.example.com";
+            getClaimsGatheringUrlParams.ClaimsRedirectURI = ConfigurationManager.AppSettings["ClaimsRedirectURI"];
 
 
             var getClaimsGatheringUrlResponse = new UmaRpGetClaimsGatheringUrlResponse();
@@ -718,7 +733,226 @@ namespace GluuDemoWebsite.Controllers
             }
 
             //process response
-            return Json(new { Response = JsonConvert.SerializeObject(getClaimsGatheringUrlResponse.Data) });
+            return Json(new { Response = getClaimsGatheringUrlResponse.Data.url });
+            
+        }
+        
+        #endregion
+
+
+        #region UMA Implementation
+        
+        public ActionResult GetUMAClaims()
+        {
+            Session["uma_state"] = Request.Params["state"];
+            Session["uma_ticket"] = Request.Params["ticket"];
+
+            return RedirectToAction("Resource");
+            //Response.Redirect("/UMA");
+        }
+
+        public ActionResult Resource()
+        {
+            if (Session["uma_state"] != null && Session["uma_ticket"] != null)
+            {
+                string rptStatus = GetRpt();
+
+                if (rptStatus == "error")
+                {
+                    ViewBag.Resource = "Error while accessing the Resource.";
+                    return View();
+                }
+
+                var checkAccessParams = new UmaRsCheckAccessParams();
+                string endpoint = ConfigurationManager.AppSettings["ResourceEndpoint"];
+                var method = HttpVerb.GET;
+                var request = new MakeWebRequest<UmaRsCheckAccessParams>();
+
+                var response = string.Empty;
+                if (rptStatus == "got_ticket")
+                {
+                    response = GetClaims();
+                }
+                else if (rptStatus == "got_rpt")
+                {
+                    response = request.MakeRequest(endpoint, method, Session["rpt"].ToString(), checkAccessParams);
+                }
+
+                ViewBag.Resource = response;
+                Session.Clear();
+            }
+            else
+            {
+                ViewBag.Resource = "No Resource fetched.";
+            }
+
+            return View();
+        }
+        
+        [HttpPost]
+        public ActionResult GetResource()
+        {
+
+            //RS Check Access----------
+            var checkAccessParams = new UmaRsCheckAccessParams();
+
+            string endpoint = ConfigurationManager.AppSettings["ResourceEndpoint"];
+            var method = HttpVerb.GET;
+
+            var request = new MakeWebRequest<UmaRsCheckAccessParams>();
+
+            var response = request.MakeRequest(endpoint, method, "", checkAccessParams);
+
+            string ticketResponse = GetTicket(response);
+            Session["uma_ticket"] = ticketResponse;
+
+
+            //--------RS Check Access
+
+            if (ticketResponse == "Authorized Resource")
+                return Json(new { Response = response, action = "" });
+            else if (ticketResponse == "Error")
+                return Json(new { Response = "Error occurred", action = "" });
+
+
+            //RP Get RPT--------------
+            string rptStatus = GetRpt();
+
+            if (rptStatus == "got_ticket")
+            {
+                response = GetClaims();
+            }
+            else if (rptStatus == "got_rpt")
+            {
+                response = request.MakeRequest(endpoint, method, Session["rpt"].ToString(), checkAccessParams);
+                return Json(new { Response = response, action = "" });
+            }
+
+            return Json(new { Response = response, action = "redirect" });
+
+        }
+
+        private string GetTicket(string response)
+        {
+            if (response.Contains("Unauthorized"))
+            {
+                var respArray = response.Split(';');
+
+                foreach (var ticketString in respArray)
+                {
+                    if (ticketString.Contains("ticket"))
+                    {
+                        var ticketArray = ticketString.Split(':');
+                        return ticketArray[1];
+                    }
+                }
+            }
+            else if (response.Contains("Error occurred"))
+            {
+                return "Error";
+            }
+
+            return "Authorized Resource";
+        }
+        
+        public string GetRpt()
+        {
+            var getRptParams = new UmaRpGetRptParams();
+            var getRptClient = new UmaRpGetRptClient();
+
+            string ticket = "";
+            if (Session["uma_ticket"] != null)
+            {
+                ticket = Session["uma_ticket"].ToString();
+                getRptParams.ticket = ticket;
+            }
+
+            string state = "";
+            if (Session["uma_state"] != null)
+            {
+                state = Session["uma_state"].ToString();
+                getRptParams.state = state;
+            }
+
+
+            //prepare input params for Protect Resource
+            getRptParams.OxdId = oxd_id;
+            //getRptParams.ticket = ticket;
+            //getRptParams.state = state;
+
+
+            var getRptResponse = new GetRPTResponse();
+
+            //For OXD Local
+            if (OXDType == "local")
+            {
+                //Get protection access token
+                getRptParams.ProtectionAccessToken = GetProtectionAccessToken(oxdHost, oxdPort);
+                //Get RPT
+                getRptResponse = getRptClient.GetRPT(oxdHost, oxdPort, getRptParams);
+            }
+
+            //For OXD Web
+            if (OXDType == "web")
+            {
+                //Get protection access token
+                getRptParams.ProtectionAccessToken = GetProtectionAccessToken(httpresturl);
+                //Get RPT
+                getRptResponse = getRptClient.GetRPT(httpresturl, getRptParams);
+            }
+            string response = "error";
+            //process response
+            if (getRptResponse.Status.ToLower().Equals("ok"))
+            {
+                Session["rpt"] = getRptResponse.Data.Rpt;
+                response = "got_rpt";
+            }
+
+            if (getRptResponse.Status.ToLower().Equals("error") && getRptResponse.Data.Error.ToLower().Equals("need_info"))
+            {
+                Session["uma_ticket"] = getRptResponse.Data.Details.Ticket;
+                response = "got_ticket";
+            }
+
+            return response;
+        }
+        
+        public string GetClaims()
+        {
+            var getClaimsGatheringUrlParams = new UmaRpGetClaimsGatheringUrlParams();
+            var getClaimsGatheringUrlClient = new UmaRpGetClaimsGatheringUrlClient();
+
+            string ticket = "";
+            if (Session["uma_ticket"] != null)
+                ticket = Session["uma_ticket"].ToString();
+
+            //prepare input params for Check Access
+            getClaimsGatheringUrlParams.OxdId = oxd_id;
+            getClaimsGatheringUrlParams.Ticket = ticket;
+            getClaimsGatheringUrlParams.ClaimsRedirectURI = ConfigurationManager.AppSettings["ClaimsRedirectURI"];
+
+
+            var getClaimsGatheringUrlResponse = new UmaRpGetClaimsGatheringUrlResponse();
+
+            //For OXD Local
+            if (OXDType == "local")
+            {
+                //Get protection access token
+                getClaimsGatheringUrlParams.ProtectionAccessToken = GetProtectionAccessToken(oxdHost, oxdPort);
+                //Authorize RPT
+                getClaimsGatheringUrlResponse = getClaimsGatheringUrlClient.GetClaimsGatheringUrl(oxdHost, oxdPort, getClaimsGatheringUrlParams);
+            }
+
+            //For OXD Web
+            if (OXDType == "web")
+            {
+                //Get protection access token
+                getClaimsGatheringUrlParams.ProtectionAccessToken = GetProtectionAccessToken(httpresturl);
+                //Authorize RPT
+                getClaimsGatheringUrlResponse = getClaimsGatheringUrlClient.GetClaimsGatheringUrl(httpresturl, getClaimsGatheringUrlParams);
+            }
+
+            return getClaimsGatheringUrlResponse.Data.url;
         }
 
         #endregion
