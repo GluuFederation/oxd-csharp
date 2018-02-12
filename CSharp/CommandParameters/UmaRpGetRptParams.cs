@@ -22,44 +22,44 @@ namespace oxdCSharp.UMA.CommandParameters
         public string ticket { get; set; }
         
         /// <summary>
-        /// Ticket from  RS Check Access.
+        /// Claim Token
         /// </summary>
-        /// <remarks><b>REQUIRED</b> Field.</remarks>
+        /// <remarks><b>OPTIONAL</b> Field.</remarks>
         [JsonProperty("claim_token")]
         public string ClaimToken { get; set; }
         
         /// <summary>
-        /// Ticket from  RS Check Access.
+        /// Claim Token Format
         /// </summary>
-        /// <remarks><b>REQUIRED</b> Field.</remarks>
+        /// <remarks><b>OPTIONAL</b> Field.</remarks>
         [JsonProperty("claim_token_format")]
         public string ClaimTokenFormat { get; set; }
         
         /// <summary>
-        /// Ticket from  RS Check Access.
+        /// PCT
         /// </summary>
-        /// <remarks><b>REQUIRED</b> Field.</remarks>
+        /// <remarks><b>OPTIONAL</b> Field.</remarks>
         [JsonProperty("pct")]
         public string pct { get; set; }
         
         /// <summary>
         /// RPT- Request Party Token.
         /// </summary>
-        /// <remarks><b>REQUIRED</b> Field.</remarks>
+        /// <remarks><b>OPTIONAL</b> Field.</remarks>
         [JsonProperty("access_token")]
         public string rpt { get; set; }
 
         /// <summary>
         /// scope
         /// </summary>
-        /// <remarks><b>REQUIRED</b> Field.</remarks>
+        /// <remarks><b>OPTIONAL</b> Field.</remarks>
         [JsonProperty("scope")]
         public string scope { get; set; }
 
         /// <summary>
         /// state returned from UMA_RP_GET_CLAIMS_GATHERING_URL
         /// </summary>
-        /// <remarks><b>state</b> Field.</remarks>
+        /// <remarks><b>OPTIONAL</b> Field.</remarks>
         [JsonProperty("state")]
         public string state { get; set; }
 

@@ -67,7 +67,7 @@ namespace GluuDemoWebsite.Controllers
                 oxdPort = oxdsettings.OxdPort;
 
 
-            string displayjsonstring = JsonConvert.SerializeObject(oxdsettings,Formatting.None);
+            string displayjsonstring = JsonConvert.SerializeObject(oxdsettings, Formatting.None);
 
 
             return Json(displayjsonstring, JsonRequestBehavior.AllowGet);
@@ -82,17 +82,16 @@ namespace GluuDemoWebsite.Controllers
         }
 
         /// <summary>
-        ///It registers the client  
+        /// Setup a new client for those OPs which allow dynamic client registration.
         /// </summary>
         /// <param name="oxd"></param>
         /// <returns></returns>
-
         [HttpPost]
         public ActionResult SetupClient(OxdModel oxd)
         {
             Loadoxdsettings();
-            var setupClientInputParams = new SetupClientParams();
-            var registerSiteClient = new SetupClientClient();
+            var setupClientInputParams = new SetupClientParams();//Test
+            var setupClientClient = new SetupClientClient();
 
             //prepare input params for Setup client
             setupClientInputParams.AuthorizationRedirectUri = oxd.RedirectUrl;
@@ -111,15 +110,15 @@ namespace GluuDemoWebsite.Controllers
             {
                 //Setup Client using OXD Local
                 if (oxd.ConnectionType == "local")
-                    setupClientResponse = registerSiteClient.SetupClient(oxdHost, oxd.OxdPort, setupClientInputParams);
+                    setupClientResponse = setupClientClient.SetupClient(oxdHost, oxd.OxdPort, setupClientInputParams);
 
 
                 //Setup Client using OXD Web
                 if (oxd.ConnectionType == "web")
-                    setupClientResponse = registerSiteClient.SetupClient(oxd.HttpRestUrl, setupClientInputParams);
+                    setupClientResponse = setupClientClient.SetupClient(oxd.HttpRestUrl, setupClientInputParams);
 
 
-                SetConfigValues(oxd, setupClientResponse);
+                SetConfigValues(oxd, setupClientResponse.Data.OxdId, setupClientResponse.Data.clientId, setupClientResponse.Data.clientSecret);
 
                 return Json(new { oxdId = setupClientResponse.Data.OxdId, clientId = setupClientResponse.Data.clientId, clientSecret = setupClientResponse.Data.clientSecret });
 
@@ -130,12 +129,67 @@ namespace GluuDemoWebsite.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Register a client. This is not required when SetupClient is used.
+        /// ClientId and ClientSecret are required for OPs which don't support dynamic client registration (e.g. Google). For these OPs Register_Site is used instead of Setup_Client.
+        /// </summary>
+        /// <param name="oxd"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult RegisterSite(OxdModel oxd)
+        {
+            Loadoxdsettings();
+            var registerSiteInputParams = new RegisterSiteParams();//Test
+            var registerSiteClient = new RegisterSiteClient();
+
+            //prepare input params for Setup client
+            registerSiteInputParams.AuthorizationRedirectUri = oxd.RedirectUrl;
+            registerSiteInputParams.OpHost = oxd.OpHost;
+            registerSiteInputParams.PostLogoutRedirectUri = oxd.PostLogoutRedirectUrl;
+            registerSiteInputParams.ClientName = oxd.ClientName;
+            registerSiteInputParams.Scope = scope;
+            registerSiteInputParams.GrantTypes = grant_types;
+            registerSiteInputParams.ClientId = oxd.ClientId;
+            registerSiteInputParams.ClientSecret = oxd.ClientSecret;
+            registerSiteInputParams.ClaimsRedirecturi = new List<string> { ConfigurationManager.AppSettings["ClaimsRedirectURI"] };
+
+            var registerSiteResponse = new RegisterSiteResponse();
+
+            if (string.IsNullOrEmpty(oxd.OxdId))
+            {
+                if (oxd.ConnectionType == "local")
+                {
+                    //registerSiteInputParams.ProtectionAccessToken = GetProtectionAccessToken(oxdHost, oxd.OxdPort);//Keep this line if protect_commands_with_access_token is set True for oxd-server
+                    registerSiteResponse = registerSiteClient.RegisterSite(oxdHost, oxd.OxdPort, registerSiteInputParams);
+                }
+
+
+                if (oxd.ConnectionType == "web")
+                {
+                    registerSiteInputParams.ProtectionAccessToken = GetProtectionAccessToken(oxd.HttpRestUrl);
+                    registerSiteResponse = registerSiteClient.RegisterSite(oxd.HttpRestUrl, registerSiteInputParams);
+                }
+
+
+                SetConfigValues(oxd, registerSiteResponse.Data.OxdId, oxd.ClientId, oxd.ClientSecret);
+
+                return Json(new { oxdId = registerSiteResponse.Data.OxdId, clientId = oxd.ClientId, clientSecret = oxd.ClientSecret });
+
+            }
+            else
+            {
+                return Json(new { oxdId = oxd.OxdId, clientId = clientid, clientSecret = clientsecret });
+            }
+        }
+
+
         /// <summary>
         /// Write oxd settings into json file
         /// </summary>
         /// <param name="oxd">oxd models</param>
         /// <param name="setupClientResponse">oxd setup client response from oxd server</param>
-        public void SetConfigValues(OxdModel oxd, SetupClientResponse setupClientResponse)
+        public void SetConfigValues(OxdModel oxd, string oxd_id, string client_id, string client_secret)
         {
 
             string configObjString = System.IO.File.ReadAllText(Server.MapPath(@ConfigurationManager.AppSettings["oxd_config"]));
@@ -145,9 +199,9 @@ namespace GluuDemoWebsite.Controllers
             oxdsettings.PostLogoutRedirectUrl = oxd.PostLogoutRedirectUrl;
             oxdsettings.ClientName = oxd.ClientName;
             oxdsettings.ConnectionType = oxd.ConnectionType;
-            oxdsettings.OxdId= setupClientResponse.Data.OxdId;
-            oxdsettings.ClientId = setupClientResponse.Data.clientId;
-            oxdsettings.ClientSecret = setupClientResponse.Data.clientSecret;
+            oxdsettings.OxdId = oxd_id;
+            oxdsettings.ClientId = client_id;
+            oxdsettings.ClientSecret = client_secret;
 
             if (oxd.ConnectionType == "local")
                 oxdsettings.OxdPort = oxd.OxdPort;
@@ -191,16 +245,12 @@ namespace GluuDemoWebsite.Controllers
 
                 var updateSiteResponse = new UpdateSiteResponse();
 
-                //Update Client using  OXD Local
                 if (oxd.ConnectionType == "local")
                 {
-                    //Get ProtectionAccessToken
-                    updateSiteInputParams.ProtectionAccessToken = GetProtectionAccessToken(oxdHost, oxd.OxdPort);
-                    // Update Site response
+                    //updateSiteInputParams.ProtectionAccessToken = GetProtectionAccessToken(oxdHost, oxd.OxdPort);//Keep this line if protect_commands_with_access_token is set True for oxd-server
                     updateSiteResponse = updateSiteClient.UpdateSiteRegistration(oxdHost, oxd.OxdPort, updateSiteInputParams);
                 }
 
-                //Update Client using OXD Web
                 if (oxd.ConnectionType == "web")
                 {
                     updateSiteInputParams.ProtectionAccessToken = GetProtectionAccessToken(oxd.HttpRestUrl);
@@ -216,6 +266,81 @@ namespace GluuDemoWebsite.Controllers
 
             //Process Response
             return Json(new { status = updateStatus });
+
+        }
+
+        [HttpPost]
+        public ActionResult IntrospectAccessToken(OxdModel oxd)
+        {
+            Loadoxdsettings();
+            
+            var introspectAccessTokenParams = new IntrospectAccessTokenParams();
+            var introspectAccessTokenClient = new IntrospectAccessTokenClient();
+
+            introspectAccessTokenParams.OxdId = oxd.OxdId;
+            
+            var introspectAccessTokenResponse = new IntrospectAccessTokenResponse();
+
+            if (oxd.ConnectionType == "local")
+            {
+                introspectAccessTokenParams.AccessToken = GetProtectionAccessToken(oxdHost, oxd.OxdPort);
+                introspectAccessTokenResponse = introspectAccessTokenClient.IntrospectAccessToken(oxdHost, oxd.OxdPort, introspectAccessTokenParams);
+            }
+
+            if (oxd.ConnectionType == "web")
+            {
+                introspectAccessTokenParams.AccessToken = GetProtectionAccessToken(oxd.HttpRestUrl);
+                introspectAccessTokenResponse = introspectAccessTokenClient.IntrospectAccessToken(oxd.HttpRestUrl, introspectAccessTokenParams);
+            }
+
+            
+            //Process Response
+            return Json(new { status = introspectAccessTokenResponse.Status });
+
+        }
+
+        /// <summary>
+        /// delete client from oxd server and settings json file
+        /// </summary>
+        /// <param name="oxd"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult Delete(OxdModel oxd)
+        {
+            Loadoxdsettings();
+
+            string deleteStatus = "ok";
+
+            if (dynamic_registration)
+            {
+                var removeSiteInputParams = new RemoveSiteParams();
+                var removeSiteClient = new RemoveSiteClient();
+
+                removeSiteInputParams.OxdId = oxd.OxdId;
+
+                var removeSiteResponse = new RemoveSiteResponse();
+
+                if (oxd.ConnectionType == "local")
+                {
+                    //removeSiteInputParams.ProtectionAccessToken = GetProtectionAccessToken(oxdHost, oxd.OxdPort);//Keep this line if protect_commands_with_access_token is set True for oxd-server
+                    removeSiteResponse = removeSiteClient.RemoveSite(oxdHost, oxd.OxdPort, removeSiteInputParams);
+                }
+
+                if (oxd.ConnectionType == "web")
+                {
+                    removeSiteInputParams.ProtectionAccessToken = GetProtectionAccessToken(oxd.HttpRestUrl);
+                    removeSiteResponse = removeSiteClient.RemoveSite(oxd.HttpRestUrl, removeSiteInputParams);
+                }
+
+
+                deleteStatus = removeSiteResponse.Status;
+            }
+
+            Deleteoxdsettings();
+
+
+            //Process Response
+            return Json(new { status = deleteStatus });
 
         }
 
@@ -240,9 +365,7 @@ namespace GluuDemoWebsite.Controllers
             oxdsettings.ClientName = "";
             oxdsettings.OxdPort = 0;
             oxdsettings.HttpRestUrl = "";
-            oxdsettings.ApplicationType = "";
-           
-       
+
             oxdsettings.DynamicRegistration = false;
 
 
@@ -273,22 +396,20 @@ namespace GluuDemoWebsite.Controllers
 
             //prepare input params for Getting Auth URL from a site
             getAuthUrlInputParams.OxdId = oxd_id;
-           
-           getAuthUrlInputParams.custom_parameters.Add("param1", "value1");
+
+            getAuthUrlInputParams.custom_parameters.Add("param1", "value1");
             getAuthUrlInputParams.custom_parameters.Add("param2", "value2");
             var getAuthUrlResponse = new GetAuthorizationUrlResponse();
 
-            //Get Authorization url using OXD Local
             if (OXDType == "local")
             {
-                //Get ProtectionAccessToken
-                if (dynamic_registration)
-                    getAuthUrlInputParams.ProtectionAccessToken = GetProtectionAccessToken(oxdHost, oxdPort);
-                //Get Auth URL
+                //Keep this if protect_commands_with_access_token is set True for oxd-server
+                //if (dynamic_registration)
+                //    getAuthUrlInputParams.ProtectionAccessToken = GetProtectionAccessToken(oxdHost, oxdPort);
+                
                 getAuthUrlResponse = getAuthUrlClient.GetAuthorizationURL(oxdHost, oxdPort, getAuthUrlInputParams);
             }
 
-            //Get Authorization url using OXD Web
             if (OXDType == "web")
             {
                 if (dynamic_registration)
@@ -306,7 +427,7 @@ namespace GluuDemoWebsite.Controllers
         {
             string code = Request.Params["code"];
             string state = Request.Params["state"];
-            if (code==null && state==null)
+            if (code == null && state == null)
             {
                 return RedirectToAction("Index");
             }
@@ -318,14 +439,11 @@ namespace GluuDemoWebsite.Controllers
 
             if (dynamic_registration)
             {
-                //For OXD Server
                 if (OXDType == "local")
                 {
-                    //Get ProtectionAccessToken
                     protectionAccessToken = GetProtectionAccessToken(oxdHost, oxdPort);
                 }
 
-                //For OXD Web
                 if (OXDType == "web")
                 {
                     protectionAccessToken = GetProtectionAccessToken(httpresturl);
@@ -343,19 +461,18 @@ namespace GluuDemoWebsite.Controllers
             getTokenByCodeInputParams.OxdId = oxd_id;
             getTokenByCodeInputParams.Code = code;
             getTokenByCodeInputParams.State = state;
-            getTokenByCodeInputParams.ProtectionAccessToken = protectionAccessToken;
 
             var getTokensByCodeResponse = new GetTokensByCodeResponse();
 
-            //For OXD Server
             if (OXDType == "local")
             {
+                //getTokenByCodeInputParams.ProtectionAccessToken = protectionAccessToken;//Keep this line if protect_commands_with_access_token is set True for oxd-server
                 getTokensByCodeResponse = getTokenByCodeClient.GetTokensByCode(oxdHost, oxdPort, getTokenByCodeInputParams);
             }
 
-            //For OXD Web
             if (OXDType == "web")
             {
+                getTokenByCodeInputParams.ProtectionAccessToken = protectionAccessToken;
                 getTokensByCodeResponse = getTokenByCodeClient.GetTokensByCode(httpresturl, getTokenByCodeInputParams);
             }
 
@@ -368,32 +485,57 @@ namespace GluuDemoWebsite.Controllers
             #region Get Access Token By Refresh Token
             if (dynamic_registration)
             {
-                var getAccessTokenByRefreshTokenInputParams = new GetAccessTokenByRefreshTokenParams();
-                var getAccessTokenByRefreshTokenClient = new GetAccessTokenByRefreshTokenClient();
+                #region Introspect
+                // Introspect the access token which will return the token status (Active=True/False)
 
-                //prepare input params for Getting Tokens from a site
-                getAccessTokenByRefreshTokenInputParams.OxdId = oxd_id;
-                getAccessTokenByRefreshTokenInputParams.RefreshToken = refreshToken;
-                getAccessTokenByRefreshTokenInputParams.ProtectionAccessToken = protectionAccessToken;
+                var introspectAccessTokenParams = new IntrospectAccessTokenParams();
+                var introspectAccessTokenClient = new IntrospectAccessTokenClient();
 
+                introspectAccessTokenParams.OxdId = oxd_id;
+                introspectAccessTokenParams.AccessToken = accessToken;
 
-                var getAccessTokenByRefreshTokenResponse = new GetAccessTokenByRefreshTokenResponse();
+                var introspectAccessTokenResponse = new IntrospectAccessTokenResponse();
 
-                //For OXD Server
                 if (OXDType == "local")
                 {
-                    getAccessTokenByRefreshTokenResponse = getAccessTokenByRefreshTokenClient.GetAccessTokenByRefreshToken(oxdHost, oxdPort, getAccessTokenByRefreshTokenInputParams);
+                    introspectAccessTokenResponse = introspectAccessTokenClient.IntrospectAccessToken(oxdHost, oxdPort, introspectAccessTokenParams);
                 }
 
-                //For OXD Web
                 if (OXDType == "web")
                 {
-                    getAccessTokenByRefreshTokenResponse = getAccessTokenByRefreshTokenClient.GetAccessTokenByRefreshToken(httpresturl, getAccessTokenByRefreshTokenInputParams);
+                    introspectAccessTokenResponse = introspectAccessTokenClient.IntrospectAccessToken(httpresturl, introspectAccessTokenParams);
                 }
+                #endregion
+
+                // If the access_token is not active get a fresh access_token by using the refresh_token
+                if (!introspectAccessTokenResponse.Data.Active)
+                {
+
+                    var getAccessTokenByRefreshTokenInputParams = new GetAccessTokenByRefreshTokenParams();
+                    var getAccessTokenByRefreshTokenClient = new GetAccessTokenByRefreshTokenClient();
+
+                    //prepare input params for Getting Tokens from a site
+                    getAccessTokenByRefreshTokenInputParams.OxdId = oxd_id;
+                    getAccessTokenByRefreshTokenInputParams.RefreshToken = refreshToken;
+                    
+                    var getAccessTokenByRefreshTokenResponse = new GetAccessTokenByRefreshTokenResponse();
+
+                    if (OXDType == "local")
+                    {
+                        //getAccessTokenByRefreshTokenInputParams.ProtectionAccessToken = protectionAccessToken;//Keep this line if protect_commands_with_access_token is set True for oxd-server
+                        getAccessTokenByRefreshTokenResponse = getAccessTokenByRefreshTokenClient.GetAccessTokenByRefreshToken(oxdHost, oxdPort, getAccessTokenByRefreshTokenInputParams);
+                    }
+
+                    if (OXDType == "web")
+                    {
+                        getAccessTokenByRefreshTokenInputParams.ProtectionAccessToken = protectionAccessToken;
+                        getAccessTokenByRefreshTokenResponse = getAccessTokenByRefreshTokenClient.GetAccessTokenByRefreshToken(httpresturl, getAccessTokenByRefreshTokenInputParams);
+                    }
 
 
-                accessToken = getAccessTokenByRefreshTokenResponse.Data.AccessToken;
-                refreshToken = getAccessTokenByRefreshTokenResponse.Data.RefreshToken;
+                    accessToken = getAccessTokenByRefreshTokenResponse.Data.AccessToken;
+                    refreshToken = getAccessTokenByRefreshTokenResponse.Data.RefreshToken;
+                }
             }
             #endregion
 
@@ -406,20 +548,18 @@ namespace GluuDemoWebsite.Controllers
             //prepare input params for Getting User Info from a site
             getUserInfoInputParams.OxdId = oxd_id;
             getUserInfoInputParams.AccessToken = accessToken;
-            getUserInfoInputParams.ProtectionAccessToken = protectionAccessToken;
-
-
+            
             var getUserInfoResponse = new GetUserInfoResponse();
 
-            //For OXD Server
             if (OXDType == "local")
             {
+                //getUserInfoInputParams.ProtectionAccessToken = protectionAccessToken;//Keep this line if protect_commands_with_access_token is set True for oxd-server
                 getUserInfoResponse = getUserInfoClient.GetUserInfo(oxdHost, oxdPort, getUserInfoInputParams);
             }
 
-            //For OXD Web
             if (OXDType == "web")
             {
+                getUserInfoInputParams.ProtectionAccessToken = protectionAccessToken;
                 getUserInfoResponse = getUserInfoClient.GetUserInfo(httpresturl, getUserInfoInputParams);
             }
 
@@ -455,28 +595,25 @@ namespace GluuDemoWebsite.Controllers
 
             var getLogoutUriResponse = new GetLogoutUriResponse();
 
-            //For OXD Local
             if (OXDType == "local")
             {
-                //Get ProtectionAccessToken
-                if (dynamic_registration)
-                    getLogoutUriInputParams.ProtectionAccessToken = GetProtectionAccessToken(oxdHost, oxdPort);
-                //Get Logout Url
+                //Keep this if protect_commands_with_access_token is set True for oxd-server
+                //if (dynamic_registration)
+                //    getLogoutUriInputParams.ProtectionAccessToken = GetProtectionAccessToken(oxdHost, oxdPort);
+                
                 getLogoutUriResponse = getLogoutUriClient.GetLogoutURL(oxdHost, oxdPort, getLogoutUriInputParams);
             }
 
-            //For OXD Web
             if (OXDType == "web")
             {
-                //Get ProtectionAccessToken
                 if (dynamic_registration)
                     getLogoutUriInputParams.ProtectionAccessToken = GetProtectionAccessToken(httpresturl);
-                //Get Logout Url
+                
                 getLogoutUriResponse = getLogoutUriClient.GetLogoutURL(httpresturl, getLogoutUriInputParams);
             }
-
-
+            
             Session.Clear();
+            
             //Process response
             return Json(new { LogoutUri = getLogoutUriResponse.Data.LogoutUri });
 
@@ -537,7 +674,7 @@ namespace GluuDemoWebsite.Controllers
 
 
         #region UMA methods for functionality Test
-        
+
         [HttpPost]
         public ActionResult ProtectResources()
         {
@@ -556,27 +693,28 @@ namespace GluuDemoWebsite.Controllers
                         new ProtectCondition
                         {
                             HttpMethods = new List<string> { "GET" },
-                            Scopes = new List<string> { "https://scim-test.gluu.org/identity/seam/resource/restv1/scim/vas1" },
-                            TicketScopes = new List<string> { "https://scim-test.gluu.org/identity/seam/resource/restv1/scim/vas1" }
+                            //Scopes = new List<string>{ "https://client.example.com:44300/api" },
+                            //TicketScopes = new List<string>{ "https://client.example.com:44300/api" },
+                            ScopeExpressions = new ScopeExpression
+                            {
+                                Rule = JsonConvert.DeserializeObject("{'and':[{'or':[{'var':0},{'var':1}]},{'var':2}]}"),
+                                Data = new List<string>{"http://photoz.example.com/dev/actions/a1","http://photoz.example.com/dev/actions/a2","http://photoz.example.com/dev/actions/a3" }
+                            }
                         }
                     }
                 }
             };
-            
+
             var protectResponse = new UmaRsProtectResponse();
 
-            //For OXD Local
             if (OXDType == "local")
             {
-                //Get protection access token
-                protectParams.ProtectionAccessToken = GetProtectionAccessToken(oxdHost, oxdPort);
+                //protectParams.ProtectionAccessToken = GetProtectionAccessToken(oxdHost, oxdPort);//Keep this line if protect_commands_with_access_token is set True for oxd-server
                 protectResponse = protectClient.ProtectResources(oxdHost, oxdPort, protectParams);
             }
 
-            //For OXD Web
             if (OXDType == "web")
             {
-                //Get protection access token
                 protectParams.ProtectionAccessToken = GetProtectionAccessToken(httpresturl);
                 protectResponse = protectClient.ProtectResources(httpresturl, protectParams);
             }
@@ -587,7 +725,7 @@ namespace GluuDemoWebsite.Controllers
                 return Json(new { Response = protectResponse.Status });
             }
 
-            throw new Exception("Procteting Resource is not successful. Check OXD Server log for error details.");
+            throw new Exception("Protecting Resource is not successful. Check OXD Server log for error details.");
         }
 
         [HttpPost]
@@ -612,16 +750,14 @@ namespace GluuDemoWebsite.Controllers
 
             var checkAccessResponse = new UmaRsCheckAccessResponse();
 
-            //For OXD Local
             if (OXDType == "local")
             {
                 //Get protection access token
-                checkAccessParams.ProtectionAccessToken = GetProtectionAccessToken(oxdHost, oxdPort);
+                //checkAccessParams.ProtectionAccessToken = GetProtectionAccessToken(oxdHost, oxdPort);//Keep this line if protect_commands_with_access_token is set True for oxd-server
                 //Check Access
                 checkAccessResponse = checkAccessClient.CheckAccess(oxdHost, oxdPort, checkAccessParams);
             }
 
-            //For OXD Web
             if (OXDType == "web")
             {
                 //Get protection access token
@@ -662,16 +798,14 @@ namespace GluuDemoWebsite.Controllers
 
             var getRptResponse = new GetRPTResponse();
 
-            //For OXD Local
             if (OXDType == "local")
             {
                 //Get protection access token
-                getRptParams.ProtectionAccessToken = GetProtectionAccessToken(oxdHost, oxdPort);
+                //getRptParams.ProtectionAccessToken = GetProtectionAccessToken(oxdHost, oxdPort);//Keep this line if protect_commands_with_access_token is set True for oxd-server
                 //Get RPT
                 getRptResponse = getRptClient.GetRPT(oxdHost, oxdPort, getRptParams);
             }
 
-            //For OXD Web
             if (OXDType == "web")
             {
                 //Get protection access token
@@ -697,6 +831,44 @@ namespace GluuDemoWebsite.Controllers
         }
 
         [HttpPost]
+        public ActionResult IntrospectRPT()
+        {
+            var umaIntrospectRptParams = new UmaIntrospectRptParams();
+            var umaIntrospectRptClient = new UmaIntrospectRptClient();
+
+            string rpt = "";
+            if (Session["rpt"] != null)
+            {
+                rpt = Session["rpt"].ToString();
+
+                //prepare input params for Protect Resource
+                umaIntrospectRptParams.OxdId = oxd_id;
+                umaIntrospectRptParams.RPT = rpt;
+
+                var umaIntrospectRptResponse = new UmaIntrospectRptResponse();
+
+                if (OXDType == "local")
+                {
+                    umaIntrospectRptResponse = umaIntrospectRptClient.IntrospectRpt(oxdHost, oxdPort, umaIntrospectRptParams);
+                }
+
+                if (OXDType == "web")
+                {
+                    umaIntrospectRptResponse = umaIntrospectRptClient.IntrospectRpt(httpresturl, umaIntrospectRptParams);
+                }
+
+                return Json(new { Response = JsonConvert.SerializeObject(umaIntrospectRptResponse.Data) });
+            }
+            else
+            {
+                return Json(new { Response = "RPT is null. Pass valid RPT and try again" });
+            }
+            
+
+            throw new Exception("Introspecting RPT is not successful. Check oxd Server log for error details.");
+        }
+
+        [HttpPost]
         public ActionResult GetClaimsGatheringUrl()
         {
             var getClaimsGatheringUrlParams = new UmaRpGetClaimsGatheringUrlParams();
@@ -714,16 +886,14 @@ namespace GluuDemoWebsite.Controllers
 
             var getClaimsGatheringUrlResponse = new UmaRpGetClaimsGatheringUrlResponse();
 
-            //For OXD Local
             if (OXDType == "local")
             {
                 //Get protection access token
-                getClaimsGatheringUrlParams.ProtectionAccessToken = GetProtectionAccessToken(oxdHost, oxdPort);
+                //getClaimsGatheringUrlParams.ProtectionAccessToken = GetProtectionAccessToken(oxdHost, oxdPort);//Keep this line if protect_commands_with_access_token is set True for oxd-server
                 //Authorize RPT
                 getClaimsGatheringUrlResponse = getClaimsGatheringUrlClient.GetClaimsGatheringUrl(oxdHost, oxdPort, getClaimsGatheringUrlParams);
             }
 
-            //For OXD Web
             if (OXDType == "web")
             {
                 //Get protection access token
@@ -734,14 +904,14 @@ namespace GluuDemoWebsite.Controllers
 
             //process response
             return Json(new { Response = getClaimsGatheringUrlResponse.Data.url });
-            
+
         }
-        
+
         #endregion
 
 
         #region UMA Implementation
-        
+
         public ActionResult GetUMAClaims()
         {
             Session["uma_state"] = Request.Params["state"];
@@ -775,7 +945,10 @@ namespace GluuDemoWebsite.Controllers
                 }
                 else if (rptStatus == "got_rpt")
                 {
-                    response = request.MakeRequest(endpoint, method, Session["rpt"].ToString(), checkAccessParams);
+                    if (IsRptActive(Session["rpt"].ToString()))
+                        response = request.MakeRequest(endpoint, method, Session["rpt"].ToString(), checkAccessParams);
+                    else
+                        response = "Inactive RPT";
                 }
 
                 ViewBag.Resource = response;
@@ -788,7 +961,7 @@ namespace GluuDemoWebsite.Controllers
 
             return View();
         }
-        
+
         [HttpPost]
         public ActionResult GetResource()
         {
@@ -805,9 +978,8 @@ namespace GluuDemoWebsite.Controllers
 
             string ticketResponse = GetTicket(response);
             Session["uma_ticket"] = ticketResponse;
-
-
             //--------RS Check Access
+
 
             if (ticketResponse == "Authorized Resource")
                 return Json(new { Response = response, action = "" });
@@ -824,11 +996,42 @@ namespace GluuDemoWebsite.Controllers
             }
             else if (rptStatus == "got_rpt")
             {
-                response = request.MakeRequest(endpoint, method, Session["rpt"].ToString(), checkAccessParams);
-                return Json(new { Response = response, action = "" });
+                if (IsRptActive(Session["rpt"].ToString()))
+                {
+                    response = request.MakeRequest(endpoint, method, Session["rpt"].ToString(), checkAccessParams);
+                    return Json(new { Response = response, action = "" });
+                }
+                else
+                {
+                    return Json(new { Response = "Inactive RPT", action = "" });
+                }
             }
 
             return Json(new { Response = response, action = "redirect" });
+
+        }
+
+        public bool IsRptActive(string rpt)
+        {
+            var umaIntrospectRptParams = new UmaIntrospectRptParams();
+            var umaIntrospectRptClient = new UmaIntrospectRptClient();
+
+            umaIntrospectRptParams.OxdId = oxd_id;
+            umaIntrospectRptParams.RPT = rpt;
+
+            var umaIntrospectRptResponse = new UmaIntrospectRptResponse();
+
+            if (OXDType == "local")
+            {
+                umaIntrospectRptResponse = umaIntrospectRptClient.IntrospectRpt(oxdHost, oxdPort, umaIntrospectRptParams);
+            }
+
+            if (OXDType == "web")
+            {
+                umaIntrospectRptResponse = umaIntrospectRptClient.IntrospectRpt(httpresturl, umaIntrospectRptParams);
+            }
+
+            return umaIntrospectRptResponse.Data.Active;
 
         }
 
@@ -854,7 +1057,7 @@ namespace GluuDemoWebsite.Controllers
 
             return "Authorized Resource";
         }
-        
+
         public string GetRpt()
         {
             var getRptParams = new UmaRpGetRptParams();
@@ -883,21 +1086,17 @@ namespace GluuDemoWebsite.Controllers
 
             var getRptResponse = new GetRPTResponse();
 
-            //For OXD Local
             if (OXDType == "local")
             {
-                //Get protection access token
-                getRptParams.ProtectionAccessToken = GetProtectionAccessToken(oxdHost, oxdPort);
-                //Get RPT
+                //getRptParams.ProtectionAccessToken = GetProtectionAccessToken(oxdHost, oxdPort);//Keep this line if protect_commands_with_access_token is set True for oxd-server
+                
                 getRptResponse = getRptClient.GetRPT(oxdHost, oxdPort, getRptParams);
             }
 
-            //For OXD Web
             if (OXDType == "web")
             {
-                //Get protection access token
                 getRptParams.ProtectionAccessToken = GetProtectionAccessToken(httpresturl);
-                //Get RPT
+                
                 getRptResponse = getRptClient.GetRPT(httpresturl, getRptParams);
             }
             string response = "error";
@@ -916,7 +1115,7 @@ namespace GluuDemoWebsite.Controllers
 
             return response;
         }
-        
+
         public string GetClaims()
         {
             var getClaimsGatheringUrlParams = new UmaRpGetClaimsGatheringUrlParams();
@@ -934,21 +1133,15 @@ namespace GluuDemoWebsite.Controllers
 
             var getClaimsGatheringUrlResponse = new UmaRpGetClaimsGatheringUrlResponse();
 
-            //For OXD Local
             if (OXDType == "local")
             {
-                //Get protection access token
-                getClaimsGatheringUrlParams.ProtectionAccessToken = GetProtectionAccessToken(oxdHost, oxdPort);
-                //Authorize RPT
+                //getClaimsGatheringUrlParams.ProtectionAccessToken = GetProtectionAccessToken(oxdHost, oxdPort);//Keep this line if protect_commands_with_access_token is set True for oxd-server
                 getClaimsGatheringUrlResponse = getClaimsGatheringUrlClient.GetClaimsGatheringUrl(oxdHost, oxdPort, getClaimsGatheringUrlParams);
             }
 
-            //For OXD Web
             if (OXDType == "web")
             {
-                //Get protection access token
                 getClaimsGatheringUrlParams.ProtectionAccessToken = GetProtectionAccessToken(httpresturl);
-                //Authorize RPT
                 getClaimsGatheringUrlResponse = getClaimsGatheringUrlClient.GetClaimsGatheringUrl(httpresturl, getClaimsGatheringUrlParams);
             }
 
@@ -1000,12 +1193,12 @@ namespace GluuDemoWebsite.Controllers
         {
             string configObjString = System.IO.File.ReadAllText(Server.MapPath(@ConfigurationManager.AppSettings["oxd_config"]));
             OxdSetting oxdsettings = JsonConvert.DeserializeObject<OxdSetting>(configObjString);
-            oxdsettings.AuthUrl = oxd.RedirectUrl; 
+            oxdsettings.AuthUrl = oxd.RedirectUrl;
             oxdsettings.PostLogoutRedirectUrl = oxd.PostLogoutRedirectUrl;
             oxdsettings.OpHost = oxd.OpHost;
-            oxdsettings.ConnectionType = oxd.ConnectionType; 
+            oxdsettings.ConnectionType = oxd.ConnectionType;
             oxdsettings.ClientId = oxd.ClientId;
-            oxdsettings.ClientSecret = oxd.ClientSecret;  
+            oxdsettings.ClientSecret = oxd.ClientSecret;
             oxdsettings.ClientName = oxd.ClientName;
             oxdsettings.OxdPort = oxd.OxdPort;
             oxdsettings.HttpRestUrl = oxd.HttpRestUrl;

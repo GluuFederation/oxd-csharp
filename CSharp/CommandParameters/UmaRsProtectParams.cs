@@ -76,7 +76,29 @@ namespace oxdCSharp.UMA.CommandParameters
         [JsonProperty("ticketScopes", NullValueHandling = NullValueHandling.Ignore)]
         public IList<string> TicketScopes { get; set; }
 
-
-        
+        /// <summary>
+        /// Scope expression for logical operations
+        /// </summary>
+        [JsonProperty("scope_expression")]
+        public ScopeExpression ScopeExpressions { get; set; }
     }
+
+    /// <summary>
+    /// Scope expression for logical operations
+    /// </summary>
+    public class ScopeExpression
+    {
+        /// <summary>
+        /// Logical operation rule
+        /// </summary>
+        [JsonProperty("rule")]
+        public object Rule { get; set; }
+
+        /// <summary>
+        /// Data for logical operation
+        /// </summary>
+        [JsonProperty("data")]
+        public IList<string> Data { get; set; }
+    }
+    
 }

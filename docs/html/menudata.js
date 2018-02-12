@@ -1,7 +1,7 @@
 var menudata={children:[
 {text:"Main Page",url:"index.html"},
-{text:"Packages",url:"namespaces.html",children:[
-{text:"Packages",url:"namespaces.html"}]},
+{text:"Namespaces",url:"namespaces.html",children:[
+{text:"Namespace List",url:"namespaces.html"}]},
 {text:"Classes",url:"annotated.html",children:[
 {text:"Class List",url:"annotated.html"},
 {text:"Class Index",url:"classes.html"},
@@ -17,6 +17,7 @@ var menudata={children:[
 {text:"g",url:"functions_g.html#index_g"},
 {text:"h",url:"functions_h.html#index_h"},
 {text:"i",url:"functions_i.html#index_i"},
+{text:"j",url:"functions_j.html#index_j"},
 {text:"l",url:"functions_l.html#index_l"},
 {text:"m",url:"functions_m.html#index_m"},
 {text:"n",url:"functions_n.html#index_n"},
@@ -26,10 +27,16 @@ var menudata={children:[
 {text:"s",url:"functions_s.html#index_s"},
 {text:"t",url:"functions_t.html#index_t"},
 {text:"u",url:"functions_u.html#index_u"},
-{text:"v",url:"functions_v.html#index_v"},
 {text:"w",url:"functions_w.html#index_w"},
 {text:"z",url:"functions_z.html#index_z"}]},
-{text:"Functions",url:"functions_func.html"},
+{text:"Functions",url:"functions_func.html",children:[
+{text:"c",url:"functions_func.html#index_c"},
+{text:"g",url:"functions_func.html#index_g"},
+{text:"i",url:"functions_func.html#index_i"},
+{text:"p",url:"functions_func.html#index_p"},
+{text:"r",url:"functions_func.html#index_r"},
+{text:"s",url:"functions_func.html#index_s"},
+{text:"u",url:"functions_func.html#index_u"}]},
 {text:"Variables",url:"functions_vars.html"},
 {text:"Properties",url:"functions_prop.html",children:[
 {text:"a",url:"functions_prop.html#index_a"},
@@ -41,6 +48,7 @@ var menudata={children:[
 {text:"g",url:"functions_prop_g.html#index_g"},
 {text:"h",url:"functions_prop_h.html#index_h"},
 {text:"i",url:"functions_prop_i.html#index_i"},
+{text:"j",url:"functions_prop_j.html#index_j"},
 {text:"l",url:"functions_prop_l.html#index_l"},
 {text:"m",url:"functions_prop_m.html#index_m"},
 {text:"n",url:"functions_prop_n.html#index_n"},
@@ -50,8 +58,5 @@ var menudata={children:[
 {text:"s",url:"functions_prop_s.html#index_s"},
 {text:"t",url:"functions_prop_t.html#index_t"},
 {text:"u",url:"functions_prop_u.html#index_u"},
-{text:"v",url:"functions_prop_v.html#index_v"},
 {text:"w",url:"functions_prop_w.html#index_w"},
-{text:"z",url:"functions_prop_z.html#index_z"}]}]}]},
-{text:"Files",url:"files.html",children:[
-{text:"File List",url:"files.html"}]}]}
+{text:"z",url:"functions_prop_z.html#index_z"}]}]}]}]}

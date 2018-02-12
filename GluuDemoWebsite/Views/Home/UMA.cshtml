@@ -33,6 +33,15 @@
             );
         });
 
+        jQuery('#btnIntrospectRpt').click(function (event) {
+            jQuery.post("/Home/IntrospectRpt",
+                {},
+                function (data) {
+                    jQuery("#divResult").html("UMA Introspect RPT: <br/>" + data.Response);
+                }
+            );
+        });
+
         jQuery('#btnGetClaimsGatheringUrl').click(function (event) {
             jQuery.post("/Home/GetClaimsGatheringUrl",
                 { },
@@ -61,7 +70,19 @@
 
 <div class="container">
 <h1>oxd C# Application - UMA</h1>
+    <div class="row">
+        <div class="col-md-4">
+            <ul class="list-group">
+                <li class="list-group-item"><input type="button" id="btnProtect" name="btnProtect" class="btn-link" value="UMA RS Protect" /></li>
+                <li class="list-group-item"><input type="button" id="btnCheckAccess" name="btnCheckAccess" class="btn-link" value="UMA RS Check Access" /></li>
+                <li class="list-group-item"><input type="button" id="btnGetRpt" name="btnGetRpt" class="btn-link" value="UMA RP Get RPT" /></li>
+                <li class="list-group-item"><input type="button" id="btnIntrospectRpt" name="btnIntrospectRpt" class="btn-link" value="UMA Introspect RPT" /></li>
+                <li class="list-group-item"><input type="button" id="btnGetClaimsGatheringUrl" name="btnGetClaimsGatheringUrl" class="btn-link" value="UMA RP Get Claims-Gathering URL" /></li>
+            </ul>
+        </div>
+    </div>
     
+
     <div class="row">
         <div class="col-md-4">
             <input type="button" id="btnGetResource" name="btnGetResource" class="btn btn-success" value="Get Resource" />

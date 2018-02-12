@@ -47,12 +47,12 @@ namespace oxdCSharp.Clients
 
             if (getAccessTokenByRefreshTokenParams == null)
             {
-                throw new ArgumentNullException("The UMA RS Check Access command params should not be NULL.");
+                throw new ArgumentNullException("The get access_token by refresh_token command params should not be NULL.");
             }
 
             if (string.IsNullOrEmpty(getAccessTokenByRefreshTokenParams.OxdId))
             {
-                throw new MissingFieldException("Oxd ID is required for checking access of UMA resources.");
+                throw new MissingFieldException("oxd Id is required for getting access_token by refresh_token.");
             }
 
 
@@ -69,7 +69,7 @@ namespace oxdCSharp.Clients
             }
             catch (Exception ex)
             {
-                Logger.Log(NLog.LogLevel.Error, ex, "Exception when Getting UMA Claims Gathering URL.");
+                Logger.Log(NLog.LogLevel.Error, ex, "Exception when getting access_token by refresh_token.");
                 return null;
             }
         }
@@ -104,7 +104,7 @@ namespace oxdCSharp.Clients
 
             if (string.IsNullOrEmpty(getAccessTokenByRefreshTokenParams.OxdId))
             {
-                throw new MissingFieldException("Oxd ID is required for  Get Claims Gathering Url ");
+                throw new MissingFieldException("oxd Id is required for getting access_token by refresh_token");
             }
 
 
@@ -127,7 +127,7 @@ namespace oxdCSharp.Clients
             }
             catch (Exception ex)
             {
-                Logger.Log(NLog.LogLevel.Error, ex, "Exception when Getting UMA Claims Gathering URL.");
+                Logger.Log(NLog.LogLevel.Error, ex, "Exception when getting access_token by refresh_token.");
                 return null;
             }
         }

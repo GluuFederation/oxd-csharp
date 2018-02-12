@@ -47,12 +47,12 @@ namespace oxdCSharp.UMA.Clients
 
             if (umaRpGetClaimsGatheringUrlParams == null)
             {
-                throw new ArgumentNullException("The UMA RS Check Access command params should not be NULL.");
+                throw new ArgumentNullException("The Get Claims Gathering URL command params should not be NULL.");
             }
 
             if (string.IsNullOrEmpty(umaRpGetClaimsGatheringUrlParams.OxdId))
             {
-                throw new MissingFieldException("Oxd ID is required for checking access of UMA resources.");
+                throw new MissingFieldException("Oxd ID is required for Getting Claims Gathering URL.");
             }
 
 
@@ -110,12 +110,12 @@ namespace oxdCSharp.UMA.Clients
 
             if (umaRpGetClaimsGatheringUrlParams == null)
             {
-                throw new ArgumentNullException("The UMA RS Get Claims Gathering Url params should not be NULL.");
+                throw new ArgumentNullException("The UMA RP Get Claims Gathering Url params should not be NULL.");
             }
 
             if (string.IsNullOrEmpty(umaRpGetClaimsGatheringUrlParams.OxdId))
             {
-                throw new MissingFieldException("Oxd ID is required for  Get Claims Gathering Url ");
+                throw new MissingFieldException("Oxd ID is required for Getting Claims Gathering Url ");
             }
 
           

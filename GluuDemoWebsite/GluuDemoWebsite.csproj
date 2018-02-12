@@ -222,11 +222,11 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\MakeWebRequest.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\OxdModel.cs" />
     <Compile Include="Models\OxdSetting.cs" />
     <Compile Include="Models\RegistrationType.cs" />
+    <Compile Include="Models\MakeWebRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

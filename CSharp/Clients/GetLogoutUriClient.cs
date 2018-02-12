@@ -51,7 +51,7 @@ namespace oxdCSharp.Clients
 
             if(string.IsNullOrEmpty(getLogoutUriParams.OxdId))
             {
-                throw new MissingFieldException("Oxd ID is required for getting user info.");
+                throw new MissingFieldException("Oxd ID is required for getting logout url.");
             }
 
             try

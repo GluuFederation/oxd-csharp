@@ -3,7 +3,6 @@ using System;
 using CSharp.CommonClasses;
 using oxdCSharp.CommandParameters;
 using oxdCSharp.CommandResponses;
-using System.Diagnostics.Contracts;
 
 namespace oxdCSharp.Clients
 {
@@ -103,7 +102,7 @@ namespace oxdCSharp.Clients
             }
             catch (Exception ex)
             {
-                Logger.Log(NLog.LogLevel.Error, ex, "Exception when getting logout uri of site.");
+                Logger.Log(NLog.LogLevel.Error, ex, "Exception when registering site.");
                 return null;
 
             }

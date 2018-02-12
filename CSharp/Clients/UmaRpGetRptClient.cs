@@ -189,7 +189,7 @@ namespace oxdCSharp.UMA.Clients
 
 
 
-        private GetRPTResponse GetRPTResponse(UmaRpGetRptParams getRptParams,CommandClient oxdcommand)
+        private GetRPTResponse GetRPTResponse(UmaRpGetRptParams getRptParams, CommandClient oxdcommand)
         {
             var cmdGetRPT = new Command { CommandType = CommandType.uma_rp_get_rpt, CommandParams = getRptParams };            
             string commandResponse = oxdcommand.send(cmdGetRPT);

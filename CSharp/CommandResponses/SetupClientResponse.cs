@@ -31,6 +31,9 @@ namespace oxdCSharp.CommandResponses
         [JsonProperty("oxd_id")]
         public string OxdId { get; set; }
 
+        /// <summary>
+        /// OpenID Provider
+        /// </summary>
         [JsonProperty("op_host")]
         public string opHost { get; set; }
 

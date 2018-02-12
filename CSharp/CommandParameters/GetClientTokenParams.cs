@@ -37,7 +37,7 @@ namespace oxdCSharp.CommandParameters
         /// <summary>
         /// Path to discovery document
         /// </summary>
-        /// /// <remarks><b>OPTIONAL</b> Field.</remarks>
+        /// <remarks><b>OPTIONAL</b> Field.</remarks>
         [JsonProperty("op_discovery_path")]
         public string opDiscoveryPath { get; set; }
 

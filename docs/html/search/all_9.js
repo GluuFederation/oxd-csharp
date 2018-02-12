@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['lastupdated',['LastUpdated',['../classoxd_c_sharp_1_1_command_responses_1_1_get_user_info_user_claims.html#a2498c0e2c0dcfc244c385c1a2f230385',1,'oxdCSharp::CommandResponses::GetUserInfoUserClaims']]],
-  ['locale',['Locale',['../classoxd_c_sharp_1_1_command_responses_1_1_get_user_info_user_claims.html#a532b1ab4badf5440bb034efde0ba79bc',1,'oxdCSharp::CommandResponses::GetUserInfoUserClaims']]],
-  ['logouturi',['LogoutUri',['../classoxd_c_sharp_1_1_command_responses_1_1_get_logout_uri_response_data.html#a8724368b59e15a476673465758f9f68c',1,'oxdCSharp::CommandResponses::GetLogoutUriResponseData']]]
+  ['jti',['JTI',['../classoxd_c_sharp_1_1_command_responses_1_1_introspect_access_token_response_data.html#ab30af8b03245cbb3bfc59164b0076718',1,'oxdCSharp.CommandResponses.IntrospectAccessTokenResponseData.JTI()'],['../classoxd_c_sharp_1_1_u_m_a_1_1_command_responses_1_1_uma_introspect_rpt_response_data.html#a5c0299a79f1a09b76c23baf86a40ce34',1,'oxdCSharp.UMA.CommandResponses.UmaIntrospectRptResponseData.JTI()']]]
 ];

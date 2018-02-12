@@ -91,17 +91,17 @@ namespace oxdCSharp.UMA.Clients
            
             if (umaRsProtectParams == null)
             {
-                throw new ArgumentNullException("oxd-web The UMA RS Protect command params should not be NULL.");
+                throw new ArgumentNullException("The UMA RS Protect command params should not be NULL.");
             }
 
             if (string.IsNullOrEmpty(umaRsProtectParams.OxdId))
             {
-                throw new MissingFieldException("oxd-web Oxd ID is required for protecting UMA resources.");
+                throw new MissingFieldException("oxd Id is required for protecting UMA resources.");
             }
 
             if (umaRsProtectParams.ProtectResources == null || umaRsProtectParams.ProtectResources.Count == 0)
             {
-                throw new MissingFieldException("oxd-web Valid resources are required for protecting UMA resource in RS.");
+                throw new MissingFieldException("Valid resources are required for protecting UMA resource in RS.");
             }
 
             try
@@ -119,7 +119,7 @@ namespace oxdCSharp.UMA.Clients
             }
             catch (Exception ex)
             {
-                Logger.Log(NLog.LogLevel.Error, ex, "Exception when protecting UMA resource (OXD Web).");
+                Logger.Log(NLog.LogLevel.Error, ex, "Exception when protecting UMA resource.");
                 return null;
             }
         }

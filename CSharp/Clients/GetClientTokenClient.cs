@@ -47,7 +47,7 @@ namespace oxdCSharp.Clients
 
             if (getClientTokenParams == null)
             {
-                throw new ArgumentNullException("The get auth url command params should not be NULL.");
+                throw new ArgumentNullException("The get client token command params should not be NULL.");
             }
             
 
@@ -65,7 +65,7 @@ namespace oxdCSharp.Clients
             }
             catch (Exception ex)
             {
-                Logger.Log(NLog.LogLevel.Error, ex, "Exception when getting auth url of site.");
+                Logger.Log(NLog.LogLevel.Error, ex, "Exception when getting client token.");
                 return null;
             }
         }
@@ -75,7 +75,7 @@ namespace oxdCSharp.Clients
         /// Gets Client Access Token using oxd-https-extension
         /// </summary>
         /// <param name="oxdHttpsExtensionUrl">oxd-https-extension REST service URL</param>
-        /// <param name="getClientTokenParams">Input params to Get  Client Acccess Token  command</param>
+        /// <param name="getClientTokenParams">Input params to Get Client Acccess Token command</param>
         /// <returns>GetClientTokenResponse</returns>
         /// <example>
         /// <b>Example response:</b>
@@ -105,7 +105,7 @@ namespace oxdCSharp.Clients
             }
             catch (Exception ex)
             {
-                Logger.Log(NLog.LogLevel.Error, ex, "Exception when getting Authorization url");
+                Logger.Log(NLog.LogLevel.Error, ex, "Exception when getting client token");
                 return null;
 
             }

@@ -124,6 +124,44 @@
         });
 
 
+        jQuery('#btnIntrospect').click(function (event) {
+            //event.preventDefault();
+
+            var ophostId = jQuery("#ophostId");
+            var redirectUrl = jQuery("#redirecturlid")
+            var PostLogoutRedirectUrl = jQuery("#logouturi");
+            var OxdPort = jQuery("#conn_type");
+            var client_id = jQuery("#clientid");
+            var client_secret = jQuery("#clientsecret");
+            var OxdId = jQuery("#oxdId");
+            var client_name = jQuery("#clientName");
+            var connectiontype = jQuery("input[name=conn_type_radio]:checked");
+            var httpresturl = "";
+
+            if (connectiontype.val() == 'web') {
+                httpresturl = jQuery("#conn_type").val();
+            }
+
+            jQuery.post("/Home/IntrospectAccessToken",
+                {
+                    OpHost: ophostId.val(),
+                    RedirectUrl: redirectUrl.val(),
+                    ConnectionType: connectiontype.val(),
+                    PostLogoutRedirectUrl: PostLogoutRedirectUrl.val(),
+                    OxdPort: OxdPort.val(),
+                    HttpRestUrl: httpresturl,
+                    ClientName: client_name.val(),
+                    ClientId: client_id.val(),
+                    ClientSecret: client_secret.val(),
+                    OxdId: OxdId.val()
+                },
+                function (data) {
+                    alert(data.status);
+                }
+            );
+        });
+
+
 
         jQuery('#ophostId').change(function (event) {
             var ophostId = jQuery("#ophostId");
@@ -200,16 +238,31 @@
 
         jQuery('#btnDelete').click(function (event) {
             // $("form")[0].reset();
+            var OxdPort = jQuery("#conn_type");
+            var connectiontype = jQuery("input[name=conn_type_radio]:checked");
+            var OxdId = jQuery("#oxdId");
+            var httpresturl = "";
+
+            if (connectiontype.val() == 'web') {
+                httpresturl = jQuery("#conn_type").val();
+            }
+
+            jQuery.post("/Home/Delete",
+                {
+                    OxdPort: OxdPort.val(),
+                    HttpRestUrl: httpresturl,
+                    ConnectionType: connectiontype.val(),
+                    OxdId: OxdId.val()
+                },
+                function (data) {
+                }
+            );
+
             $("#clientArea").css("display", "none");
             $("form")[0].reset();
             Enable(false);
             $("#btnRegister").prop('disabled', false);
             $("#btnEdit").prop('disabled', "disabled");
-
-            jQuery.post("/Home/Deleteoxdsettings",
-                function (data) {
-                }
-            );
         });
 
 
@@ -271,8 +324,8 @@
                     <div class="form-group">
                         <label class="control-label col-sm-3" style="text-align: left">oxd Connection Type:</label>
                         <div id="RadioDiv" class="ip_box col-sm-8">
-                            <label class="radio-inline"> <input type="radio" name="conn_type_radio" id="conn_type_radio" value="local" checked="checked"> Local</label>
-                            <label class="radio-inline"> <input type="radio" name="conn_type_radio" id="conn_type_radio" value="web"> web</label>
+                            <label class="radio-inline"> <input type="radio" name="conn_type_radio" id="conn_type_radio" value="local" checked="checked"> oxd-server</label>
+                            <label class="radio-inline"> <input type="radio" name="conn_type_radio" id="conn_type_radio" value="web"> oxd-https-extension</label>
                         </div>
                         <div id="conn">
                             <label class="control-label col-sm-3" id="conn_label" style="text-align: left"></label>
@@ -311,6 +364,7 @@
                         <button type="button" class="btn  btn-primary" value="Edit" id="btnEdit" style="text-align: left">Edit</button>
                         <button type="button" class="btn  btn-danger" value="Delete" id="btnDelete" style="text-align: left">Delete</button>
                         <a href="~/Home/Index" class="btn btn-default">Login Page</a>
+                        @*<button type="button" class="btn btn-success" value="Introspect" id="btnIntrospect" style="text-align: left;">Introspect</button>*@
 
                     </div>
 

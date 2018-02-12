@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GluuDemoWebsite", "GluuDemo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "oxd-Csharp-Test", "oxd-Csharp-Test\oxd-Csharp-Test.csproj", "{BD255B38-74CD-4FCA-B8E0-31B80E7F8982}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UMAExample", "UMAExample\UMAExample.csproj", "{6CA9C1F2-890F-4118-A88B-4D78B0B4DB77}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

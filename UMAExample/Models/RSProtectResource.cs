@@ -1,4 +1,5 @@
-﻿using oxdCSharp.UMA.Clients;
+﻿using Newtonsoft.Json;
+using oxdCSharp.UMA.Clients;
 using oxdCSharp.UMA.CommandParameters;
 using oxdCSharp.UMA.CommandResponses;
 using System;
@@ -27,40 +28,59 @@ namespace UMATestApi.Models
 
             //prepare input params for Protect Resource
             protectParams.OxdId = oxd_id;
+
+            ////Without scope_expression
+            //protectParams.ProtectResources = new List<ProtectResource>
+            //{
+            //    new ProtectResource
+            //    {
+            //        Path = "/values",
+            //        ProtectConditions = new List<ProtectCondition>
+            //        {
+            //            new ProtectCondition
+            //            {
+            //                HttpMethods = new List<string> { "GET" },
+            //                Scopes = new List<string> { "https://client.example.com:44300/api" },
+            //                TicketScopes = new List<string> { "https://client.example.com:44300/api" }
+            //            }
+            //        }
+            //    }
+            //};
+
+            ////With scope_expression
             protectParams.ProtectResources = new List<ProtectResource>
             {
                 new ProtectResource
                 {
                     Path = "/values",
-                    //Path = "/GetAll",
                     ProtectConditions = new List<ProtectCondition>
                     {
                         new ProtectCondition
                         {
                             HttpMethods = new List<string> { "GET" },
-                            Scopes = new List<string> { "https://client.example.com:44300/api" },
-                            TicketScopes = new List<string> { "https://client.example.com:44300/api" },
-                            //Scopes = new List<string> { "https://client.example.com:44300/home" },
-                            //TicketScopes = new List<string> { "https://client.example.com:44300/home" }
+                            //Scopes = new List<string>{ "https://client.example.com:44300/api", "https://client.example.com:44300/api1", "https://client.example.com:44300/api2" },
+                            //TicketScopes = new List<string>{ "https://client.example.com:44300/api", "https://client.example.com:44300/api1", "https://client.example.com:44300/api2" },
+                            ScopeExpressions = new ScopeExpression
+                            {
+                                Rule = JsonConvert.DeserializeObject("{'and':[{'or':[{'var':0},{'var':1}]},{'var':2}]}"),
+                                Data = new List<string>{ "https://client.example.com:44300/api", "https://client.example.com:44300/api1", "https://client.example.com:44300/api2" }
+                            }
                         }
                     }
                 }
             };
 
+
             var protectResponse = new UmaRsProtectResponse();
 
-            //For OXD Local
             if (OXDType == "local")
             {
-                //Get protection access token
-                protectParams.ProtectionAccessToken = pat.GetProtectionAccessToken(oxdHost, oxdPort);
+                //protectParams.ProtectionAccessToken = pat.GetProtectionAccessToken(oxdHost, oxdPort);//Keep this line if protect_commands_with_access_token is set True for oxd-server
                 protectResponse = protectClient.ProtectResources(oxdHost, oxdPort, protectParams);
             }
 
-            //For OXD Web
             if (OXDType == "web")
             {
-                //Get protection access token
                 protectParams.ProtectionAccessToken = pat.GetProtectionAccessToken(httpresturl);
                 protectResponse = protectClient.ProtectResources(httpresturl, protectParams);
             }

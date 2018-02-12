@@ -42,7 +42,6 @@ namespace UMATestApi.Models
             checkAccessParams.OxdId = oxdId;
             checkAccessParams.HttpMethod = "GET";
             checkAccessParams.Path = "/values";
-            //checkAccessParams.Path = "/GetAll";
 
             if (rpt != null)
                 checkAccessParams.RPT = rpt;
@@ -53,16 +52,14 @@ namespace UMATestApi.Models
 
             var checkAccessResponse = new UmaRsCheckAccessResponse();
 
-            //For OXD Local
             if (OXDType == "local")
             {
                 //Get protection access token
-                checkAccessParams.ProtectionAccessToken = pat.GetProtectionAccessToken(oxdHost, oxdPort);
+                //checkAccessParams.ProtectionAccessToken = pat.GetProtectionAccessToken(oxdHost, oxdPort);//Keep this line if protect_commands_with_access_token is set True for oxd-server
                 //Check Access
                 checkAccessResponse = checkAccessClient.CheckAccess(oxdHost, oxdPort, checkAccessParams);
             }
 
-            //For OXD Web
             if (OXDType == "web")
             {
                 //Get protection access token
@@ -73,7 +70,7 @@ namespace UMATestApi.Models
 
             return checkAccessResponse;
 
-            throw new Exception("Error!! Check OXD Server log for error details.");
+            throw new Exception("Error!! Check oxd Server log for error details.");
         }
     }
 }
