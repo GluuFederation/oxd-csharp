@@ -4,9 +4,6 @@ using oxdCSharp.UMA.CommandParameters;
 using oxdCSharp.UMA.CommandResponses;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Web;
 
 
 namespace UMATestApi.Models
@@ -28,7 +25,7 @@ namespace UMATestApi.Models
 
             //prepare input params for Protect Resource
             protectParams.OxdId = oxd_id;
-
+            protectParams.Overwrite = true;
             ////Without scope_expression
             //protectParams.ProtectResources = new List<ProtectResource>
             //{
@@ -62,6 +59,9 @@ namespace UMATestApi.Models
                             //TicketScopes = new List<string>{ "https://client.example.com:44300/api", "https://client.example.com:44300/api1", "https://client.example.com:44300/api2" },
                             ScopeExpressions = new ScopeExpression
                             {
+                                //Rule = JsonConvert.DeserializeObject("{'or':[{'var':0}]}"),
+                                //Data = new List<string>{ "https://client.example.com:44300/" }
+
                                 Rule = JsonConvert.DeserializeObject("{'and':[{'or':[{'var':0},{'var':1}]},{'var':2}]}"),
                                 Data = new List<string>{ "https://client.example.com:44300/api", "https://client.example.com:44300/api1", "https://client.example.com:44300/api2" }
                             }
@@ -87,7 +87,7 @@ namespace UMATestApi.Models
 
             return protectResponse.Status;
 
-            throw new Exception("Procteting Resource is not successful. Check OXD Server log for error details.");
+            throw new Exception("Protecting Resource is not successful. Check oxd Server log for error details.");
         }
     }
 }

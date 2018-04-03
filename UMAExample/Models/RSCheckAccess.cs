@@ -41,7 +41,7 @@ namespace UMATestApi.Models
             var checkAccessParams = new UmaRsCheckAccessParams();
             checkAccessParams.OxdId = oxdId;
             checkAccessParams.HttpMethod = "GET";
-            checkAccessParams.Path = "/values";
+            checkAccessParams.Path = ConfigurationManager.AppSettings["resource_path"];
 
             if (rpt != null)
                 checkAccessParams.RPT = rpt;

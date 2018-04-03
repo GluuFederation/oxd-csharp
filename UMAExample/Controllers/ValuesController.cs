@@ -14,9 +14,24 @@ namespace UMATestApi.Controllers
 
         // GET api/values
         [SecureApi]
+        [Route("api/values")]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
+        }
+
+        [SecureApi]
+        [Route("values")]
+        public IEnumerable<string> GetValues()
+        {
+            return new string[] { "value11", "value12" };
+        }
+
+        [SecureApi]
+        [Route("api/persons")]
+        public IEnumerable<string> GetPersons()
+        {
+            return new string[] { "Person1", "Person2" };
         }
 
         // GET api/values/5

@@ -16,6 +16,13 @@ namespace oxdCSharp.UMA.CommandParameters
         public string OxdId { get; set; }
 
         /// <summary>
+        /// Allow existing resource to overwrite or not
+        /// </summary>
+        /// <remarks><b>OPTIONAL</b> Field.</remarks>
+        [JsonProperty("overwrite")]
+        public bool Overwrite { get; set; }
+
+        /// <summary>
         /// Resources to be protected
         /// </summary>
         /// <remarks><b>REQUIRED</b> Field.</remarks>

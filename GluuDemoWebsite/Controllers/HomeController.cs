@@ -918,7 +918,6 @@ namespace GluuDemoWebsite.Controllers
             Session["uma_ticket"] = Request.Params["ticket"];
 
             return RedirectToAction("Resource");
-            //Response.Redirect("/UMA");
         }
 
         public ActionResult Resource()
