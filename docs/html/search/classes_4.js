@@ -7,5 +7,6 @@ var searchData=
   ['removesiteclient',['RemoveSiteClient',['../classoxd_c_sharp_1_1_clients_1_1_remove_site_client.html',1,'oxdCSharp::Clients']]],
   ['removesiteparams',['RemoveSiteParams',['../classoxd_c_sharp_1_1_command_parameters_1_1_remove_site_params.html',1,'oxdCSharp::CommandParameters']]],
   ['removesiteresponse',['RemoveSiteResponse',['../classoxd_c_sharp_1_1_command_responses_1_1_remove_site_response.html',1,'oxdCSharp::CommandResponses']]],
-  ['removesiteresponsedata',['RemoveSiteResponseData',['../classoxd_c_sharp_1_1_command_responses_1_1_remove_site_response_data.html',1,'oxdCSharp::CommandResponses']]]
+  ['removesiteresponsedata',['RemoveSiteResponseData',['../classoxd_c_sharp_1_1_command_responses_1_1_remove_site_response_data.html',1,'oxdCSharp::CommandResponses']]],
+  ['requiredclaim',['RequiredClaim',['../classoxd_c_sharp_1_1_u_m_a_1_1_command_responses_1_1_required_claim.html',1,'oxdCSharp::UMA::CommandResponses']]]
 ];

@@ -146,6 +146,22 @@ namespace oxdCSharp.CommandParameters
         public string ClientSecret { get; set; }
 
         /// <summary>
+        /// Access token of existing client.
+        /// Must be used together with client_id/client_secret
+        /// </summary>
+        /// <remarks><b>OPTIONAL</b> Field.</remarks>
+        [JsonProperty("client_registration_access_token")]
+        public string ClientRegistrationAccessToken { get; set; }
+
+        /// <summary>
+        /// URI of existing client.
+        /// Must be used together with client_id/client_secret
+        /// </summary>
+        /// <remarks><b>OPTIONAL</b> Field.</remarks>
+        [JsonProperty("client_registration_client_uri")]
+        public string ClientRegistrationClientUri { get; set; }
+
+        /// <summary>
         /// oxd_rp_programming_language.
         /// Programming language: For example Csharp
         /// </summary>

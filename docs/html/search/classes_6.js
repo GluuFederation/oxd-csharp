@@ -17,7 +17,9 @@ var searchData=
   ['umarsprotectclient',['UmaRsProtectClient',['../classoxd_c_sharp_1_1_u_m_a_1_1_clients_1_1_uma_rs_protect_client.html',1,'oxdCSharp::UMA::Clients']]],
   ['umarsprotectparams',['UmaRsProtectParams',['../classoxd_c_sharp_1_1_u_m_a_1_1_command_parameters_1_1_uma_rs_protect_params.html',1,'oxdCSharp::UMA::CommandParameters']]],
   ['umarsprotectresponse',['UmaRsProtectResponse',['../classoxd_c_sharp_1_1_u_m_a_1_1_command_responses_1_1_uma_rs_protect_response.html',1,'oxdCSharp::UMA::CommandResponses']]],
+  ['umarsprotectresponsedata',['UmaRsProtectResponseData',['../classoxd_c_sharp_1_1_u_m_a_1_1_command_responses_1_1_uma_rs_protect_response_data.html',1,'oxdCSharp::UMA::CommandResponses']]],
   ['updatesiteparams',['UpdateSiteParams',['../classoxd_c_sharp_1_1_command_parameters_1_1_update_site_params.html',1,'oxdCSharp::CommandParameters']]],
   ['updatesiteregistrationclient',['UpdateSiteRegistrationClient',['../classoxd_c_sharp_1_1_clients_1_1_update_site_registration_client.html',1,'oxdCSharp::Clients']]],
-  ['updatesiteresponse',['UpdateSiteResponse',['../classoxd_c_sharp_1_1_command_responses_1_1_update_site_response.html',1,'oxdCSharp::CommandResponses']]]
+  ['updatesiteresponse',['UpdateSiteResponse',['../classoxd_c_sharp_1_1_command_responses_1_1_update_site_response.html',1,'oxdCSharp::CommandResponses']]],
+  ['updatesiteresponsedata',['UpdateSiteResponseData',['../classoxd_c_sharp_1_1_command_responses_1_1_update_site_response_data.html',1,'oxdCSharp::CommandResponses']]]
 ];

@@ -47,5 +47,27 @@ namespace oxdCSharp.CommandParameters
         /// <remarks><b>OPTIONAL</b> Field.</remarks>
         [JsonProperty("scope")]
         public List<string> scope { get; set; }
+
+        /// <summary>
+        /// Authentication Method
+        /// </summary>
+        /// <remarks><b>OPTIONAL</b> Field.</remarks>
+        [JsonProperty("authentication_method")]
+        public string AuthenticationMethod { get; set; }
+
+        /// <summary>
+        /// Algorithm
+        /// </summary>
+        /// <remarks><b>OPTIONAL</b> Field.</remarks>
+        [JsonProperty("algorithm")]
+        public string Algorithm { get; set; }
+
+
+        /// <summary>
+        /// Key Id
+        /// </summary>
+        /// <remarks><b>OPTIONAL</b> Field.</remarks>
+        [JsonProperty("key_id")]
+        public string KeyId { get; set; }
     }
 }

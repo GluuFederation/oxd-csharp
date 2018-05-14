@@ -32,6 +32,8 @@ namespace GluuDemoWebsite.Controllers
         public static string op_host = "";
         public static string oxd_id = "";
         public static string oxdHost = "";
+        public static string clientidOfoxdId = "";
+        public static string setupClientoxdId = "";
         public static int oxdPort = 0;
         public static List<string> scope;
         public static List<string> grant_types;
@@ -120,12 +122,12 @@ namespace GluuDemoWebsite.Controllers
 
                 SetConfigValues(oxd, setupClientResponse.Data.OxdId, setupClientResponse.Data.clientId, setupClientResponse.Data.clientSecret);
 
-                return Json(new { oxdId = setupClientResponse.Data.OxdId, clientId = setupClientResponse.Data.clientId, clientSecret = setupClientResponse.Data.clientSecret });
+                return Json(new { oxdId = setupClientResponse.Data.OxdId, clientidOfoxdId = setupClientResponse.Data.ClientIdOfOxdId, setupClientoxdId = setupClientResponse.Data.SetupClientOxdId , clientId = setupClientResponse.Data.clientId, clientSecret = setupClientResponse.Data.clientSecret });
 
             }
             else
             {
-                return Json(new { oxdId = oxd.OxdId, clientId = clientid, clientSecret = clientsecret });
+                return Json(new { oxdId = oxd.OxdId, clientidOfoxdId = clientidOfoxdId, clientId = clientid, clientSecret = clientsecret,  setupClientoxdId= setupClientoxdId });
             }
         }
 

@@ -32,10 +32,23 @@ namespace oxdCSharp.CommandResponses
         public string OxdId { get; set; }
 
         /// <summary>
-        /// OpenID Provider
+        /// Additional registered client oxdId
         /// </summary>
+        [JsonProperty("client_id_of_oxd_id")]
+        public string ClientIdOfOxdId { get; set; }
+
+        /// <summary>
+        /// OpenID Provider
+        /// </summary>  
         [JsonProperty("op_host")]
         public string opHost { get; set; }
+
+        /// <summary>
+        /// oxdId of the setup client used to obtain access token
+        /// </summary>
+        [JsonProperty("setup_client_oxd_id")]
+        public string SetupClientOxdId { get; set; }
+
 
         /// <summary>
         /// Registered Client Id form the OP server

@@ -99,5 +99,12 @@ namespace oxdCSharp.CommandResponses
         public IList<string> AcrValues { get; set; }
 
 
+        /// <summary>
+        /// Extension Field
+        /// </summary>
+        [JsonProperty("extension_field")]
+        public string ExtensionField { get; set; }
+
+
     }
 }

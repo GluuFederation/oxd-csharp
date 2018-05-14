@@ -86,5 +86,55 @@ namespace oxdCSharp.UMA.CommandResponses
         /// </summary>
         [JsonProperty("ticket")]
         public string Ticket { get; set; }
+
+
+        /// <summary>
+        /// Required Claims
+        /// </summary>
+        [JsonProperty("required_claims")]
+        public IList<RequiredClaim> RequiredClaims { get; set; }
+
+        /// <summary>
+        /// Redirect User
+        /// </summary>
+        [JsonProperty("redirect_user")]
+        public string RedirectUser { get; set; }
+        
+    }
+
+    /// <summary>
+    /// Required Claims (Need_Info error)
+    /// </summary>
+    public class RequiredClaim
+    {
+        /// <summary>
+        /// Claim Token Format
+        /// </summary>
+        [JsonProperty("claim_token_format")]
+        public  IList<string> ClaimTokenFormat { get; set; }
+
+        /// <summary>
+        /// Claim Type
+        /// </summary>
+        [JsonProperty("claim_type")]
+        public string  ClaimType { get; set; }
+
+        /// <summary>
+        /// Friendly Name
+        /// </summary>
+        [JsonProperty("friendly_name")]
+        public string FriendlyName { get; set; }
+
+        /// <summary>
+        /// Issuer
+        /// </summary>
+        [JsonProperty("issuer")]
+        public IList<string> Issuer { get; set; }
+
+        /// <summary>
+        /// Name
+        /// </summary>
+        [JsonProperty("name")]
+        public string Name { get; set; }
     }
 }
